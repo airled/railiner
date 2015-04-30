@@ -8,7 +8,7 @@ default: &default
   adapter: mysql2 
   user: root
   password: 
-  host: localhost
+  host: 127.0.0.1
 
 development:
   <<: *default
