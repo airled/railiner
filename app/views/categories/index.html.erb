@@ -1,24 +1,23 @@
-<h1>Categories list</h1>
-<%= link_to 'Go back', root_path %>
-<%= link_to 'Groups', groups_path %>
-<%= link_to 'Products', products_path %>
+<h1>Список категорий</h1>
+<%= link_to 'Назад', root_path %>
+<%= link_to 'Группы', groups_path %>
+<%= link_to 'Продукты', products_path %>
 <table>
   <tr>
-    <th>id</th>
-<!--    <th>Url</th> -->
-    <th>Name</th>
-    <th>Name (rus)</th>
-    <th>Is new</th>
+<!--    <th>id</th>
+    <th>Name</th> -->
+    <th>Название</th>
+    <th>Подробнее</th>
+<!--    <th>Is new</th> -->
   </tr>
 
   <% @categories.each do |category| %>
     <tr>
-      <td><%= category.id %></td>
-<!--      <td><%= category.url %></td>
-      <td><%= category.name %></td> -->
-      <td><%= link_to category.name, category.url %></td>
-      <td><%= category.name_ru %></td>
-      <td><%= category.is_new %></td>
+<!--      <td><%= category.id %></td> -->
+      <td><%= link_to category.name_ru, category.url %></td>
+      <td><%= link_to 'Подробнее', category_path(category) %></td>
+<!--      <td><%= category.name_ru %></td>
+      <td><%= category.is_new %></td> -->
     </tr>
   <% end %>
 </table>

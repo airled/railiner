@@ -1,17 +1,17 @@
-<h1>Groups list</h1>
-<%= link_to 'Go back', root_path %>
-<%= link_to 'Categories', categories_path %>
-<%= link_to 'Products', products_path %>
+<h1>Список групп</h1>
+<%= link_to 'Назад', root_path %>
+<%= link_to 'Категории', categories_path %>
+<%= link_to 'Продукты', products_path %>
 <table>
   <tr>
-    <th>id</th>
+<!--    <th>id</th> -->
     <th>Name</th>
     <th>Name (rus)</th>
   </tr>
 
   <% @groups.each do |group| %>
     <tr>
-      <td><%= group.id %></td>
+<!--      <td><%= group.id %></td> -->
       <td><%= group.name %></td>
       <td><%= group.name_ru %></td>
     </tr>

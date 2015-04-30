@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
 
-  get 'groups/', to: 'groups#index'
-  get 'categories/', to: 'categories#index'
-  get 'products/', to: 'products#index'
-  #get 'welcome/index'
-  #get 'groups/index'
-  #get 'categories/index'
+  #get 'groups/', to: 'groups#index'
+  #get 'categories/', to: 'categories#index'
+  #get 'products/', to: 'products#index'
+  resources :groups, only: [:index] #do
+  resources :categories, only: [:index,:show]
+  resources :products, only: [:index]
+#   resources :categories do
+#     resources :products do     
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
