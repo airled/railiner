@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150430054952) do
+ActiveRecord::Schema.define(version: 20150430102705) do
+
+  create_table "categories", force: :cascade do |t|
+    t.string  "url",     limit: 255
+    t.string  "name",    limit: 255
+    t.string  "name_ru", limit: 255
+    t.boolean "is_new",  limit: 1
+  end
 
   create_table "groups", force: :cascade do |t|
     t.string "name",    limit: 255
