@@ -3,16 +3,17 @@
 <table>
   <tr>
     <th>id</th>
+    <th>Group name</th>
     <th>Group name (rus)</th>
   </tr>
 
   <% @groups.each do |group| %>
     <tr>
       <td><%= group.id %></td>
+      <td><%= group.name %></td>
       <td><%= group.name_ru %></td>
-<!--      <td><%= group.id %></td>
-      <td><%= group.name_ru %></td>
-      -->
     </tr>
   <% end %>
 </table>
+
+<%= link_to 'Go back', root_path %>
