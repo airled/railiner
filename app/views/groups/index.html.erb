@@ -1,1 +1,18 @@
 <h1>Groups list</h1>
+
+<table>
+  <tr>
+    <th>id</th>
+    <th>Group name (rus)</th>
+  </tr>
+
+  <% @groups.each do |group| %>
+    <tr>
+      <td><%= group.id %></td>
+      <td><%= group.name_ru %></td>
+<!--      <td><%= group.id %></td>
+      <td><%= group.name_ru %></td>
+      -->
+    </tr>
+  <% end %>
+</table>
