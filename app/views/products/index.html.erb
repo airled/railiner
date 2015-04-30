@@ -1,0 +1,20 @@
+<h1>Products list</h1>
+<%= link_to 'Go back', root_path %>
+<%= link_to 'Groups', groups_path %>
+<%= link_to 'Categories', categories_path %>
+<table>
+  <tr>
+    <th>id</th>
+    <th>Url</th>
+    <th>Name</th>
+    <th>Url изображения</th>
+  </tr>
+  <% @products.each do |product| %>
+    <tr>
+      <td><%= product.id %></td>
+      <td><%= product.url %></td>
+      <td><%= product.name %></td>
+      <td><%= product.image_url %></td>
+    </tr>
+  <% end %>
+</table>
