@@ -28,8 +28,8 @@ class Parser
     groups.zip(categories_blocks).map do |group_node, categories_block|
       group = create_group(group_node)
       categories_block.xpath("./li/div[@class='i']").map do |category_node|
-        category = create_category(category_node)
-#        group.add_category(category)
+#        category_hash = category_node_parameters(category_node)
+        category = group.categories.create(category_node_parameters(category_node))
         create_category_products(category,category_node)
       end
     end
@@ -47,20 +47,33 @@ class Parser
   end
 
   #creating categories in Categories table
-  def create_category(category_node)
+  def category_node_parameters(category_node)
     url = category_node.xpath("./a[1]/@href").text
     name = url.sub(URL,'').delete('/')
     name_ru = category_node.xpath("./a[last()]").text
     is_new = category_node.xpath("./a[2]/img[@class='img_new']").any?
-    Category.create(name: name, name_ru: name_ru, url: url, is_new: is_new)
+    { name: name, name_ru: name_ru, url: url, is_new: is_new }
+  end
+
+ #creating all products of a category
+  def create_category_products(category,category_node)
+    products_page_url = category_node.xpath("./a[1]/@href").text
+    while products_page_url
+      html_product = Nokogiri::HTML(open(products_page_url))
+      html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
+#        product_hash = product_node_parameters(product_node)
+        category.products.create(product_node_parameters(product_node))
+      end
+      products_page_url = check_next(html_product)
+    end
   end
 
   #creating products in Products table
-  def create_product(product_node)
+  def product_node_parameters(product_node)
     url = URL + product_node.xpath("./strong/a/@href").text
     name = product_node.xpath("./strong/a").text.delete("\n" " ")
     image_url = product_node.xpath("../td[@class='pimage']/a/img/@src").text
-    Product.create(url: url, name: name, image_url: image_url)
+    { url: url, name: name, image_url: image_url }
   end
 
   #checking if there is a next product page in the same category
@@ -73,19 +86,6 @@ class Parser
       false
     end
     next_products_page_url
-  end
-
-  #creating all products of a category
-  def create_category_products(category,category_node)
-    products_page_url = category_node.xpath("./a[1]/@href").text
-    while products_page_url
-      html_product = Nokogiri::HTML(open(products_page_url))
-      html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
-        product = create_product(product_node)
-#        category.add_product(product)
-      end
-      products_page_url = check_next(html_product)
-    end
   end
   
   #calculating parsing time and amount of fetched objects
