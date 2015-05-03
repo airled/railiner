@@ -23,4 +23,4 @@ test:
 
 production:
   <<: *default
-  password: <%= ENV['DB_PASS'] %>
+  database: railiner_production
