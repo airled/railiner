@@ -5,6 +5,6 @@ require File.expand_path('../config/application', __FILE__)
 require './lib/parser'
 Rails.application.load_tasks
 
-task :parse do
+task :parse => :environment do
   Parser.instance.run
 end

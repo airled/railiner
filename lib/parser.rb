@@ -1,7 +1,6 @@
 #Onliner's catalog parser. Fetches groups of categories, categories
 #and products of each category and inserts them all into the 
 #appropriate MySQL table.
-#require './init_models'
 require 'nokogiri'
 require 'open-uri'
 require 'singleton'
@@ -15,7 +14,7 @@ class Parser
 
   #parser's work script
   def run
-    start_time=Time.new
+    start_time = Time.new
     #fetching HTML code
     puts 'Fetching start page HTML...'
     html = Nokogiri::HTML(open(URL))
@@ -28,11 +27,11 @@ class Parser
     groups.zip(categories_blocks).map do |group_node, categories_block|
       group = create_group(group_node)
       categories_block.xpath("./li/div[@class='i']").map do |category_node|
-        category = group.categories.create(category_node_parameters(category_node))
+        category = group.categories.create(category_parameters(category_node))
         create_category_products(category,category_node)
       end
     end
-    stop_time=Time.new
+    stop_time = Time.new
     #echo result information
     results(stop_time,start_time)
   end
@@ -41,12 +40,12 @@ class Parser
 
   #creating groups in Groups table
   def create_group(group_node)
-    name = group_node.text.delete("0-9")
-    Group.create(name_ru: name)
+    name_ru = group_node.text.delete("0-9")
+    Group.create(name_ru: name_ru, name: '')
   end
 
-  #creating categories in Categories table
-  def category_node_parameters(category_node)
+  #fetching hash parameters of one category
+  def category_parameters(category_node)
     url = category_node.xpath("./a[1]/@href").text
     name = url.sub(URL,'').delete('/')
     name_ru = category_node.xpath("./a[last()]").text
@@ -60,14 +59,14 @@ class Parser
     while products_page_url
       html_product = Nokogiri::HTML(open(products_page_url))
       html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
-        category.products.create(product_node_parameters(product_node))
+        category.products.create(product_parameters(product_node))
       end
       products_page_url = check_next(html_product)
     end
   end
 
-  #creating products in Products table
-  def product_node_parameters(product_node)
+  #fetching hash parameters of one product
+  def product_parameters(product_node)
     url = URL + product_node.xpath("./strong/a/@href").text
     name = product_node.xpath("./strong/a").text.delete("\n" " ")
     image_url = product_node.xpath("../td[@class='pimage']/a/img/@src").text
@@ -80,9 +79,7 @@ class Parser
     next_url = products_page.xpath(xnext).text
     next_products_page_url = if next_url != ''
       URL + '/' + next_url
-    else
-      false
-    end
+    end || false
     next_products_page_url
   end
   
