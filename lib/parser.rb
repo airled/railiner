@@ -28,7 +28,6 @@ class Parser
     groups.zip(categories_blocks).map do |group_node, categories_block|
       group = create_group(group_node)
       categories_block.xpath("./li/div[@class='i']").map do |category_node|
-#        category_hash = category_node_parameters(category_node)
         category = group.categories.create(category_node_parameters(category_node))
         create_category_products(category,category_node)
       end
@@ -61,7 +60,6 @@ class Parser
     while products_page_url
       html_product = Nokogiri::HTML(open(products_page_url))
       html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
-#        product_hash = product_node_parameters(product_node)
         category.products.create(product_node_parameters(product_node))
       end
       products_page_url = check_next(html_product)
