@@ -25,11 +25,6 @@ ActiveRecord::Schema.define(version: 20150430111908) do
     t.string "name_ru", limit: 255
   end
 
-  create_table "prods", force: :cascade do |t|
-    t.string "url",  limit: 255
-    t.string "name", limit: 20
-  end
-
   create_table "products", force: :cascade do |t|
     t.string "url",       limit: 255
     t.string "name",      limit: 255
