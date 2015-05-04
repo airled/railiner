@@ -22,6 +22,7 @@ class Parser
     #fetching groups and categories root nodes
     groups = html.xpath("//h1[@class='cm__h1']")
     categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
+    puts "Found #{groups.size} groups of categories to parse"
     puts 'Parsing...'
     #matching products to their categories and categories to their groups
     groups.zip(categories_blocks).map do |group_node, categories_block|

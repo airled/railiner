@@ -1,19 +1,13 @@
 <h1>Список групп</h1>
 <%= link_to 'Назад', root_path %>
-<%= link_to 'Категории', categories_path %>
-<%= link_to 'Продукты', products_path %>
 <table>
   <tr>
-<!--    <th>id</th> -->
-    <th>Name</th>
     <th>Name (rus)</th>
   </tr>
 
   <% @groups.each do |group| %>
     <tr>
-<!--      <td><%= group.id %></td> -->
-      <td><%= group.name %></td>
-      <td><%= group.name_ru %></td>
+      <td><%= link_to group.name_ru, group_categories_path(group) %></td>
     </tr>
   <% end %>
 </table>

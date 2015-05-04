@@ -1,0 +1,15 @@
+<h1>Список категорий</h1>
+<%= link_to 'Назад', root_path %>
+<table>
+  <tr>
+    <th>Название</th>
+    <th></th>
+  </tr>
+
+  <% @categories.each do |category| %>
+    <tr>
+      <td><%= category.name_ru %></td>
+      <td><%= link_to 'Ссылка', category.url %></td>
+    </tr>
+  <% end %>
+</table>

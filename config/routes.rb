@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
 
-  #get 'groups/', to: 'groups#index'
-  #get 'categories/', to: 'categories#index'
-  #get 'products/', to: 'products#index'
-  resources :groups, only: [:index] #do
-  resources :categories, only: [:index,:show]
-  resources :products, only: [:index]
+  get 'categories/', to: 'categories#index_all'
+  get 'products/', to: 'products#index_all'
+  resources :groups, only: [:index] do
+    resources :categories, only: [:index] do
+      resources :products, only: [:index]
+    end
+  end
 #   resources :categories do
 #     resources :products do     
 
