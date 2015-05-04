@@ -1,15 +1,19 @@
 <h1>Список продуктов для категории: <%= @category_name %></h1>
+
 <%= link_to 'Назад', group_categories_path %>
 
 <table>
+
   <tr>
     <th>Название</th>
     <th></th>
   </tr>
+
     <% @products.each do |product| %>
     <tr>
       <td><%= product.name %></td>
       <td><%= link_to 'Ссылка', product.url %></td>
     </tr>
   <% end %>
+
 </table>

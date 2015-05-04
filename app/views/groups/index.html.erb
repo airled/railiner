@@ -1,6 +1,9 @@
 <h1>Список групп</h1>
+
 <%= link_to 'Назад', root_path %>
+
 <table>
+
   <tr>
     <th>Name (rus)</th>
   </tr>
@@ -10,4 +13,5 @@
       <td><%= link_to group.name_ru, group_categories_path(group) %></td>
     </tr>
   <% end %>
+
 </table>
