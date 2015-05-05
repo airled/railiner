@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'ruby-progressbar'
 gem 'capistrano-rbenv'
 gem 'libv8'
 gem 'mysql2'

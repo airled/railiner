@@ -3,6 +3,7 @@
 #appropriate MySQL table.
 require 'nokogiri'
 require 'open-uri'
+require 'ruby-progressbar'
 require 'singleton'
 
 class Parser
@@ -22,8 +23,8 @@ class Parser
     #fetching groups and categories root nodes
     groups = html.xpath("//h1[@class='cm__h1']")
     categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
-    puts "Found #{groups.size} groups of categories to parse"
     puts 'Parsing...'
+    progressbar = ProgressBar.create(:title => "Groups:", :starting_at => 0, :total => groups.size)
     #matching products to their categories and categories to their groups
     groups.zip(categories_blocks).map do |group_node, categories_block|
       group = create_group(group_node)
@@ -31,8 +32,10 @@ class Parser
         category = group.categories.create(category_parameters(category_node))
         create_category_products(category,category_node)
       end
+    progressbar.increment
     end
     stop_time = Time.new
+    progressbar.finish
     #echo result information
     results(stop_time,start_time)
   end
