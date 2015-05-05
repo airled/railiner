@@ -25,7 +25,7 @@ class Parser
     categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
     categories_amount = categories_blocks.xpath("./li/div[@class='i']").size
     puts 'Parsing...'
-    progress_parameters = {:title => "->Categories", :starting_at => 0, :total => categories_amount}
+    progress_parameters = {:title => ">Categories", :starting_at => 0, :total => categories_amount}
     categories_bar = ProgressBar.create(progress_parameters)
     #matching products to their categories and categories to their groups
     groups.zip(categories_blocks).map do |group_node, categories_block|
