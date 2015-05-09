@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'kaminari'
 gem 'ruby-progressbar'
 gem 'capistrano-rbenv'
 gem 'libv8'
