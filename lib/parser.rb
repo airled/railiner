@@ -26,18 +26,18 @@ class Parser
     categories_amount = categories_blocks.xpath("./li/div[@class='i']").size
     puts 'Parsing...'
     progress_options = { title: ">Progress", starting_at: 0, total: categories_amount }
-    categories_bar = ProgressBar.create(progress_options)
+    progress_bar = ProgressBar.create(progress_options)
     #matching products to their categories and categories to their groups
     groups.zip(categories_blocks).map do |group_node, categories_block|
       group = create_group(group_node)
       categories_block.xpath("./li/div[@class='i']").map do |category_node|
         category = group.categories.create(category_parameters(category_node))
-        categories_bar.increment
         create_category_products(category,category_node)
+        progress_bar.increment
       end
     end
     stop_time = Time.new
-    categories_bar.finish
+    progress_bar.finish
     #echo result information
     results(stop_time,start_time)
   end
@@ -75,7 +75,6 @@ class Parser
   def product_parameters(product_node)
     url = URL + product_node.xpath("./strong/a/@href").text
     name = product_node.xpath("./strong/a").text.strip
-    #name = product_node.xpath("./strong/a").text.delete("\n" " ")
     image_url = product_node.xpath("../td[@class='pimage']/a/img/@src").text
     { url: url, name: name, image_url: image_url }
   end

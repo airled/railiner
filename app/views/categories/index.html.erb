@@ -10,10 +10,10 @@
   </tr>
 
   <% @categories.each do |category| %>
-   <tr>
-     <td><%= link_to category.name_ru, group_category_products_path(@group,category) %></td>
-     <td><%= link_to 'Ссылка', category.url %></td>
-   </tr>
+    <tr>
+      <td><%= link_to category.name_ru, group_category_products_path(@group,category) %></td>
+      <td><%= link_to 'Ссылка', category.url %></td>
+    </tr>
   <% end %>
 
 </table>
