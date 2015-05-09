@@ -5,11 +5,9 @@ one:
   name: MyString
   name_ru: MyString
   is_new: false
-  group_id: 
 
 two:
   url: MyString
   name: MyString
   name_ru: MyString
   is_new: false
-  group_id: 
