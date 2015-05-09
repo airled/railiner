@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   get 'categories/', to: 'categories#index_all'
-  get 'products/(page/:page)', to: 'products#index_all'
+  get 'products/(page/:page)', to: 'products#index_all', as: :products
   resources :categories, only: [:show] 
   resources :groups, only: [:index] do
     resources :categories, only: [:index] do
