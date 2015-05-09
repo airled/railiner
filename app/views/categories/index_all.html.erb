@@ -11,7 +11,7 @@
 
   <% @categories.each do |category| %>
     <tr>
-      <td><%= category.name_ru %></td>
+      <td><%= link_to category.name_ru, category_path(category) %></td>
       <td><%= link_to 'Ссылка', category.url %></td>
     </tr>
   <% end %>
