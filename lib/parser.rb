@@ -74,7 +74,8 @@ class Parser
   #fetching hash parameters of one product
   def product_parameters(product_node)
     url = URL + product_node.xpath("./strong/a/@href").text
-    name = product_node.xpath("./strong/a").text.delete("\n" " ")
+    name = product_node.xpath("./strong/a").text.strip
+    #name = product_node.xpath("./strong/a").text.delete("\n" " ")
     image_url = product_node.xpath("../td[@class='pimage']/a/img/@src").text
     { url: url, name: name, image_url: image_url }
   end
