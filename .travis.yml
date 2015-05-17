@@ -1,13 +1,16 @@
 language: ruby
 rbenv:
   - 2.1.5
-env:
-  - DB=mysql
-script: 
-  - RAILS_ENV=test bundle exec rake db:migrate --trace
-  - bundle exec rake db:test:prepare
-  - bundle exec rspec spec/
+env: 
+  - RAILS_ENV=test
 before_script:
-  - mysql -e 'create database my_app_test'
-
-bundler_args: --binstubs=./bundler_stubs
+  - "mysql -e 'create database railiner_testing;'"
+# script: 
+#   - bundle exec rake db:schema:load
+#   - bundle exec rake db:test:prepare
+#   - bundle exec rake spec
+# after_failure:
+#   - "mysql -e 'show databases;'"
+#   - "cat ./config/database.yml"
+#   - "echo $RAILS_ENV"
+#   - "bundle exec rake --version"
