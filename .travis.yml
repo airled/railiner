@@ -11,3 +11,4 @@ script:
   
 notifications:
   email: false
+  slack: jaturken:FhaDtZwDXZh6Vxq3YyYJ6li5
