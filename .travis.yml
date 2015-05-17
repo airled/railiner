@@ -7,7 +7,8 @@ before_script:
   - bundle exec rake db:test:prepare
 #   - "mysql -e 'create database railiner_testing;'"
 script: 
-  # - bundle exec rake db:schema:load
+  # - rake db:migrate RAILS_ENV=test
+  - bundle exec rake db:schema:load
   # - bundle exec rake db:test:prepare
   # - bundle exec rake spec
 # after_failure:
