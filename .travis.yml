@@ -5,9 +5,10 @@ env:
   - RAILS_ENV=test
 before_script:
   # - bundle exec rake db:test:prepare
-  - "mysql -e 'create database railiner_testing;'"
+  # - "mysql -e 'create database railiner_testing;'"
 script: 
   # - rake db:migrate RAILS_ENV=test
+  - "mysql -e 'create database railiner_testing;'"
   - bundle exec rake db:schema:load
   # - bundle exec rake db:test:prepare
   # - bundle exec rake spec
