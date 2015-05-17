@@ -91,11 +91,10 @@ class Parser
   
   #calculating parsing time and amount of fetched objects
   def results(stop,start)
-    hours = stop.hour - start.hour
-    mins = stop.min - start.min
-    secs = stop.sec - start.sec
-    (mins = mins + 60) && (hours = hours - 1) if mins < 0
-    (secs = secs + 60) && (mins = mins - 1) if secs < 0
+    secs_total = (stop - start).to_i
+    hours = secs_total/3600
+    mins = (secs_total - hours*3600)/60
+    secs = secs_total - hours*3600 - mins*60
     puts "Done in #{hours}:#{mins}:#{secs}"
     puts "Got: #{Group.count} groups, #{Category.count} categories, #{Product.count} products"
   end
