@@ -8,7 +8,6 @@ before_script:
 script: 
   - bundle exec rake db:schema:load
   - bundle exec rake test
-  
 notifications:
   email: false
   slack: jaturken:FhaDtZwDXZh6Vxq3YyYJ6li5
