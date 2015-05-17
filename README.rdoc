@@ -4,6 +4,8 @@
 
 {<img src="https://codeclimate.com/github/airled/railiner/badges/coverage.svg" />}[https://codeclimate.com/github/airled/railiner/coverage]
 
+{<img src="https://travis-ci.org/airled/railiner.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/airled/railiner]
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
