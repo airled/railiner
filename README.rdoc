@@ -4,6 +4,6 @@
 
 * Rails application has been developed with Ruby version 2.1.5.
 
-* At that point you probably need Node.js package.
+* It has some issues with Node.js and The Rubyracer dependencies. Be prepared.
 
-* At that point Rails application uses MySQL (and mysql2 adapter for Active Record).
+* At that moment the rails application uses MySQL (and mysql2 adapter for Active Record).
