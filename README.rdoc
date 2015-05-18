@@ -2,29 +2,8 @@
 
 {<img src="https://codeclimate.com/github/airled/railiner/badges/gpa.svg" />}[https://codeclimate.com/github/airled/railiner] {<img src="https://codeclimate.com/github/airled/railiner/badges/coverage.svg" />}[https://codeclimate.com/github/airled/railiner/coverage] {<img src="https://travis-ci.org/airled/railiner.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/airled/railiner]
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Rails application has been developed with Ruby version 2.1.5.
 
-Things you may want to cover:
+* At that point you probably need Node.js package.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+* At that point Rails application uses MySQL (and mysql2 adapter for Active Record).
