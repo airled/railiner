@@ -1,9 +1,6 @@
 == README
 
 {<img src="https://codeclimate.com/github/airled/railiner/badges/gpa.svg" />}[https://codeclimate.com/github/airled/railiner] {<img src="https://codeclimate.com/github/airled/railiner/badges/coverage.svg" />}[https://codeclimate.com/github/airled/railiner/coverage] {<img src="https://travis-ci.org/airled/railiner.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/airled/railiner]
-
 * Rails application has been developed with Ruby version 2.1.5.
-
 * It has some issues with Node.js and The Rubyracer dependencies. Be prepared.
-
 * At that moment the rails application uses MySQL (and mysql2 adapter for Active Record).
