@@ -1,4 +1,4 @@
-<h1>Список категорий</h1>
+<h1>Список продуктов для категории: <%= @category.name_ru %></h1>
 
 <% @products.each do |product| %>
   <div class="row">
@@ -6,8 +6,10 @@
       <%= image_tag product.image_url %>
     </div>
     <div class="col-lg-8">
-      <%= product.name %>
+      <%= link_to product.name, product.url %>
     </div>
   </div>
   <br>
 <% end %>
+
+<%= paginate @products %>
