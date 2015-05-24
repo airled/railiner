@@ -1,19 +1,12 @@
 <h1>Список категорий</h1>
 
-<%= link_to 'Назад', root_path %>
-
-<table>
-
-  <tr>
-    <th>Название</th>
-    <th></th>
-  </tr>
-
-  <% @categories.each do |category| %>
-    <tr>
-      <td><%= link_to category.name_ru, category_path(category) %></td>
-      <td><%= link_to 'Ссылка', category.url %></td>
-    </tr>
-  <% end %>
-
-</table>
+<% @categories.each_slice(4) do |slice| %>
+  <div class="row">
+    <% slice.each do |category| %>
+      <div class="col-lg-3">
+        <%= link_to category.name_ru, category_path(category) %>
+      </div>
+    <% end %>
+  </div>
+  <br>
+<% end %>

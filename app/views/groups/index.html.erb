@@ -1,17 +1,13 @@
 <h1>Список групп</h1>
 
-<%= link_to 'Назад', root_path %>
+<% @groups.each_slice(4) do |slice| %>
+	<div class='row'>
+		<% slice.each do |group| %>
+			<div class='col-lg-3'>
+				<%= link_to group.name_ru, group_categories_path(group) %>
+			</div>
+		<% end %>
+	</div>
+  <br>
+<% end %>
 
-<table>
-
-  <tr>
-    <th>Название</th>
-  </tr>
-
-  <% @groups.each do |group| %>
-    <tr>
-      <td><%= link_to group.name_ru, group_categories_path(group) %></td>
-    </tr>
-  <% end %>
-
-</table>
