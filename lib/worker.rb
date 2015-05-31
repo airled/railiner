@@ -35,9 +35,12 @@ class Worker
     # end
   end
 
-  def update
-
+  def create_product
   end
+
+  def update
+  end
+  
 end
 
 # url = 'http://catalog.onliner.by/mobile/'
