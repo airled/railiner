@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'kaminari'
+gem 'curb'
 gem 'ruby-progressbar'
 gem 'capistrano-rbenv'
 gem 'libv8'

@@ -8,3 +8,9 @@ task :parse => :environment do
   require './lib/parser'
   Parser.instance.run
 end
+
+task :work => :environment do
+  require './lib/worker'
+  url = 'http://catalog.onliner.by/mobile/'
+  Worker.new.find_category_db(url)
+end
