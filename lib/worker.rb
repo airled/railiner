@@ -27,13 +27,13 @@ class Worker
         page_number += 1
       end || false
     end
-    puts "Elements of category in web: #{@products_from_web.size}"
+    puts "Products of category in web: #{@products_from_web.size}"
   end
 
   def find_category_db(category_url)
     category = Category.find_by(url: category_url)
     @products_from_db = category.products.map { |product| {url: product.url, name: product.name, image_url: product.image_url} }
-    puts "Elements of category in db: #{@products_from_db.size}"
+    puts "Products of category in db: #{@products_from_db.size}"
   end
 
   def compare_web_to_db
