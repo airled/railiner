@@ -12,7 +12,7 @@ class Worker
   end
 
   def get_category_products(category_url)
-    @hash_of_products_from_web = []
+    @products_from_web = []
     page_number = 1
     while page_number
       category_url_for_worker = 'https://catalog.api.onliner.by/search/' + category_url.sub(URL,'').delete('/') + "?page=#{page_number}"
@@ -22,37 +22,35 @@ class Worker
           url = product['html_url']
           name = product['full_name']
           image_url = product['images']['header']
-          @hash_of_products_from_web << {url: url, name: name, image_url: image_url}
-          File.open('web.txt','w') { |x| x.puts @hash_of_products_from_web }
+          @products_from_web << {url: url, name: name, image_url: image_url}
         end
         page_number += 1
       end || false
     end
-    puts "Elements of category in web: #{@hash_of_products_from_web.size}"
+    puts "Elements of category in web: #{@products_from_web.size}"
   end
 
   def find_category_db(category_url)
     category = Category.find_by(url: category_url)
-    @hash_of_products_from_db = category.products.map { |product| {url: product.url, name: product.name, image_url: product.image_url} }
-    puts "Elements of category in db: #{@hash_of_products_from_db.size}"
-    File.open('db.txt','w') { |x| x.puts @hash_of_products_from_db }
+    @products_from_db = category.products.map { |product| {url: product.url, name: product.name, image_url: product.image_url} }
+    puts "Elements of category in db: #{@products_from_db.size}"
   end
 
   def compare_web_to_db
     new = []
     modified = []
-    @hash_of_products_from_web.each do |hash_web_product|
+    @products_from_web.each do |web_product|
       mismatch_count = 0;
-      @hash_of_products_from_db.each do |hash_db_product|
-        if hash_web_product[:url] == hash_db_product[:url] && (hash_web_product[:name] != hash_db_product[:name] || hash_web_product[:image_url] != hash_db_product[:image_url])
-          modified << hash_web_product
+      @products_from_db.each do |db_product|
+        if web_product[:url] == db_product[:url] && (web_product[:name] != db_product[:name] || web_product[:image_url] != db_product[:image_url])
+          modified << web_product
         end
-        if hash_web_product[:url] != hash_db_product[:url]
+        if web_product[:url] != db_product[:url]
           mismatch_count += 1 
         end
       end
-      if mismatch_count == @hash_of_products_from_db.size
-        new << hash_web_product
+      if mismatch_count == @products_from_db.size
+        new << web_product
       end
     end
     puts "Existing records to modify: #{modified.size}"
@@ -62,7 +60,7 @@ class Worker
   def compare_db_to_web
   end
 
-  def create_product
+  def create
   end
 
   def update
