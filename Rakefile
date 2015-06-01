@@ -12,5 +12,5 @@ end
 task :work => :environment do
   require './lib/worker'
   url = 'http://catalog.onliner.by/mobile/'
-  Worker.new.find_category_db(url)
+  Worker.new.run(url)
 end
