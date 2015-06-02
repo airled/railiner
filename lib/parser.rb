@@ -25,7 +25,7 @@ class Parser
     categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
     categories_amount = categories_blocks.xpath("./li/div[@class='i']").size
     puts 'Parsing...'
-    progress_options = { title: ">Progress", starting_at: 0, total: categories_amount }
+    progress_options = {title: ">Progress", starting_at: 0, total: categories_amount}
     progress_bar = ProgressBar.create(progress_options)
     #matching products to their categories and categories to their groups
     groups.zip(categories_blocks).map do |group_node, categories_block|
@@ -56,7 +56,7 @@ class Parser
     name = url.sub(URL,'').delete('/')
     name_ru = category_node.xpath("./a[last()]").text
     is_new = category_node.xpath("./a[2]/img[@class='img_new']").any?
-    { name: name, name_ru: name_ru, url: url, is_new: is_new }
+    {name: name, name_ru: name_ru, url: url, is_new: is_new}
   end
 
  #creating all products of a category
@@ -76,7 +76,7 @@ class Parser
     url = URL + product_node.xpath("./strong/a/@href").text
     name = product_node.xpath("./strong/a").text.strip
     image_url = product_node.xpath("../td[@class='pimage']/a/img/@src").text
-    { url: url, name: name, image_url: image_url }
+    {url: url, name: name, image_url: image_url}
   end
 
   #checking if there is a next product page in the same category
