@@ -14,8 +14,10 @@ class Worker
       puts "Do you like to update your records? Y/n"
       answer = STDIN.gets.chomp
       case answer
-        when 'Y','y' then update
-        when 'N','n' then puts "Records have not been updated"
+      when 'Y','y' 
+        update
+      when 'N','n'
+        puts "Records have not been updated"
       else puts 'Error. No option'
       end
       #update if answer == 'Y' || answer == 'y'
