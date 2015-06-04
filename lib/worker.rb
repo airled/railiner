@@ -11,9 +11,15 @@ class Worker
     find_category_db(url)
     compare_web_to_db
     if @modified.size != 0
-      puts "Do you like to modify your records? Y/n"
+      puts "Do you like to update your records? Y/n"
       answer = STDIN.gets.chomp
-      update if answer == ('Y' || 'y')
+      case answer
+        when 'Y','y' then update
+        when 'N','n' then puts "Records have not been updated"
+      else puts 'Error. No option'
+      end
+      #update if answer == 'Y' || answer == 'y'
+      #puts "Records haven't been modified" if answer == 'N' || answer == 'n'
     end
   end
 
@@ -59,7 +65,7 @@ class Worker
         @new << web_product
       end
     end
-    puts "Existing records to modify: #{@modified.size}"
+    puts "Existing records to update: #{@modified.size}"
     puts "New records to add: #{@new.size}"
   end
 
@@ -70,12 +76,12 @@ class Worker
   end
 
   def update
-    puts 'Modifying database records...'
+    puts 'Updating database records...'
     @modified.map do |web_hash|
       product = Product.find_by(url: web_hash[:url])
       product.update(web_hash)
     end
-    puts 'Modified'
+    puts 'Updated'
   end
 
   def destroy
