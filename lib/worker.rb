@@ -20,8 +20,6 @@ class Worker
         puts "Records have not been updated"
       else puts 'Error. No option'
       end
-      #update if answer == 'Y' || answer == 'y'
-      #puts "Records haven't been modified" if answer == 'N' || answer == 'n'
     end
   end
 
@@ -91,9 +89,6 @@ class Worker
   
 end
 
-# Worker.new.find_from_db(url)
-
-# Worker.new.get_category_products('http://catalog.onliner.by/mobile/');
 # A="https://catalog.api.onliner.by/search/mobile?birthday[from]=2015&mp_ruggedcase=false&is_actual=1"
 
 # select count(*) from categories_products join categories on categories.id=categories_products.category_id join products on products.id=categories_products.product_id where categories.name='mobile';
