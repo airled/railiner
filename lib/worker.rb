@@ -21,11 +21,11 @@ class Worker
       end
     end
     if @new.size != 0
-      puts "Do you like to add your records? Y/n"
+      puts "Do you like to add new records? Y/n"
       answer = STDIN.gets.chomp
       case answer
       when 'Y','y' 
-        create_new_products_in_db
+        create_new_products_in_db(category_url)
       when 'N','n'
         puts "New records have not been added"
       else puts 'Error. No such option'
