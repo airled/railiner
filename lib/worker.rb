@@ -83,7 +83,7 @@ class Worker
   def create_new_products_in_db(category_url)
     puts 'Adding new records...'
     category = Category.find_by(url: category_url)
-    @new.map do { |new_product_hash| Category.products.create(new_product_hash)}
+    @new.map { |new_product_hash| Category.products.create(new_product_hash)}
     puts 'Added'
   end
 
