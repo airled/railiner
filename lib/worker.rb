@@ -4,26 +4,37 @@ require 'curb'
 class Worker
 
   URL = 'http://catalog.onliner.by'
-  url = 'http://catalog.onliner.by/mobile/'
 
-  def run(url)
-    get_category_products(url)
-    find_category_db(url)
+  def run(category_url)
+    get_web_category_products(category_url)
+    find_category_products_in_db(category_url)
     compare_web_to_db
     if @modified.size != 0
       puts "Do you like to update your records? Y/n"
       answer = STDIN.gets.chomp
       case answer
       when 'Y','y' 
-        update
+        update_products_in_db
       when 'N','n'
         puts "Records have not been updated"
-      else puts 'Error. No option'
+      else puts 'Error. No such option'
       end
     end
+    if @new.size != 0
+      puts "Do you like to add your records? Y/n"
+      answer = STDIN.gets.chomp
+      case answer
+      when 'Y','y' 
+        create_new_products_in_db
+      when 'N','n'
+        puts "New records have not been added"
+      else puts 'Error. No such option'
+      end
   end
 
-  def get_category_products(category_url)
+  private
+
+  def get_web_category_products(category_url)
     @products_from_web = []
     page_number = 1
     while page_number
@@ -42,7 +53,7 @@ class Worker
     puts "Products of category in web: #{@products_from_web.size}"
   end
 
-  def find_category_db(category_url)
+  def find_category_products_in_db(category_url)
     category = Category.find_by(url: category_url)
     @products_from_db = category.products.map { |product| {url: product.url, name: product.name, image_url: product.image_url} }
     puts "Products of category in db: #{@products_from_db.size}"
@@ -69,22 +80,20 @@ class Worker
     puts "New records to add: #{@new.size}"
   end
 
-  def compare_db_to_web
+  def create_new_products_in_db(category_url)
+    puts 'Adding new records...'
+    category = Category.find_by(url: category_url)
+    @new.map do { |new_product_hash| Category.products.create(new_product_hash)}
+    puts 'Added'
   end
 
-  def create
-  end
-
-  def update
+  def update_products_in_db
     puts 'Updating database records...'
-    @modified.map do |web_hash|
-      product = Product.find_by(url: web_hash[:url])
-      product.update(web_hash)
+    @modified.map do |updated_product_hash|
+      product = Product.find_by(url: updated_product_hash[:url])
+      product.update(updated_product_hash)
     end
     puts 'Updated'
-  end
-
-  def destroy
   end
   
 end
