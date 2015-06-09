@@ -30,6 +30,7 @@ class Worker
         puts "New records have not been added"
       else puts 'Error. No such option'
       end
+    end
   end
 
   private
@@ -83,7 +84,7 @@ class Worker
   def create_new_products_in_db(category_url)
     puts 'Adding new records...'
     category = Category.find_by(url: category_url)
-    @new.map { |new_product_hash| Category.products.create(new_product_hash)}
+    @new.map { |new_product_hash| category.products.create(new_product_hash)}
     puts 'Added'
   end
 
