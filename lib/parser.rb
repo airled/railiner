@@ -8,7 +8,14 @@ require 'singleton'
 
 class Parser
 
-  include Singleton
+
+# require 'json'
+
+# file = File.open('./2.rb','r')
+# huita = file.read
+# p JSON.parse(huita)
+# file.close
+#   include Singleton
 
   #Onliner's catalog URL
   URL = 'http://catalog.onliner.by'
