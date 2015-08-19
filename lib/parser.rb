@@ -15,15 +15,15 @@ class Parser
     puts 'Adding database records...'
     hash.map do |large_category|
       large_category[1]['groups'].map do |group|
-          db_group = create_group(group['title'])
-          group['links'].map do |category|
-            db_category = create_group_category(db_group,category['url'],category['title'])
-            # p pages_quantity = JSON.parse(request('https://catalog.api.onliner.by/search/mobile?is_actual=1'))['page']['last']
-          end
+        db_group = create_group(group['title'])
+        group['links'].map do |category|
+          db_category = create_group_category(db_group, category['url'], category['title'])
+          # p pages_quantity = JSON.parse(request('https://catalog.api.onliner.by/search/mobile?is_actual=1'))['page']['last']
+        end
       end
     end
     stop_time = Time.new
-    results(stop_time,start_time)
+    results(stop_time, start_time)
   end
 
   private
@@ -39,19 +39,19 @@ class Parser
 
   def get_hash(text)
     puts "Parsing script's JSON..."
-    JSON.parse(text.sub('window.categories = ','').chop)
+    JSON.parse(text.sub('window.categories = ', '').chop)
   end
 
   def create_group(name_ru)
     Group.create(name_ru: name_ru)
   end
 
-  def create_group_category(group,url,name_ru)
+  def create_group_category(group, url, name_ru)
     group.categories.create(url: url, name_ru: name_ru)
   end
 
 #calculating parsing time and amount of fetched objects
-  def results(stop,start)
+  def results(stop, start)
     secs_total = (stop - start).to_i
     hours = secs_total / 3600
     mins = (secs_total - hours * 3600) / 60

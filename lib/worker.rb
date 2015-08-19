@@ -39,7 +39,7 @@ class Worker
     @products_from_web = []
     page_number = 1
     while page_number
-      category_url_for_worker = 'https://catalog.api.onliner.by/search/' + category_url.sub(URL,'').delete('/') + "?page=#{page_number}"
+      category_url_for_worker = 'https://catalog.api.onliner.by/search/' + category_url.sub(URL, '').delete('/') + "?page=#{page_number}"
       page = JSON.parse(Curl.get(category_url_for_worker).body_str)
       page_number = if page['products'].any?
         page['products'].map do |product|
@@ -84,7 +84,7 @@ class Worker
   def create_new_products_in_db(category_url)
     puts 'Adding new records...'
     category = Category.find_by(url: category_url)
-    @new.map { |new_product_hash| category.products.create(new_product_hash)}
+    @new.map { |new_product_hash| category.products.create(new_product_hash) }
     puts 'Added'
   end
 
