@@ -6,7 +6,7 @@ Rails.application.load_tasks
 
 task :parse => :environment do
   require './lib/parser'
-  Parser.instance.run
+  # Parser.instance.run
 end
 
 task :work => :environment do
