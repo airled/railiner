@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'json'
+require 'curb'
 
 class Parser
 
@@ -16,7 +17,8 @@ class Parser
       large_category[1]['groups'].map do |group|
           db_group = create_group(group['title'])
           group['links'].map do |category|
-            create_group_category(db_group,category['url'],category['title'])
+            db_category = create_group_category(db_group,category['url'],category['title'])
+            # p pages_quantity = JSON.parse(request('https://catalog.api.onliner.by/search/mobile?is_actual=1'))['page']['last']
           end
       end
     end
@@ -24,9 +26,15 @@ class Parser
     results(stop_time,start_time)
   end
 
+  private
+
   def get_html(source)
     puts 'Getting HTML...'
     Nokogiri::HTML(open(source))
+  end
+
+  def request(url)
+    Curl.get(url).body_str
   end
 
   def get_hash(text)
@@ -51,6 +59,7 @@ class Parser
     puts "Done in #{hours}:#{mins}:#{secs}"
     puts "Got: #{Group.count} groups, #{Category.count} categories, #{Product.count} products"
   end
+
 end
 
 Parser.new.run
