@@ -13,12 +13,19 @@ class Parser
     script_tag = html.xpath('//div[@class="g-middle"]/div[@class="g-middle-i"]/script[1]').text.strip
     hash = get_hash(script_tag)
     puts 'Adding database records...'
-    hash.map do |large_category|
-      large_category[1]['groups'].map do |group|
+    hash.map do |large_group|
+      large_group[1]['groups'].map do |group|
         db_group = create_group(group['title'])
         group['links'].map do |category|
           db_category = create_group_category(db_group, category['url'], category['title'])
-          # p pages_quantity = JSON.parse(request('https://catalog.api.onliner.by/search/mobile?is_actual=1'))['page']['last']
+
+          products_request_url = 'https://catalog.api.onliner.by/search/' + category['url'].split('/').last
+          pages_quantity = JSON.parse(request(products_request_url))['page']['last'].to_i
+          
+          1.upto(pages_quantity) do |page_number|
+            get_products_from_page(products_request_url + '?page=' + page_number.to_s, db_category)
+          end
+
         end
       end
     end
@@ -40,6 +47,14 @@ class Parser
   def get_hash(text)
     puts "Parsing script's JSON..."
     JSON.parse(text.sub('window.categories = ', '').chop)
+  end
+
+  def get_products_from_page(url,category)
+    json = request(url)
+    JSON.parse(json)['products'].map do |product|
+      name = product['full_name']
+      category.products.create(name: name)
+    end
   end
 
   def create_group(name_ru)
