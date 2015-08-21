@@ -43,7 +43,7 @@ class Parser
 
   def request(url)
     # Curl.get(url).body_str
-    user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0', '']
+    user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0', 'Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36']
     data = Curl::Easy.new(url) do |http| 
       http.headers["User-Agent"] = user_agents[rand(user_agents.size)]
     end
