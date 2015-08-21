@@ -22,7 +22,15 @@ class Parser
           pages_quantity = JSON.parse(request(products_request_url))['page']['last'].to_i
           puts "Current category: #{category['title']}/#{pages_quantity} pages"
           1.upto(pages_quantity) do |page_number|
-            get_products_from_page(products_request_url + '?page=' + page_number.to_s, db_category)
+
+            begin
+              get_products_from_page(products_request_url + '?page=' + page_number.to_s, db_category)
+              sleep(0.5)
+            rescue
+              puts 'Disconnected. Retry...'
+              sleep(5)
+              redo
+            end
           end
           sleep(5)
         end
