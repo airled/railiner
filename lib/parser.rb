@@ -18,15 +18,13 @@ class Parser
         db_group = create_group(group['title'])
         group['links'].map do |category|
           db_category = create_group_category(db_group, category['url'], category['title'])
-
-          products_request_url = 'https://catalog.api.onliner.by/search/' + category['url'].sub('http://catalog.onliner.by/','').split('/').first
-          
+          products_request_url = 'https://catalog.api.onliner.by/search/' + category['url'].sub('http://catalog.onliner.by/','').split('/').first.split('?').first
           pages_quantity = JSON.parse(request(products_request_url))['page']['last'].to_i
-          
+          puts "Current category: #{category['title']}/#{pages_quantity} pages"
           1.upto(pages_quantity) do |page_number|
             get_products_from_page(products_request_url + '?page=' + page_number.to_s, db_category)
           end
-
+          sleep(5)
         end
       end
     end
