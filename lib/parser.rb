@@ -24,6 +24,14 @@ class Parser
           
           1.upto(pages_quantity) do |page_number|
             get_products_from_page(products_request_url + '?page=' + page_number.to_s, db_category)
+            
+            # c = Curl::Easy.new("http://www.google.co.uk") do |curl| 
+            #   curl.headers["User-Agent"] = "myapp-0.0"
+            #   curl.verbose = true
+            # end
+            # c.perform
+
+
           end
 
         end
