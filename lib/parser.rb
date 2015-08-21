@@ -57,7 +57,7 @@ class Parser
     JSON.parse(text.sub('window.categories = ', '').chop)
   end
 
-  def get_products_from_page(url,category)
+  def get_products_from_page(url, category)
     json = request(url)
     JSON.parse(json)['products'].map do |product|
       name = product['full_name']
