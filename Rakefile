@@ -6,7 +6,6 @@ Rails.application.load_tasks
 
 task :parse => :environment do
   require './lib/parser'
-  # Parser.instance.run
 end
 
 task :work => :environment do
@@ -14,3 +13,6 @@ task :work => :environment do
   url = 'http://catalog.onliner.by/mobile/'
   Worker.new.run(url)
 end
+
+# task :reparse => [:environment, "db:rollback(STEP=5)", "db:migrate", :parse] do
+# end
