@@ -77,7 +77,9 @@ class Parser
     json = request(url)
     JSON.parse(json)['products'].map do |product|
       name = product['full_name']
-      category.products.create(name: name)
+      url = product['html_url']
+      image_url = product['images']['icon']
+      category.products.create(name: name, url: url, image_url: image_url)
     end
   end
 
