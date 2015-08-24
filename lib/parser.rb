@@ -5,7 +5,7 @@ require 'curb'
 
 class Parser
 
-  URL = 'http://catalog.onliner.by'
+  URL = 'http://catalog.onliner.by/'
 
   def run
     start_time = Time.new
@@ -18,9 +18,9 @@ class Parser
     hash.map do |large_group|
       large_group[1]['groups'].map do |group| #each group
         db_group = create_group(group['title'])
-        group['links'].map do |category|      #each category of the group
+        group['links'].map do |category|  #each category of the group
           db_category = create_group_category(db_group, category['url'], category['title'])
-          products_request_url = 'https://catalog.api.onliner.by/search/' + category['url'].sub('http://catalog.onliner.by/','').split('/').first.split('?').first
+          products_request_url = 'https://catalog.api.onliner.by/search/' + category['url'].sub(URL,'').split('/').first.split('?').first
           #getting quantity of pages from hash and iterating through each page of products
           pages_quantity = JSON.parse(request(products_request_url))['page']['last'].to_i
           puts "...#{category['title']}/#{pages_quantity} pages"
