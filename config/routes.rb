@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'info/stats'
+
   get 'categories/', to: 'categories#index_all'
   # get 'products/(page/:page)', to: 'products#index_all', as: :products
   get 'products/(page/:page)', to: 'products#index', as: :products
@@ -8,6 +10,8 @@ Rails.application.routes.draw do
     resources :categories, only: [:index] do
     end
   end
+
+  get 'info', to: 'info#stats'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
