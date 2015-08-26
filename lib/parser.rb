@@ -19,8 +19,9 @@ class Parser
       large_group[1]['groups'].map do |group| #each group
         db_group = create_group(group['title'])
         group['links'].map do |category|  #each category of the group
-          db_category = create_group_category(db_group, category['url'], category['title'])
-          products_request_url = 'https://catalog.api.onliner.by/search/' + category['url'].sub(URL,'').split('/').first.split('?').first
+          category_name = category['url'].sub(URL,'').split('/').first.split('?').first
+          db_category = create_group_category(db_group, category['url'], category['title'], category_name)
+          products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
           #getting quantity of pages from hash and iterating through each page of products
           pages_quantity = JSON.parse(request(products_request_url))['page']['last'].to_i
           puts "...#{category['title']}/#{pages_quantity} pages"
@@ -69,8 +70,8 @@ class Parser
     Group.create(name_ru: name_ru)
   end
 
-  def create_group_category(group, url, name_ru)
-    group.categories.create(url: url, name_ru: name_ru)
+  def create_group_category(group, url, name_ru, name)
+    group.categories.create(url: url, name_ru: name_ru, name: name)
   end
 
   def get_products_from_page(url, category)
