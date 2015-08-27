@@ -21,7 +21,7 @@ class Parser
         db_category = create_group_category(db_group, node, category_name)
         products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
         pages_quantity = JSON.parse(curl_request(products_request_url))['page']['last'].to_i
-        puts "...#{category['title']}/#{pages_quantity} pages"
+        puts "...#{category_name}/#{pages_quantity} pages"
         1.upto(pages_quantity) do |page_number|
           begin
             get_products_from_page(products_request_url + '?page=' + page_number.to_s, db_category)
