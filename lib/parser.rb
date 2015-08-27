@@ -17,8 +17,8 @@ class Parser
     group_nodes.zip(categories_nodes).map do |group_node, categories_node|
       db_group = create_group(group_node.text)
       categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |node|
-        name = node.xpath('./a/@href').text.sub(URL,'').split('?').first
-        db_category = create_group_category(db_group, node)
+        category_name = node.xpath('./a/@href').text.sub(URL,'').split('?').first
+        db_category = create_group_category(db_group, node, category_name)
         products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
         pages_quantity = JSON.parse(curl_request(products_request_url))['page']['last'].to_i
         puts "...#{category['title']}/#{pages_quantity} pages"
