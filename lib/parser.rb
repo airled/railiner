@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'json'
 require 'curb'
+require 'cgi'
 
 class Parser
 
@@ -34,8 +35,14 @@ class Parser
     Nokogiri::HTML(open(source))
   end
 
+  def translate_to_en(word)
+    string = CGI::escape "#{word}"
+    html = Nokogiri::HTML(open("http://gogo.by/translate/?from=ru&query=#{string}&to=en"))
+    html.xpath('//div[@id="result"]').text
+  end
+
   def create_group(name_ru)
-    Group.create(name_ru: name_ru)
+    Group.create(name: translate_to_en(name_ru).split(' ').first, name_ru: name_ru)
   end
 
   def create_group_category(group, node, name)
@@ -44,16 +51,6 @@ class Parser
     group.categories.create(url: url, name_ru: name_ru, name: name)
   end
   
-  def get_products_from_page(url, category)
-    json = curl_request(url)
-    JSON.parse(json)['products'].map do |product|
-      name = product['full_name']
-      url = product['html_url']
-      image_url = product['images']['icon']
-      category.products.create(name: name, url: url, image_url: image_url)
-    end
-  end
-
   def curl_request(url)
     user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0', 'Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36']
     data = Curl::Easy.new(url) do |http| 
@@ -74,6 +71,16 @@ class Parser
         sleep(5)
         redo
       end
+    end
+  end
+
+  def get_products_from_page(url, category)
+    json = curl_request(url)
+    JSON.parse(json)['products'].map do |product|
+      name = product['full_name']
+      url = product['html_url']
+      image_url = product['images']['icon']
+      category.products.create(name: name, url: url, image_url: image_url)
     end
   end
 
