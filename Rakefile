@@ -8,11 +8,3 @@ task :parse => :environment do
   require './lib/parser'
 end
 
-task :work => :environment do
-  require './lib/worker'
-  url = 'http://catalog.onliner.by/mobile/'
-  Worker.new.run(url)
-end
-
-# task :reparse => [:environment, "db:rollback(STEP=5)", "db:migrate", :parse] do
-# end
