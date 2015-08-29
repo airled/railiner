@@ -9,7 +9,7 @@ class Parser
   URL = 'http://catalog.onliner.by/'
 
   def run
-    start_stats
+    start = start_stats
     html = get_html(URL) 
     group_nodes = []
     categories_nodes = []
@@ -26,8 +26,8 @@ class Parser
         sleep(5)
       end
     end
-    stop_stats
-    results(stop_stats, start_stats)
+    stop = stop_stats
+    results(stop, start)
   end #def
 
   def get_html(source)
