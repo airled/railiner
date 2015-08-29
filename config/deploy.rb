@@ -9,7 +9,7 @@ set :repo_url, 'git@github.com:airled/railiner'
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, '/home/onliner'
-
+set :tmp_dir, '/home/onliner/tmp'
 # Default value for :scm is :git
 # set :scm, :git
 
