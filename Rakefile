@@ -8,3 +8,7 @@ task :parse => :environment do
   require './lib/parser'
 end
 
+task :deploy do
+  system('bundle exec cap production deploy')
+end
+
