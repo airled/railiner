@@ -42,7 +42,7 @@ class Parser
   end
 
   def create_group(name_ru)
-    Group.create(name: translate_to_en(name_ru).split(' ').first, name_ru: name_ru)
+    Group.create(name: translate_to_en(name_ru).split(' ').first.downcase, name_ru: name_ru)
   end
 
   def create_group_category(group, node, name)

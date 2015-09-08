@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
 
   def index
-    @group = Group.find(params[:group_id])
+    @group = Group.find_by(:name => params[:group_name])
     @categories = @group.categories.all
   end
   
@@ -10,7 +10,7 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @category = Category.find(params[:id])
+    @category = Category.find_by(:name => params[:category_name])
     @products = @category.products.all.page(params[:page])
   end
   
