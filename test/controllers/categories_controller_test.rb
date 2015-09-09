@@ -14,28 +14,28 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
-  	group_id = Group.first.id
-    get :index, group_id: group_id
+  	group_name = Group.first.name
+    get :index, group_name: group_name
     assert_response :success
     assert_not_nil assigns(:categories)
   end
 
   test 'index should render correct template' do
-    group_id = Group.first.id
-    get :index, group_id: group_id
+    group_name = Group.first.name
+    get :index, group_name: group_name
     assert_template :index
   end
 
   test "should get show" do
-  	id = Category.first.id
-    get :show, id: id
+  	category_name = Category.first.name
+    get :show, category_name: category_name
     assert_response :success
     assert_not_nil assigns(:products)
   end
 
   test 'show should render correct template' do
-    id = Category.first.id
-    get :show, id: id
+    category_name = Category.first.name
+    get :show, category_name: category_name
     assert_template :show
   end
   

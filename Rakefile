@@ -12,3 +12,6 @@ task :deploy do
   system('bundle exec cap production deploy')
 end
 
+task :reparse => :environment do
+  system('rake db:rollback STEP=5 && rake db:migrate && rake parse')
+end
