@@ -66,8 +66,7 @@ class Parser
         get_products_from_page(url + '?page=' + page_number.to_s, db_category)
         sleep(0.5)
       rescue => exception
-        # puts 'Disconnected. Retrying...'
-        exception.message
+        puts exception.message
         sleep(5)
         redo
       end
