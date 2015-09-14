@@ -53,7 +53,7 @@ class Parser
   
   def curl_request(url)
     user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0', 'Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36']
-    data = Curl::Easy.new(url) do |http| 
+    data = Curl.get(url) do |http| 
       http.headers["User-Agent"] = user_agents[rand(user_agents.size)]
     end
     data.perform
@@ -74,13 +74,16 @@ class Parser
     end
   end
 
-  def get_products_from_page(url, category)
-    json = curl_request(url)
+  def get_products_from_page(page_url, category)
+    json = curl_request(page_url)
     JSON.parse(json)['products'].map do |product|
       name = product['full_name']
       url = product['html_url']
       image_url = product['images']['icon']
-      category.products.create(name: name, url: url, image_url: image_url)
+      min_price = product['prices']['min'].reverse.scan(/\d{1,3}/).join(' ').reverse
+      min_price = product['prices']['max'].reverse.scan(/\d{1,3}/).join(' ').reverse
+      description = product['description']
+      category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
     end
   end
 

@@ -36,9 +36,12 @@ ActiveRecord::Schema.define(version: 20150503115236) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "url",       limit: 255
-    t.string "name",      limit: 255
-    t.string "image_url", limit: 255
+    t.string "url",         limit: 255
+    t.string "name",        limit: 255
+    t.string "image_url",   limit: 255
+    t.string "max_price",   limit: 255
+    t.string "min_price",   limit: 255
+    t.string "description", limit: 255
   end
 
 end

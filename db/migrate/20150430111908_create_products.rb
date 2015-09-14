@@ -4,8 +4,9 @@ class CreateProducts < ActiveRecord::Migration
       t.string :url
       t.string :name
       t.string :image_url
-
-      #t.timestamps null: false
+      t.string :max_price
+      t.string :min_price
+      t.string :description
     end
   end
 end
