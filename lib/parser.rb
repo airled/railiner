@@ -82,8 +82,8 @@ class Parser
       image_url = product['images']['icon']
       description = product['description']
       if product['prices'].nil?
-        min_price = 'Нет в продаже'
-        max_price = ''
+        min_price = 'N/A'
+        max_price = 'N/A'
       else
         min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
         max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
