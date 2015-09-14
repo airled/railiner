@@ -65,8 +65,9 @@ class Parser
       begin
         get_products_from_page(url + '?page=' + page_number.to_s, db_category)
         sleep(0.5)
-      rescue
-        puts 'Disconnected. Retrying...'
+      rescue => exception
+        # puts 'Disconnected. Retrying...'
+        exception.message
         sleep(5)
         redo
       end
@@ -79,7 +80,7 @@ class Parser
       name = product['full_name']
       url = product['html_url']
       image_url = product['images']['icon']
-      description = product['description'].scan(/.{1,30}/).first
+      description = product['description']
       if product['prices'].nil?
         min_price = 'Нет в продаже'
         max_price = ''
