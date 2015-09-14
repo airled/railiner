@@ -9,7 +9,7 @@ class Parser
   URL = 'http://catalog.onliner.by/'
 
   def run
-    start = start_stats
+    start = current_stats
     html = get_html(URL) 
     group_nodes = []
     categories_nodes = []
@@ -23,10 +23,9 @@ class Parser
         products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
         pages_quantity = JSON.parse(curl_request(products_request_url))['page']['last'].to_i
         parse_pages(category_name, pages_quantity, products_request_url, db_category)
-        sleep(5)
       end
     end
-    stop = stop_stats
+    stop = current_stats
     results(stop, start)
   end #def
 
@@ -80,10 +79,10 @@ class Parser
       name = product['full_name']
       url = product['html_url']
       image_url = product['images']['icon']
-      description = product['description']
+      description = product['description'].scan(/.{1,30}/).first
       if product['prices'].nil?
-        min_price = '-'
-        max_price = '-'
+        min_price = 'Нет в продаже'
+        max_price = ''
       else
         min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
         max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
@@ -92,11 +91,7 @@ class Parser
     end
   end
 
-  def start_stats
-    {time: Time.new, groups: Group.count, categories: Category.count, products: Product.count}
-  end
-
-  def stop_stats
+  def current_stats
     {time: Time.new, groups: Group.count, categories: Category.count, products: Product.count}
   end
 
