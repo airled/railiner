@@ -80,9 +80,14 @@ class Parser
       name = product['full_name']
       url = product['html_url']
       image_url = product['images']['icon']
-      min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
-      max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
       description = product['description']
+      if product['prices'].nil?
+        min_price = '-'
+        max_price = '-'
+      else
+        min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
+        max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
+      end
       category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
     end
   end
