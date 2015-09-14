@@ -4,9 +4,6 @@ class CreateCategories < ActiveRecord::Migration
       t.string :url
       t.string :name
       t.string :name_ru
-      t.boolean :is_new
-
-      #t.timestamps null: false
     end
   end
 end
