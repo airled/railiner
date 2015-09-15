@@ -9,7 +9,7 @@ class Parser
   URL = 'http://catalog.onliner.by/'
 
   def run
-    start = current_stats
+    start = stats
     html = get_html(URL) 
     group_nodes = []
     categories_nodes = []
@@ -20,13 +20,11 @@ class Parser
       categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |node|
         category_name = node.xpath('./a/@href').text.sub(URL,'').split('/').first.split('?').first
         db_category = create_group_category(db_group, node, category_name)
-        products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
-        pages_quantity = JSON.parse(curl_request(products_request_url))['page']['last'].to_i
-        parse_pages(category_name, pages_quantity, products_request_url, db_category)
+        parse_category_pages(category_name, db_category)
         sleep(2)
       end
     end
-    stop = current_stats
+    stop = stats
     results(stop, start)
   end #def
 
@@ -60,11 +58,15 @@ class Parser
     data.body_str
   end
   
-  def parse_pages(category_name, quantity, url, db_category)
-    puts "#{category_name}:#{page_number}/#{quantity}"
+  def parse_category_pages(category_name, db_category)
+    products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
+    json = curl_request(products_request_url)
+    quantity = JSON.parse(json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
+      puts "#{category_name}:#{page_number}/#{quantity}"
       begin
-        get_products_from_page(url + '?page=' + page_number.to_s, db_category)
+        page_url = products_request_url + '?page=' + page_number.to_s
+        get_products_from_page(page_url, db_category)
         sleep(0.5)
       rescue => exception
         puts exception.message
@@ -92,7 +94,7 @@ class Parser
     end
   end
 
-  def current_stats
+  def stats
     {time: Time.new, groups: Group.count, categories: Category.count, products: Product.count}
   end
 
