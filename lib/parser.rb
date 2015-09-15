@@ -23,6 +23,7 @@ class Parser
         products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
         pages_quantity = JSON.parse(curl_request(products_request_url))['page']['last'].to_i
         parse_pages(category_name, pages_quantity, products_request_url, db_category)
+        sleep(2)
       end
     end
     stop = current_stats
@@ -60,7 +61,7 @@ class Parser
   end
   
   def parse_pages(category_name, quantity, url, db_category)
-    puts "...#{category_name}/#{quantity} pages"
+    puts "#{category_name}:#{page_number}/#{quantity}"
     1.upto(quantity) do |page_number|
       begin
         get_products_from_page(url + '?page=' + page_number.to_s, db_category)
