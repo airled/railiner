@@ -4,10 +4,9 @@ one:
   url: MyString
   name: MyString
   name_ru: MyString
-  is_new: false
+
 
 two:
   url: MyString
   name: MyString
   name_ru: MyString
-  is_new: false

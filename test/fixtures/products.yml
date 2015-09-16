@@ -4,8 +4,14 @@ one:
   url: MyString
   name: MyString
   image_url: MyString
+  max_price: MyString
+  min_price: MyString
+  description: MyString
 
 two:
   url: MyString
   name: MyString
   image_url: MyString
+  max_price: MyString
+  min_price: MyString
+  description: MyString
