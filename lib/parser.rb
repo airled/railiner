@@ -11,10 +11,8 @@ class Parser
   def run
     start = stats
     html = get_html(URL) 
-    group_nodes = []
-    categories_nodes = []
-    html.xpath('//h2[@class="catalog-navigation-list__group-title"]').map { |group_node| group_nodes << group_node }
-    html.xpath('//ul[@class="catalog-navigation-list__links"]').map { |categories_node| categories_nodes << categories_node }
+    group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]').map { |group_node| group_node }
+    categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]').map { |categories_node| categories_node }
     group_nodes.zip(categories_nodes).map do |group_node, categories_node|
       db_group = create_group(group_node.text)
       categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |node|
