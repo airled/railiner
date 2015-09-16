@@ -6,7 +6,6 @@ class ProductsController < ApplicationController
 
   def find
     request = params[:form][:product]
-    params[:form][:out].class
     if params[:form][:out] == '0'
       @products = Product.where("name like ?", "%#{request}%").where("min_price !=?", "N/A")
     else
