@@ -6,9 +6,12 @@ class ProductsController < ApplicationController
 
   def find
     request = params[:form][:product]
-    # @products = Product.find_by(:name => params[:form][:product])
-    @products = Product.where("name like ?", "%#{request}%") 
-    # redirect_to @product.url
+    params[:form][:out].class
+    if params[:form][:out] == '0'
+      @products = Product.where("name like ?", "%#{request}%").where("min_price !=?", "N/A")
+    else
+      @products = Product.where("name like ?", "%#{request}%")
+    end
   end
   
 end

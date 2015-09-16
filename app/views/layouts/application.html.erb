@@ -57,8 +57,11 @@
         <div>
           <%= form_for :form, url: '/find' do |f| %>
             <%= f.text_field :product %>
-            <%= f.submit 'Найти' %>
-          <% end %><br>
+            <%= f.submit 'Найти' %><br>
+            <div>
+              <%= f.check_box 'out' %>Не в продаже
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
@@ -69,25 +72,8 @@
           <%= bootstrap_flash %><br><br>
           <%= yield %>
         </div>
-<!--         <div class="col-lg-3">
-          <div class="well sidebar-nav">
-            <h3>Sidebar</h3>
-            <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li><%= link_to "Link1", "/path1"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
-            </ul>
-          </div>
-        </div>
- -->        <!--/span-->
-      </div><!--/row-->
-
-<!--       <footer>
-        <p>&copy; 2015</p>
-      </footer> -->
-
-    </div> <!-- /container -->
+      </div>
+    </div>
 
   </body>
 </html>
