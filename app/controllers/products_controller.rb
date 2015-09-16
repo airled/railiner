@@ -5,8 +5,10 @@ class ProductsController < ApplicationController
   end
 
   def find
-    @product = Product.find_by(:name => params[:form][:product])
-    redirect_to @product.url
+    request = params[:form][:product]
+    # @products = Product.find_by(:name => params[:form][:product])
+    @products = Product.where("name like ?", "%#{request}%") 
+    # redirect_to @product.url
   end
   
 end
