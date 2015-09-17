@@ -55,7 +55,7 @@
           </ul>
         </div>
         <div>
-          <%= form_for :form, url: '/find' do |f| %>
+          <%= form_for :form, url: '/find', method: :get do |f| %>
             <%= f.text_field :product %>
             <%= f.submit 'Найти' %><br>
             <div>
