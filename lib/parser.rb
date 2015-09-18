@@ -30,12 +30,14 @@ class Parser
   end
 
   def translate_to_en(word)
-    string = ERB::Util.url_encode(word)
-    get_html("http://gogo.by/translate/?from=ru&query=#{string}&to=en").xpath('//div[@id="result"]').text
+    encoded = ERB::Util.url_encode(word)
+    url = "http://gogo.by/translate/?from=ru&query=#{encoded}&to=en"
+    get_html(url).xpath('//div[@id="result"]').text
   end
 
   def create_group(name_ru)
-    Group.create(name: translate_to_en(name_ru).gsub(/[\ ,]/, '_').downcase, name_ru: name_ru)
+    name = translate_to_en(name_ru).gsub(/[\ ,]/, '_').downcase
+    Group.create(name: name, name_ru: name_ru)
   end
 
   def create_group_category(group, node, name)
@@ -44,7 +46,7 @@ class Parser
     group.categories.create(url: url, name_ru: name_ru, name: name)
   end
   
-  def curl_request(url)
+  def special_request(url)
     user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0', 'Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36']
     data = Curl.get(url) do |http| 
       http.ssl_verify_peer = false
@@ -56,7 +58,7 @@ class Parser
   
   def parse_category_pages(category_name, db_category, group_name)
     products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
-    json = curl_request(products_request_url)
+    json = special_request(products_request_url)
     quantity = JSON.parse(json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
       puts "#{group_name}/#{category_name} : #{page_number}/#{quantity}"
@@ -73,7 +75,7 @@ class Parser
   end
 
   def get_products_from_page(page_url, category)
-    json = curl_request(page_url)
+    json = special_request(page_url)
     JSON.parse(json)['products'].map do |product|
       name = product['full_name']
       url = product['html_url']
@@ -106,5 +108,3 @@ class Parser
   end
 
 end
-
-Parser.new.run
