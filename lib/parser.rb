@@ -1,5 +1,4 @@
 require 'nokogiri'
-require 'open-uri'
 require 'json'
 require 'curb'
 require 'erb'
@@ -27,14 +26,12 @@ class Parser
   end #def
 
   def get_html(source)
-    puts 'Getting HTML...'
-    Nokogiri::HTML(open(source))
+    Nokogiri::HTML(Curl.get(source).body)
   end
 
   def translate_to_en(word)
     string = ERB::Util.url_encode(word)
-    html = Nokogiri::HTML(open("http://gogo.by/translate/?from=ru&query=#{string}&to=en"))
-    html.xpath('//div[@id="result"]').text
+    get_html("http://gogo.by/translate/?from=ru&query=#{string}&to=en").xpath('//div[@id="result"]').text
   end
 
   def create_group(name_ru)
