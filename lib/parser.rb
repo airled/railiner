@@ -81,7 +81,7 @@ class Parser
       name = product['full_name']
       url = product['html_url']
       image_url = product['images']['icon']
-      description = product['description']
+      description = Nokogiri::HTML.parse(product['description']).text
       if product['prices'].nil?
         min_price = max_price = 'N/A'
       else
