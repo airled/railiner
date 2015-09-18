@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'json'
 require 'curb'
-require 'cgi'
+require 'erb'
 
 class Parser
 
@@ -32,7 +32,7 @@ class Parser
   end
 
   def translate_to_en(word)
-    string = CGI::escape "#{word}"
+    string = ERB::Util.url_encode(word)
     html = Nokogiri::HTML(open("http://gogo.by/translate/?from=ru&query=#{string}&to=en"))
     html.xpath('//div[@id="result"]').text
   end
