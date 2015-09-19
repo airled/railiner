@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'json'
 require 'curb'
 require 'erb'
+require 'slack-notifier'
 
 class Parser
 
@@ -103,8 +104,16 @@ class Parser
     groups_delta = stop[:groups] - start[:groups]
     categories_delta = stop[:categories] - start[:categories]
     products_delta = stop[:products] - start[:products]
-    puts "Done in #{hours}:#{mins}:#{secs}"
-    puts "Got: #{groups_delta} groups, #{categories_delta} categories, #{products_delta} products"
+    time_result = "Done in #{hours}:#{mins}:#{secs}. "
+    db_result = "Got: #{groups_delta} groups, #{categories_delta} categories, #{products_delta} products"
+    puts "#{time_result}"
+    puts "#{db_result}"
+    slack_results(time_result + db_result)
+  end
+
+  def slack_results(result)
+    notifier = Slack::Notifier.new ENV["PARSER_HOOK"]
+    notifier.ping result
   end
 
 end

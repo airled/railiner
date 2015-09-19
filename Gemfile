@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'slack-notifier'
 gem 'kaminari'
 gem 'curb'
 gem 'ruby-progressbar'
