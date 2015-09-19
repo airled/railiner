@@ -45,13 +45,20 @@ set :rbenv_roles, :all # default value
 
 namespace :deploy do
 
+  task :start do
+    on roles(:web) do
+      within "#{fetch(:deploy_to)}/current/" do
+        execute :bundle, :exec, :'unicorn -c config/unicorn.rb -E production -D'
+      end
+    end
+  end
+
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
-      run "cd /home/onliner/current && be unicorn -E production -D"
     end
   end
 
