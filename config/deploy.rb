@@ -1,7 +1,9 @@
 # config valid only for current version of Capistrano
 lock '3.4.0'
 
-set :default_environment, { 'PATH' => '$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH' }
+set :default_env, { 'PATH' => '$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH' }
+# set :default_environment, { 'PATH' => '$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH' }
+set :default_shell, '/bin/zsh --login'
 
 set :application, 'railiner'
 set :repo_url, 'git@github.com:airled/railiner'
@@ -48,12 +50,22 @@ set :rbenv_roles, :all # default value
 namespace :deploy do
 
   task :start do
-    on roles(:web) do
+    on roles(:all) do
       within "#{fetch(:deploy_to)}/current/" do
-        execute :bundle, :exec, :'unicorn -c config/unicorn.rb -E production -D'
+        with RAILS_ENV: fetch(:environment) do
+          execute :bundle, :exec, :'unicorn -c config/unicorn.rb -E production -D'
+        end
       end
     end
   end
+
+  # task :start do
+  #   on roles(:all) do
+  #     within "#{fetch(:deploy_to)}/current/" do
+  #       execute :bundle, :exec, :'unicorn -c config/unicorn.rb -E production -D'
+  #     end
+  #   end
+  # end
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
