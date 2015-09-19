@@ -2,7 +2,6 @@ require 'nokogiri'
 require 'json'
 require 'curb'
 require 'erb'
-require 'slack-notifier'
 
 class Parser
 
@@ -112,8 +111,8 @@ class Parser
   end
 
   def slack_results(result)
-    notifier = Slack::Notifier.new ENV["PARSER_HOOK"]
-    notifier.ping result
+    payload = {'text' => result}.to_json
+    Curl.post(ENV["PARSER_HOOK"], payload)
   end
 
 end
