@@ -9,4 +9,7 @@ Rails.application.routes.draw do
     resources :categories, only: [:index] do
     end
   end
+  resources :products do
+    get :autocomplete_product_name, :on => :collection
+  end
 end

@@ -12,5 +12,7 @@ class ProductsController < ApplicationController
       @products = Product.where("name like ?", "%#{request}%").page(params[:page])
     end
   end
+
+  autocomplete :product, :name
   
 end
