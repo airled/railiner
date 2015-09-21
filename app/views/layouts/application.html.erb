@@ -56,7 +56,7 @@
         </div>
         <div>
           <%= form_for :form, url: '/find', method: :get do |f| %>
-            <%= f.autocomplete_field :product, autocomplete_product_name_products_path %>
+            <%= f.autocomplete_field :product, autocomplete_product_name_path %>
             <%= f.submit 'Найти' %><br>
             <div>
               <%= f.check_box 'out' %>Не в продаже
