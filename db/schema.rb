@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150503115236) do
+ActiveRecord::Schema.define(version: 20150922142508) do
 
   create_table "categories", force: :cascade do |t|
     t.string "url",     limit: 255
@@ -42,5 +42,7 @@ ActiveRecord::Schema.define(version: 20150503115236) do
     t.string "min_price",   limit: 255
     t.text   "description", limit: 65535
   end
+
+  add_index "products", ["name"], name: "index_products_on_name", using: :btree
 
 end
