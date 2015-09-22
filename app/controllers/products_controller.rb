@@ -13,6 +13,12 @@ class ProductsController < ApplicationController
     end
   end
 
-  autocomplete :product, :name
+  # autocomplete :product, :name
+
+  def autocomplete_product_name
+    term = params[:term]
+    products = Product.select(:id, :name).distinct.where('name LIKE ?', "#{term}%").take(10)
+    render :json => products.map { |product| {id: product.id, label: product.name, value: product.name} }
+  end
   
 end
