@@ -7,9 +7,9 @@ class ProductsController < ApplicationController
   def find
     request = params[:form][:product]
     if params[:form][:out] == '0'
-      @products = Product.where("name like ?", "%#{request}%").where("min_price !=?", "N/A").page(params[:page])
+      @products = Product.select(:url, :name, :image_url, :max_price, :min_price, :description).distinct.where("name like ?", "%#{request}%").where("min_price !=?", "N/A").page(params[:page])
     else
-      @products = Product.where("name like ?", "%#{request}%").page(params[:page])
+      @products = Product.select(:url, :name, :image_url, :max_price, :min_price, :description).distinct.where("name like ?", "%#{request}%").page(params[:page])
     end
   end
 
