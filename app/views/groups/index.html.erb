@@ -4,7 +4,7 @@
   <div class='row'>
     <% slice.each do |group| %>
       <div class='col-lg-3'>
-        <%= link_to group.name_ru, group_categories_path(group.name) %>
+        <%= link_to group.name_ru, group_categories_path(:group_name => group.name) %>
       </div>
     <% end %>
   </div>
