@@ -13,8 +13,6 @@ class ProductsController < ApplicationController
     end
   end
 
-  # autocomplete :product, :name
-
   def autocomplete_product_name
     term = params[:term]
     products = Product.select(:name).distinct.where('name LIKE ?', "#{term}%").take(10)
