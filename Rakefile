@@ -10,7 +10,7 @@ task :parse => :environment do
 end
 
 task :reparse => :environment do
-  system('rake db:rollback STEP=5 && rake db:migrate && rake parse')
+  system('rake db:rollback STEP=6 && rake db:migrate && rake parse')
 end
 
 task :deploy do
