@@ -116,3 +116,7 @@ class Parser
   end
 
 end
+
+# product = Product.first
+# seller = product.sellers.create(name: 'sample')
+# Cost.find_by(:product_id => product.id, :seller_id => seller.id).update(:amount => '1000')
