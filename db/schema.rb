@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20151003114752) do
   create_table "costs", force: :cascade do |t|
     t.integer "product_id", limit: 4
     t.integer "seller_id",  limit: 4
-    t.string  "amount",     limit: 255
+    t.string  "price",      limit: 255
   end
 
   create_table "groups", force: :cascade do |t|
