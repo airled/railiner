@@ -10,8 +10,8 @@ class Parser
   def run
     start = stats
     html = get_html(URL) 
-    group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]').map { |group_node| group_node }
-    categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]').map { |categories_node| categories_node }
+    group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
+    categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
     group_nodes.zip(categories_nodes).map do |group_node, categories_node|
       db_group = create_group(group_node.text)
       categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |node|
@@ -47,7 +47,9 @@ class Parser
   end
   
   def special_request(url)
-    user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0', 'Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36']
+    user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0',
+                   'Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0',
+                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36']
     data = Curl.get(url) do |http| 
       http.ssl_verify_peer = false
       http.headers["User-Agent"] = user_agents[rand(user_agents.size)]
