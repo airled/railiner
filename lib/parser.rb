@@ -63,7 +63,7 @@ class Parser
     json = special_request(products_request_url)
     quantity = JSON.parse(json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
-      puts "#{group_name}/#{category_name} : #{page_number}/#{quantity}"
+      print "\r#{group_name}/#{category_name} : #{page_number}/#{quantity}"
       begin
         page_url = products_request_url + '?page=' + page_number.to_s
         get_products_from_page(page_url, db_category)
