@@ -74,6 +74,7 @@ class Parser
         redo
       end
     end
+    puts
   end
 
   def get_products_from_page(page_url, category)
