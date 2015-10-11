@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'json'
 require 'curb'
 require 'erb'
+require 'pry'
 
 class Parser
 
@@ -24,6 +25,8 @@ class Parser
     stop = stats
     results(stop, start)
   end #def
+
+  # private
 
   def get_html(source)
     Nokogiri::HTML(Curl.get(source).body)
@@ -90,8 +93,23 @@ class Parser
         min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
         max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
       end
-      category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
+      db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
+
+      get_prices_and_sellers(url + '/prices#region=minsk&currency=byr', db_product)
+
     end
+  end
+
+  def get_prices_and_sellers(url, product)
+    html = get_html(url)
+    rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr//a[@class="js-currency-primary"]')
+    rows.size
+    # rows.map do |row|
+      # price = row.text
+      # seller_id = row.xpath('./@href').text.sub('http://','').split('.').first
+      # p [seller_id, price]
+      # product.costs.create(seller_id: seller_id, price: price)
+    # end
   end
 
   def stats
@@ -120,6 +138,7 @@ class Parser
 
 end
 
+binding.pry
 # product = Product.first
 # seller = product.sellers.create(name: 'sample')
 # Cost.find_by(:product_id => product.id, :seller_id => seller.id).update(:price => '1000')
