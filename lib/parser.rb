@@ -25,7 +25,7 @@ class Parser
     results(stop, start)
   end #def
 
-  # private
+  private
 
   def get_html(source)
     Nokogiri::HTML(Curl.get(source).body)
