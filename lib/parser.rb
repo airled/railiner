@@ -94,7 +94,7 @@ class Parser
       end
       db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
 
-      get_prices_and_sellers(url + '/prices#region=minsk&currency=byr', db_product)
+      get_prices_and_sellers(url + '/prices#region=minsk&currency=byr', db_product) if min_price != 'N/A'
 
     end
   end

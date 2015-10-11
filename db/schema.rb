@@ -52,8 +52,7 @@ ActiveRecord::Schema.define(version: 20151003114752) do
   add_index "products", ["name"], name: "index_products_on_name", using: :btree
 
   create_table "sellers", force: :cascade do |t|
-    t.string "onliner_id", limit: 255
-    t.string "name",       limit: 255
+    t.string "name", limit: 255
   end
 
 end
