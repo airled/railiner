@@ -102,7 +102,6 @@ class Parser
   def get_prices_and_sellers(url, product)
     html = get_html(url)
     rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr//a[@class="js-currency-primary"]')
-    rows.size
     rows.map do |row|
       price = row.text
       seller_id = row.xpath('./@href').text.sub('http://','').split('.').first
@@ -122,11 +121,11 @@ class Parser
     groups_delta = stop[:groups] - start[:groups]
     categories_delta = stop[:categories] - start[:categories]
     products_delta = stop[:products] - start[:products]
-    time_result = "Done in #{hours}:#{mins}:#{secs}. "
+    time_result = "Done in #{hours}:#{mins}:#{secs}"
     db_result = "Got: #{groups_delta} groups, #{categories_delta} categories, #{products_delta} products"
     puts "#{time_result}"
     puts "#{db_result}"
-    slack_results(time_result + db_result)
+    slack_results(time_result + '. ' + db_result)
   end
 
   def slack_results(result)
