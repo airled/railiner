@@ -2,7 +2,6 @@ require 'nokogiri'
 require 'json'
 require 'curb'
 require 'erb'
-require 'pry'
 
 class Parser
 
@@ -104,12 +103,11 @@ class Parser
     html = get_html(url)
     rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr//a[@class="js-currency-primary"]')
     rows.size
-    # rows.map do |row|
-      # price = row.text
-      # seller_id = row.xpath('./@href').text.sub('http://','').split('.').first
-      # p [seller_id, price]
-      # product.costs.create(seller_id: seller_id, price: price)
-    # end
+    rows.map do |row|
+      price = row.text
+      seller_id = row.xpath('./@href').text.sub('http://','').split('.').first
+      product.costs.create(seller_id: seller_id, price: price)
+    end
   end
 
   def stats
@@ -138,7 +136,6 @@ class Parser
 
 end
 
-binding.pry
 # product = Product.first
 # seller = product.sellers.create(name: 'sample')
 # Cost.find_by(:product_id => product.id, :seller_id => seller.id).update(:price => '1000')
