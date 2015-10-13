@@ -69,7 +69,6 @@ class Parser
       begin
         page_url = products_request_url + '?page=' + page_number.to_s
         get_products_from_page(page_url, db_category)
-        sleep(0.5)
       rescue => exception
         puts exception.message
         sleep(5)
