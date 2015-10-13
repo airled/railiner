@@ -13,9 +13,9 @@ class Parser
     group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
     categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
     group_nodes.zip(categories_nodes).map do |group_node, categories_node|
-      db_group = create_group(group_node.text)
+      db_group = create_group(group_node.text.strip)
       categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |node|
-        category_name = node.xpath('./a/@href').text.sub(URL,'').split('/').first.split('?').first
+        category_name = node.xpath('./a/@href').text.sub(URL,'').split('/').first.split('?').first.strip
         db_category = create_group_category(db_group, node, category_name)
         parse_category_pages(category_name, db_category, group_node.text)
         sleep(2)
@@ -38,13 +38,13 @@ class Parser
   end
 
   def create_group(name_ru)
-    name = translate_to_en(name_ru).gsub(/[\ ,]/, '_').downcase
+    name = translate_to_en(name_ru).gsub(/[\ ,]/, '_').downcase.strip
     Group.create(name: name, name_ru: name_ru)
   end
 
   def create_group_category(group, node, name)
-    url = node.xpath('./a/@href').text
-    name_ru = node.xpath('./a/@title').text
+    url = node.xpath('./a/@href').text.strip
+    name_ru = node.xpath('./a/@title').text.strip
     group.categories.create(url: url, name_ru: name_ru, name: name)
   end
   
@@ -81,15 +81,15 @@ class Parser
   def get_products_from_page(page_url, category)
     json = special_request(page_url)
     JSON.parse(json)['products'].map do |product|
-      name = product['full_name']
-      url = product['html_url']
-      image_url = product['images']['icon']
-      description = Nokogiri::HTML.parse(product['description']).text
+      name = product['full_name'].strip
+      url = product['html_url'].strip
+      image_url = product['images']['icon'].strip
+      description = Nokogiri::HTML.parse(product['description']).text.strip
       if product['prices'].nil?
         min_price = max_price = 'N/A'
       else
-        min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
-        max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse
+        min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
+        max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
       end
       db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
 
