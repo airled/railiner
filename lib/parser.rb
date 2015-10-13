@@ -100,12 +100,17 @@ class Parser
   end
 
   def get_prices_and_sellers(url, product)
-    html = get_html(url)
-    rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr//a[@class="js-currency-primary"]')
-    rows.map do |row|
-      price = row.text
-      seller_id = row.xpath('./@href').text.sub('http://','').split('.').first
-      product.costs.create(seller_id: seller_id, price: price)
+    loop do
+      html = get_html(url)
+      if (!html.text.include?('503 Service Temporarily Unavailable'))
+        rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr//a[@class="js-currency-primary"]')
+        rows.map do |row|
+          price = row.text
+          seller_id = row.xpath('./@href').text.sub('http://','').split('.').first
+          product.costs.create(seller_id: seller_id, price: price)
+        end
+        break
+      end
     end
   end
 
