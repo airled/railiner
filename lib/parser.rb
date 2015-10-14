@@ -93,14 +93,14 @@ class Parser
       end
       db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
 
-      get_prices_and_sellers(url + '/prices#region=minsk&currency=byr', db_product) if min_price != 'N/A'
+      get_prices_and_sellers(url, db_product) if min_price != 'N/A'
 
     end
   end
 
-  def get_prices_and_sellers(url, product)
+  def get_prices_and_sellers(product_url, product)
     loop do
-      html = get_html(url)
+      html = get_html(product_url + '/prices#region=minsk&currency=byr')
       if (!html.text.include?('503 Service Temporarily Unavailable'))
         rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr')
         rows.map do |row|
@@ -127,8 +127,7 @@ class Parser
     products_delta = stop[:products] - start[:products]
     time_result = "Done in #{hours}:#{mins}:#{secs}"
     db_result = "Got: #{groups_delta} groups, #{categories_delta} categories, #{products_delta} products"
-    puts "#{time_result}"
-    puts "#{db_result}"
+    puts "#{time_result}\n#{db_result}"
     slack_results(time_result + '. ' + db_result)
   end
 
