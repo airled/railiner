@@ -18,8 +18,10 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rails-jquery-autocomplete'
 gem 'sidekiq'
+gem 'sinatra', :require => nil
 
 group :development, :test do
+  gem 'pry'
   gem 'capistrano-rails', '~> 1.1.1'
   gem 'byebug'
   gem 'web-console', '~> 2.0'

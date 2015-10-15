@@ -10,4 +10,7 @@ Rails.application.routes.draw do
     end
   end
   get :autocomplete_product_name, to: 'products#autocomplete_product_name'
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
 end

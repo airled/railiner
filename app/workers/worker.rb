@@ -2,7 +2,7 @@ class Worker
 
   include Sidekiq::Worker
 
-  def get_prices_and_sellers(product_url, product)
+  def perform(product_url, product)
     loop do
       html = Nokogiri::HTML(Curl.get(product_url + '/prices#region=minsk&currency=byr'))
       if (!html.text.include?('503 Service Temporarily Unavailable'))
