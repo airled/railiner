@@ -3,7 +3,6 @@ require 'json'
 require 'curb'
 require 'erb'
 require_relative '../app/workers/worker'
-require 'pry'
 
 class Parser
 
@@ -16,10 +15,9 @@ class Parser
     categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
     group_nodes.zip(categories_nodes).map do |group_node, categories_node|
       db_group = create_group(group_node.text.strip)
-      categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |node|
-        category_name = node.xpath('./a/@href').text.sub(URL,'').split('/').first.split('?').first.strip
-        db_category = create_group_category(db_group, node, category_name)
-        parse_category_pages(category_name, db_category, group_node.text)
+      categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |category_node|
+        db_category = create_group_category(db_group, category_node)
+        parse_category_pages(db_category, group_node.text)
         sleep(2)
       end
     end
@@ -44,9 +42,10 @@ class Parser
     Group.create(name: name, name_ru: name_ru)
   end
 
-  def create_group_category(group, node, name)
-    url = node.xpath('./a/@href').text.strip
-    name_ru = node.xpath('./a/@title').text.strip
+  def create_group_category(group, category_node)
+    url = category_node.xpath('./a/@href').text.strip
+    name = category_node.xpath('./a/@href').text.sub(URL,'').split('/').first.split('?').first.strip
+    name_ru = category_node.xpath('./a/@title').text.strip
     group.categories.create(url: url, name_ru: name_ru, name: name)
   end
   
@@ -62,12 +61,12 @@ class Parser
     data.body_str
   end
   
-  def parse_category_pages(category_name, db_category, group_name)
-    products_request_url = 'https://catalog.api.onliner.by/search/' + category_name
+  def parse_category_pages(db_category, group_name)
+    products_request_url = 'https://catalog.api.onliner.by/search/' + db_category.name
     json = special_request(products_request_url)
     quantity = JSON.parse(json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
-      print "\r#{group_name}/#{category_name} : #{page_number}/#{quantity}"
+      print "\r#{group_name}/#{db_category.name} : #{page_number}/#{quantity}"
       begin
         page_url = products_request_url + '?page=' + page_number.to_s
         get_products_from_page(page_url, db_category)
@@ -85,7 +84,11 @@ class Parser
     JSON.parse(json)['products'].map do |product|
       name = product['full_name'].strip
       url = product['html_url'].strip
-      image_url = product['images']['icon'].strip
+      if product['images']['icon'].nil?
+        image_url = 'N/A'
+      else
+        image_url = product['images']['icon'].strip
+      end
       description = Nokogiri::HTML.parse(product['description']).text.strip
       if product['prices'].nil?
         min_price = max_price = 'N/A'
@@ -95,7 +98,7 @@ class Parser
       end
       db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
 
-      Worker.perform_async(url, product.id) if min_price != 'N/A'
+      # Worker.perform_async(url, db_product.id) if min_price != 'N/A'
 
     end
   end
@@ -124,5 +127,3 @@ class Parser
   end
 
 end
-
-binding.pry
