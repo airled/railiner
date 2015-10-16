@@ -44,7 +44,7 @@ class Parser
 
   def create_group_category(group, category_node)
     url = category_node.xpath('./a/@href').text.strip
-    name = category_node.xpath('./a/@href').text.sub(URL,'').split('/').first.split('?').first.strip
+    name = url.sub(URL,'').split('/').first.split('?').first.strip
     name_ru = category_node.xpath('./a/@title').text.strip
     group.categories.create(url: url, name_ru: name_ru, name: name)
   end
