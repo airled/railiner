@@ -95,7 +95,7 @@ class Parser
       end
       db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
 
-      Worker.perform_async(url, db_product) if min_price != 'N/A'
+      Worker.perform_async(url, product.id) if min_price != 'N/A'
 
     end
   end

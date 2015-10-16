@@ -2,7 +2,7 @@ class Worker
 
   include Sidekiq::Worker
 
-  def perform(product_url, product)
+  def perform(product_url, id)
     loop do
       html = Nokogiri::HTML(Curl.get(product_url + '/prices#region=minsk&currency=byr').body)
       if (!html.text.include?('503 Service Temporarily Unavailable'))
@@ -10,6 +10,7 @@ class Worker
         rows.map do |row|
           price = row.xpath('./td[1]//a').text.strip
           seller_id = row.xpath('./@data-shop').text.strip
+          product = Product.find_by(id: id)
           product.costs.create(seller_id: seller_id, price: price)
         end
         break
