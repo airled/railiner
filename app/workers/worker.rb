@@ -1,6 +1,7 @@
 class Worker
 
   include Sidekiq::Worker
+  sidekiq_options :queue => :railiner_costs
 
   def perform(product_url, id)
     loop do

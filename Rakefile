@@ -22,5 +22,5 @@ task :deploy do
 end
 
 task :sk do
-  system('bundle exec sidekiq -c 1')
+  system('bundle exec sidekiq -c 1 -q railiner_costs')
 end
