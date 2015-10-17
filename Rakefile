@@ -20,3 +20,7 @@ end
 task :deploy do
   system('bundle exec cap production deploy')
 end
+
+task :sk do
+  system('bundle exec sidekiq -c 1')
+end

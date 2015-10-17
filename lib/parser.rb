@@ -2,7 +2,6 @@ require 'nokogiri'
 require 'json'
 require 'curb'
 require 'erb'
-require_relative '../app/workers/worker'
 
 class Parser
 
