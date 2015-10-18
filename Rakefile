@@ -9,12 +9,13 @@ task :parse => :environment do
   Parser.new.run
 end
 
-task :fill => :environment do
-  require './lib/sellers_filler'
-end
-
 task :reparse => :environment do
   system('rake db:rollback STEP=8 && rake db:migrate && rake parse')
+end
+
+task :fill => :environment do
+  require './lib/sellers_filler'
+  Filler.run
 end
 
 task :deploy do
@@ -24,3 +25,8 @@ end
 task :sk do
   system('bundle exec sidekiq -c 3 -q railiner_costs')
 end
+
+task :reset do
+  system('rake db:rollback STEP=8 && rake db:migrate')
+end
+
