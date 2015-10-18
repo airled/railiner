@@ -10,7 +10,7 @@ task :parse => :environment do
 end
 
 task :fill => :environment do
-  require './lib/filler'
+  require './lib/sellers_filler'
 end
 
 task :reparse => :environment do
