@@ -66,41 +66,41 @@ class Parser
     quantity = JSON.parse(json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
       print "\r#{group_name}/#{db_category.name} : #{page_number}/#{quantity}"
-      begin
-        page_url = products_request_url + '?page=' + page_number.to_s
-        get_products_from_page(page_url, db_category)
-      rescue => exception
-        puts exception.message
-        sleep(5)
-        redo
-      end
+      page_url = products_request_url + '?page=' + page_number.to_s
+      get_products_from_page(page_url, db_category)
     end
     puts
   end
 
   def get_products_from_page(page_url, category)
-    json = special_request(page_url)
-    JSON.parse(json)['products'].map do |product|
-      name = product['full_name'].strip
-      url = product['html_url'].strip
-      if product['images']['icon'].nil?
-        image_url = 'N/A'
+    loop do
+      page = special_request(page_url)
+      if (!page.include?('503 Service Temporarily Unavailable'))
+        JSON.parse(page)['products'].map do |product|
+          name = product['full_name'].strip
+          url = product['html_url'].strip
+          if product['images']['icon'].nil?
+            image_url = 'N/A'
+          else
+            image_url = product['images']['icon'].strip
+          end
+          description = Nokogiri::HTML.parse(product['description']).text.strip
+          if product['prices'].nil?
+            min_price = max_price = 'N/A'
+          else
+            min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
+            max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
+          end
+          db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
+          Worker.perform_async(url, db_product.id) if min_price != 'N/A'
+        end
+        break
       else
-        image_url = product['images']['icon'].strip
-      end
-      description = Nokogiri::HTML.parse(product['description']).text.strip
-      if product['prices'].nil?
-        min_price = max_price = 'N/A'
-      else
-        min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
-        max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
-      end
-      db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
-
-      Worker.perform_async(url, db_product.id) if min_price != 'N/A'
-
-    end
-  end
+        puts "\nBanned! Waiting 5s..."
+        sleep(5)
+      end #if
+    end #loop
+  end #def
 
   def stats
     {time: Time.new, groups: Group.count, categories: Category.count, products: Product.count}
