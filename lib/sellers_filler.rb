@@ -11,7 +11,7 @@ class Filler
       loop do
         html = Nokogiri::HTML(Curl.get("#{seller_id}.shop.onliner.by").body)
         if (!html.text.include?('503 Service Temporarily Unavailable'))
-          name = html.xpath('//h1[@class="sells-title"]').text
+          name = html.xpath('//h1[@class="sells-title"]').text.strip
           Seller.create(id: seller_id, name: name) if name != ''
           break
         end #if
