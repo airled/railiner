@@ -84,7 +84,7 @@ class Parser
         JSON.parse(page)['products'].map do |product|
           name = product['full_name'].strip
           url = product['html_url'].strip
-          image_url = (product['images']['icon'].nil?) ? '' : product['images']['icon'].strip
+          image_url = (product['images']['icon'].nil?) ? product['images']['header'].strip : product['images']['icon'].strip
           description = Nokogiri::HTML.parse(product['description']).text.strip
           if product['prices'].nil?
             min_price = max_price = 'N/A'
