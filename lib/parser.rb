@@ -8,20 +8,25 @@ class Parser
   URL = 'http://catalog.onliner.by/'
 
   def run
-    start = stats
-    html = get_html(URL) 
-    group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
-    categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
-    group_nodes.zip(categories_nodes).map do |group_node, categories_node|
-      db_group = create_group(group_node.text.strip)
-      categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |category_node|
-        db_category = create_group_category(db_group, category_node)
-        parse_category_pages(db_category, group_node.text)
-        sleep(2)
+    begin
+      start = stats
+      html = get_html(URL) 
+      group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
+      categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
+      group_nodes.zip(categories_nodes).map do |group_node, categories_node|
+        db_group = create_group(group_node.text.strip)
+        categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |category_node|
+          db_category = create_group_category(db_group, category_node)
+          parse_category_pages(db_category, group_node.text)
+          sleep(2)
+        end
       end
+      stop = stats
+      results(stop, start)
+    rescue => exception
+      puts exception.message
+      slack_results(exception.message)
     end
-    stop = stats
-    results(stop, start)
   end #def
 
   private
