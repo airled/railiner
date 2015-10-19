@@ -109,13 +109,11 @@ class Parser
 
   def results(stop, start)
     secs_total = (stop[:time] - start[:time]).to_i
-    hours = secs_total / 3600
-    mins = (secs_total - hours * 3600) / 60
-    secs = secs_total - hours * 3600 - mins * 60
+    time_delta = Time.at(secs_total).utc.strftime("%H:%M:%S")
     groups_delta = stop[:groups] - start[:groups]
     categories_delta = stop[:categories] - start[:categories]
     products_delta = stop[:products] - start[:products]
-    time_result = "Done in #{hours}:#{mins}:#{secs}"
+    time_result = "Done in #{time_delta}"
     db_result = "Got: #{groups_delta} groups, #{categories_delta} categories, #{products_delta} products"
     puts "#{time_result}\n#{db_result}"
     slack_results(time_result + '. ' + db_result)
