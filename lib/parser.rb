@@ -109,7 +109,7 @@ class Parser
 
   def results(stop, start)
     seconds = (stop[:time] - start[:time]).to_i
-    time_delta = [seconds / 3600, seconds / 60 % 60, seconds % 60].map { |t| t.to_s.rjust(2,'0') }.join(':')
+    time_delta = [seconds / 3600, seconds / 60 % 60, seconds % 60].map { |t| t.to_s.rjust(2, '0') }.join(':')
     groups_delta = stop[:groups] - start[:groups]
     categories_delta = stop[:categories] - start[:categories]
     products_delta = stop[:products] - start[:products]
