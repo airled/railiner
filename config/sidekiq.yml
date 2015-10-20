@@ -1,0 +1,7 @@
+---
+:verbose: false
+:concurrency: 3
+:queues:
+  - railiner_costs
+:logfile: ./log/sidekiq.log
+:pidfile: ./tmp/pids/sidekiq.pid

@@ -22,11 +22,17 @@ task :deploy do
   system('bundle exec cap production deploy')
 end
 
-task :sk do
-  system('bundle exec sidekiq -c 3 -q railiner_costs')
-end
-
 task :reset do
   system('rake db:rollback STEP=8 && rake db:migrate')
+end
+
+task :sk do
+  system('bundle exec sidekiq -C config/sidekiq.yml -d')
+end
+
+task :skk do
+  pid = File.open('./tmp/pids/sidekiq.pid') { |f| f.read }
+  system("kill #{pid.strip}")
+  puts 'Sidekiq killed.'
 end
 
