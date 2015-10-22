@@ -36,3 +36,6 @@ task :skk do
   puts 'Sidekiq killed.'
 end
 
+task :run do
+  system('bundle exec unicorn -c config/unicorn.rb -E production -D')
+end
