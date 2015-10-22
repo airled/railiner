@@ -49,12 +49,28 @@ set :rbenv_roles, :all # default value
 
 namespace :deploy do
 
+  # task :start do
+  #   on roles(:all) do
+  #     within "#{fetch(:deploy_to)}/current/" do
+  #       with RAILS_ENV: fetch(:environment) do
+  #         execute :bundle, :exec, :'unicorn -c config/unicorn.rb -E production -D'
+  #       end
+  #     end
+  #   end
+  # end
+
   task :start do
     on roles(:all) do
       within "#{fetch(:deploy_to)}/current/" do
-        with RAILS_ENV: fetch(:environment) do
-          execute :bundle, :exec, :'unicorn -c config/unicorn.rb -E production -D'
-        end
+        execute :rake, 'app:run'
+      end
+    end
+  end
+
+  task :stop do
+    on roles(:all) do
+      within "#{fetch(:deploy_to)}/current/" do
+        execute :rake, 'app:stop'
       end
     end
   end
