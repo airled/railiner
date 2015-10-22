@@ -59,14 +59,6 @@ namespace :deploy do
     end
   end
 
-  # task :start do
-  #   on roles(:all) do
-  #     within "#{fetch(:deploy_to)}/current/" do
-  #       execute :bundle, :exec, :'unicorn -c config/unicorn.rb -E production -D'
-  #     end
-  #   end
-  # end
-
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
