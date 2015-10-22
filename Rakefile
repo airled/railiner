@@ -36,6 +36,16 @@ task :skk do
   puts 'Sidekiq killed.'
 end
 
-task :run do
-  system('bundle exec unicorn -c config/unicorn.rb -E production -D')
+namespace :app do
+
+  task :run do
+    system('bundle exec unicorn -c config/unicorn.rb -E production -D')
+  end
+
+  task :stop do
+    pid = File.open('/home/onliner/current/tmp/pids/unicorn.pid') { |f| f.read }
+    system("kill #{pid.strip}")
+    puts 'Unicorn killed.'
+  end
+
 end
