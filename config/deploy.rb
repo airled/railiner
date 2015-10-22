@@ -58,7 +58,8 @@ namespace :app do
   task :start do
     on roles(:all) do
       within "#{fetch(:deploy_to)}/current/" do
-        execute :rake, 'l:start'
+        execute :ps, '-p $$'
+        execute :rake, 'local:start'
       end
     end
   end
@@ -66,7 +67,7 @@ namespace :app do
   task :stop do
     on roles(:all) do
       within "#{fetch(:deploy_to)}/current/" do
-        execute :rake, 'l:stop'
+        execute :rake, 'local:stop'
       end
     end
   end

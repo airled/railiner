@@ -35,7 +35,7 @@ task :skk do
   puts 'Sidekiq killed.'
 end
 
-namespace :l do
+namespace :local do
 
   task :start do
     system('bundle exec unicorn -c config/unicorn.rb -E production -D')
@@ -50,7 +50,7 @@ namespace :l do
 
 end
 
-namespace :r do
+namespace :rem do
 
   task :start do
     system('bundle exec cap production app:start')
