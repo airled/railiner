@@ -58,7 +58,7 @@ namespace :app do
   task :start do
     on roles(:all) do
       within "#{fetch(:deploy_to)}/current/" do
-        execute :rake, 'local:start'
+        execute :bundle, :exec, :rake, 'local:start'
       end
     end
   end
@@ -66,7 +66,7 @@ namespace :app do
   task :stop do
     on roles(:all) do
       within "#{fetch(:deploy_to)}/current/" do
-        execute :rake, 'local:stop'
+        execute :bundle, :exec, :rake, 'local:stop'
       end
     end
   end
