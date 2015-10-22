@@ -58,7 +58,6 @@ namespace :app do
   task :start do
     on roles(:all) do
       within "#{fetch(:deploy_to)}/current/" do
-        execute :ps, '-p $$'
         execute :rake, 'local:start'
       end
     end
