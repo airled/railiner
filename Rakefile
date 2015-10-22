@@ -8,8 +8,11 @@ task :parse => :environment do
   Parser.new.run
 end
 
-task :reparse => :environment do
-  system('rake reset && rake parse')
+task :reset do
+  system('rake db:rollback STEP=8 && rake db:migrate')
+end
+
+task :reparse => [:environment, :reset, :parse] do
 end
 
 task :fill => :environment do
@@ -18,11 +21,9 @@ task :fill => :environment do
 end
 
 task :deploy do
+  Rake::Task['remote:stop'].invoke
   system('bundle exec cap production deploy')
-end
-
-task :reset do
-  system('rake db:rollback STEP=8 && rake db:migrate')
+  Rake::Task['remote:start'].invoke
 end
 
 task :sk do
@@ -50,7 +51,7 @@ namespace :local do
 
 end
 
-namespace :rem do
+namespace :remote do
 
   task :start do
     system('bundle exec cap production app:start')
