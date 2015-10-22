@@ -38,8 +38,7 @@ end
 namespace :local do
 
   task :start do
-    system('source ./.zshrc')
-    system('bundle exec unicorn -c config/unicorn.rb -E production -D')
+    system('source /home/onliner/.zshrc && bundle exec unicorn -c config/unicorn.rb -E production -D')
     puts 'Unicorn started.'
   end
 
