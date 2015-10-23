@@ -122,8 +122,8 @@ class Parser
     slack_message(time_result + '. ' + db_result)
   end
 
-  def slack_message(result)
-    payload = {'text' => result}.to_json
+  def slack_message(message)
+    payload = {'text' => message}.to_json
     Curl.post(ENV["PARSER_HOOK"], payload)
   end
 
