@@ -8,8 +8,9 @@ class Parser
   URL = 'http://catalog.onliner.by/'
 
   def run(as_daemon)
-    Process.daemon if as_daemon
     begin
+      Process.daemon if as_daemon
+      File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
       slack_message("Parsing begin at #{Time.now}")
       start = stats
       html = get_html(URL) 
