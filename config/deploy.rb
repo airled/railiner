@@ -34,15 +34,6 @@ set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :rbenv_roles, :all # default value
 
 namespace :deploy do
-  # task :start do
-  #   on roles(:all) do
-  #     within "#{fetch(:deploy_to)}/current/" do
-  #       with RAILS_ENV: fetch(:environment) do
-  #         execute :bundle, :exec, :'unicorn -c config/unicorn.rb -E production -D'
-  #       end
-  #     end
-  #   end
-  # end
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
