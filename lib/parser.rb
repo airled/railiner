@@ -7,8 +7,10 @@ class Parser
 
   URL = 'http://catalog.onliner.by/'
 
-  def run
+  def run(as_daemon)
+    Process.daemon if as_daemon
     begin
+      slack_message("Parsing begin at #{Time.now}")
       start = stats
       html = get_html(URL) 
       group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
@@ -25,7 +27,7 @@ class Parser
       results(stop, start)
     rescue => exception
       puts exception.message
-      slack_results(exception.message)
+      slack_message(exception.message)
     end
   end #def
 
@@ -116,10 +118,10 @@ class Parser
     time_result = "Done in #{time_delta}"
     db_result = "Got: #{groups_delta} groups, #{categories_delta} categories, #{products_delta} products"
     puts "#{time_result}\n#{db_result}"
-    slack_results(time_result + '. ' + db_result)
+    slack_message(time_result + '. ' + db_result)
   end
 
-  def slack_results(result)
+  def slack_message(result)
     payload = {'text' => result}.to_json
     Curl.post(ENV["PARSER_HOOK"], payload)
   end

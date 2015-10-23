@@ -3,9 +3,15 @@
 require File.expand_path('../config/application', __FILE__)
 Rails.application.load_tasks
 
-task :parse => :environment do
+task :parse, [:arg] do |t, arg|
+  Rake::Task['environment'].invoke
   require './lib/parser'
-  Parser.new.run
+  as_daemon = false
+  if arg[:arg] == 'd'
+    as_daemon = true
+    puts "WARNING: Argument 'd' found. Starting parse as daemon"
+  end
+  Parser.new.run(as_daemon)
 end
 
 task :reset do
