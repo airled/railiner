@@ -65,6 +65,10 @@ namespace :remote do
 
   task :stop do
     system('bundle exec cap production app:stop')
+  end  
+
+  task :reparse do
+    system('bundle exec cap production app:reparse')
   end
 
 end
