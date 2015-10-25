@@ -11,9 +11,9 @@ class Parser
     begin
       Process.daemon if as_daemon
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
-      slack_message("Parsing begin at #{Time.now}")
+      slack_message("Parsing begin at #{Time.now}", 'warning')
       start = stats
-      html = get_html(URL) 
+      html = get_html(URL)
       group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
       categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
       group_nodes.zip(categories_nodes).map do |group_node, categories_node|
@@ -28,7 +28,7 @@ class Parser
       results(stop, start)
     rescue => exception
       puts exception.message
-      slack_message(exception.message)
+      slack_message(exception.message, 'danger')
     end
   end #def
 
@@ -119,11 +119,11 @@ class Parser
     time_result = "Done in #{time_delta}"
     db_result = "Got: #{groups_delta} groups, #{categories_delta} categories, #{products_delta} products"
     puts "#{time_result}\n#{db_result}"
-    slack_message(time_result + '. ' + db_result)
+    slack_message(time_result + '. ' + db_result, 'good')
   end
 
-  def slack_message(message)
-    payload = {'text' => message}.to_json
+  def slack_message(message, status)
+    payload = {'color' => status, 'fields' => [{'value' => message}]}.to_json
     Curl.post(ENV["PARSER_HOOK"], payload)
   end
 
