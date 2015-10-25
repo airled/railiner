@@ -11,7 +11,7 @@ class Parser
     begin
       Process.daemon if as_daemon
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
-      slack_message("Parsing begin at #{Time.now}", 'warning')
+      slack_message("Started at #{Time.now}", 'warning')
       start = stats
       html = get_html(URL)
       group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
