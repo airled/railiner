@@ -10,7 +10,7 @@ task :parse, [:arg] do |t, arg|
   as_daemon = false
   if arg[:arg] == 'd'
     as_daemon = true
-    puts "WARNING: Argument 'd' found. Starting parse as daemon"
+    puts "WARNING: Argument 'd' found. Running parser as daemon"
   end
   Parser.new.run(as_daemon)
 end
