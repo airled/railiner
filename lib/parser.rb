@@ -28,7 +28,7 @@ class Parser
       results(stop, start)
     rescue => exception
       puts exception.message
-      slack_message(exception.message, 'danger')
+      slack_message(exception.message + ": #{Time.now}", 'danger')
     end
   end #def
 
