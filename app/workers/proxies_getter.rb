@@ -5,9 +5,8 @@ class Proxies_getter
 
   def perform(url)
     html = Nokogiri::HTML(Curl.get(url).body)
-    list = html.xpath('//body/table[2]/tbody/tr[4]/td/table/tbody/tr/td[1]/font[@class="spy14"]').map { |node| node.text }
-    list.map do |address|
-      Proxies_handler.perform_async(address)
+    html.xpath('//tr/td[1]/font[@class="spy14"]').map do |ip|
+      Proxies_handler.perform_async(ip.text)
     end
   end
 
