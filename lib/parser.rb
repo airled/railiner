@@ -57,9 +57,12 @@ class Parser
   end
   
   def special_request(url)
-    user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0',
-                   'Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0',
-                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36']
+    user_agents = [
+      'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:39.0) Gecko/20100101 Firefox/39.0',
+      'Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0',
+      'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36',
+      'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:41.0) Gecko/20100101 Firefox/41.0'
+    ]
     data = Curl.get(url) do |http| 
       http.ssl_verify_peer = false
       http.headers["User-Agent"] = user_agents[rand(user_agents.size)]
@@ -95,7 +98,15 @@ class Parser
             min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
             max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
           end
-          db_product = category.products.create(name: name, url: url, image_url: image_url, max_price: max_price, min_price: min_price, description: description)
+          product_params = {
+            name: name,
+            url: url,
+            image_url: image_url,
+            max_price: max_price,
+            min_price: min_price,
+            description: description
+          }
+          db_product = category.products.create(product_params)
           Worker.perform_async(url, db_product.id) if min_price != 'N/A'
         end
         break
