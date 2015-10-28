@@ -19,6 +19,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rails-jquery-autocomplete'
 gem 'sidekiq'
 gem 'sinatra', :require => nil
+gem 'foreman'
 
 group :development, :test do
   gem 'pry'
