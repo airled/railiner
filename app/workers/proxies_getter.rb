@@ -1,13 +1,18 @@
-class Proxies_getter
+require 'nokogiri'
+require 'curb'
+# class Proxies_getter
 
-  include Sidekiq::Worker
-  sidekiq_options :queue => :proxy_source
+#   include Sidekiq::Worker
+#   sidekiq_options :queue => :proxy_source
 
-  def perform(url)
+#   def perform(url)
+    url = 'http://xseo.in/freeproxy'
     html = Nokogiri::HTML(Curl.get(url).body)
-    html.xpath('//tr/td[1]/font[@class="spy14"]').map do |ip|
-      Proxies_handler.perform_async(ip.text)
+    list = html.xpath('//td[1]/font').map do |node|
+      # Proxies_handler.perform_async(ip.text)
+      node.text if node.text.scan(/[А-Яа-я]/).empty?
     end
-  end
+    p list.compact
+  # end
 
-end
+# end
