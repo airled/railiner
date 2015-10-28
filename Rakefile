@@ -3,14 +3,20 @@
 require File.expand_path('../config/application', __FILE__)
 Rails.application.load_tasks
 
-desc "Parse Onliner's product pages and fill database's tables with main information."
+desc "Parse Onliner's product pages and fill database's tables, use the d-argument for running as a daemon and the q-argument for a sidekiq queue filling"
 task :parse, [:arg1, :arg2] do |t, args|
   Rake::Task['environment'].invoke
   require './lib/parser'
-  as_daemon = false
-  with_queue = false
-  (as_daemon = true) && (puts "WARNING: Argument 'd' found. Running parser as daemon") if Hash[args].has_value?('d')
-  (with_queue = true) && (puts "WARNING: Argument 'q' found. Running parser with queue filling") if Hash[args].has_value?('q')
+  as_daemon =
+    if Hash[args].has_value?('d')
+      puts "WARNING: Argument 'd' found. Running parser as daemon"
+      true
+    end || false
+  with_queue =
+    if Hash[args].has_value?('q')
+      puts "WARNING: Argument 'q' found. Running parser with queue filling"
+      true
+    end || false
   Parser.new.run(as_daemon, with_queue)
 end
 
