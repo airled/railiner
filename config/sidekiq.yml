@@ -3,6 +3,8 @@
 :concurrency: 3
 :queues:
   - costs
+  - proxy_source
+  - proxies
 :logfile: ./log/sidekiq.log
 :pidfile: ./tmp/pids/sidekiq.pid
-:namespace: railiner
+# :namespace: railiner
