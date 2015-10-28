@@ -66,7 +66,7 @@ namespace :app do
     on roles(:all) do
       within "#{fetch(:deploy_to)}/current/" do
         execute :bundle, :exec, :rake, 'reset RAILS_ENV=production'
-        execute 'source ~/.zshrc && cd current && RAILS_ENV=production bundle exec rake parse\[d\]'
+        execute 'source ~/.zshrc && cd current && RAILS_ENV=production bundle exec rake parse\[d,q\]'
       end
     end
   end

@@ -7,7 +7,7 @@ class Parser
 
   URL = 'http://catalog.onliner.by/'
 
-  def run(as_daemon)
+  def run(as_daemon, with_queue)
     begin
       Process.daemon if as_daemon
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
@@ -20,7 +20,7 @@ class Parser
         db_group = create_group(group_node.text.strip)
         categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |category_node|
           db_category = create_group_category(db_group, category_node)
-          parse_category_pages(db_category, group_node.text)
+          parse_category_pages(db_category, group_node.text, with_queue)
           sleep(2)
         end
       end
@@ -71,19 +71,19 @@ class Parser
     data.body_str
   end
   
-  def parse_category_pages(db_category, group_name)
+  def parse_category_pages(db_category, group_name, with_queue)
     products_request_url = 'https://catalog.api.onliner.by/search/' + db_category.name
     json = special_request(products_request_url)
     quantity = JSON.parse(json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
       print "\r#{group_name}/#{db_category.name} : #{page_number}/#{quantity}"
       page_url = products_request_url + '?page=' + page_number.to_s
-      get_products_from_page(page_url, db_category)
+      get_products_from_page(page_url, db_category, with_queue)
     end
     puts
   end
 
-  def get_products_from_page(page_url, category)
+  def get_products_from_page(page_url, category, with_queue)
     loop do
       page = special_request(page_url)
       if (!page.include?('503 Service Temporarily Unavailable'))
@@ -107,7 +107,7 @@ class Parser
             description: description
           }
           db_product = category.products.create(product_params)
-          Worker.perform_async(url, db_product.id) if min_price != 'N/A'
+          Worker.perform_async(url, db_product.id) if with_queue && (min_price != 'N/A')
         end
         break
       else

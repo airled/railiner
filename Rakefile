@@ -3,16 +3,15 @@
 require File.expand_path('../config/application', __FILE__)
 Rails.application.load_tasks
 
-desc "Parse Onliner's product pages and fill database's tables with main information. Use 'd'-argument for running the parser as daemon like rake parse[d]. Notice: If you use Zsh, run parser as daemon like rake parse\[d\] or rake 'parse[d]'."
-task :parse, [:arg] do |t, arg|
+desc "Parse Onliner's product pages and fill database's tables with main information."
+task :parse, [:arg1, :arg2] do |t, args|
   Rake::Task['environment'].invoke
   require './lib/parser'
   as_daemon = false
-  if arg[:arg] == 'd'
-    as_daemon = true
-    puts "WARNING: Argument 'd' found. Running parser as daemon"
-  end
-  Parser.new.run(as_daemon)
+  with_queue = false
+  (as_daemon = true) && (puts "WARNING: Argument 'd' found. Running parser as daemon") if Hash[args].has_value?('d')
+  (with_queue = true) && (puts "WARNING: Argument 'q' found. Running parser with queue filling") if Hash[args].has_value?('q')
+  Parser.new.run(as_daemon, with_queue)
 end
 
 desc 'Reset the migrations.'
