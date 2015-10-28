@@ -108,7 +108,7 @@ class Parser
             description: description
           }
           db_product = category.products.create(product_params)
-          Worker.perform_async(url, db_product.id) if with_queue && (min_price != 'N/A')
+          Prices_handler.perform_async(url, db_product.id) if with_queue && (min_price != 'N/A')
         end
         break
       else

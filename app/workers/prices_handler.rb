@@ -1,4 +1,4 @@
-class Worker
+class Prices_handler
 
   include Sidekiq::Worker
   sidekiq_options :queue => :costs
