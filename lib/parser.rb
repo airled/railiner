@@ -13,8 +13,7 @@ class Parser
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
       slack_message("Started at #{Time.now}", 'warning')
       start = stats
-      # redis_proxies = Redis.new
-      # Proxies_getter.perform_async('http://xseo.in/freeproxy', redis_proxies)
+      # Proxies_getter.perform_async('http://xseo.in/freeproxy')
       html = get_html(URL)
       group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
       categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
@@ -109,7 +108,7 @@ class Parser
             description: description
           }
           db_product = category.products.create(product_params)
-          Prices_handler.perform_async(url, db_product.id, redis_proxies) if with_queue && (min_price != 'N/A')
+          Prices_handler.perform_async(url, db_product.id) if with_queue && (min_price != 'N/A')
         end
         break
       else
