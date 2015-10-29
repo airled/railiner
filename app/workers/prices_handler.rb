@@ -14,7 +14,7 @@ class Prices_handler
       ips = JSON.parse(Redis.new.get("ips"))
       proxy_ip = ips[rand(ips.size)]
       prices_url = product_url + '/prices#region=minsk&currency=byr'
-      html = Nokogiri::HTML(proxy_request(prices_url, proxy_ip).body)
+      html = Nokogiri::HTML(proxy_request(prices_url, proxy_ip))
 
       unless (html.text.include?('503 Service Temporarily Unavailable') || html.text.include?('403 Forbidden'))
         rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr')

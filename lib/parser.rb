@@ -13,7 +13,7 @@ class Parser
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
       slack_message("Started at #{Time.now}", 'warning')
       start = stats
-      # Proxies_getter.perform_async('http://xseo.in/freeproxy')
+      Proxies_getter.perform_async('http://xseo.in/freeproxy') if with_queue
       html = get_html(URL)
       group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
       categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
