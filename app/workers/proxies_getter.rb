@@ -4,11 +4,15 @@ class Proxies_getter
   sidekiq_options :queue => :getter
 
   def perform(url)
-    html = Nokogiri::HTML(Curl.get(url).body)
-    list = html.xpath('//td[1]/font').map do |node|
-      node.text if node.text.scan(/[А-Яа-я]/).empty?
-    end
-    # redis_proxies.set("ips", list).to_json
+    # loop do
+      # url = 'http://xseo.in/freeproxy'
+      html = Nokogiri::HTML(Curl.get(url).body)
+      list = html.xpath('//td[1]/font').map do |node|
+        node.text if node.text.scan(/[А-Яа-я]/).empty?
+      end
+      Redis.new.set("ips", list.compact.to_json)
+      # sleep(1800)
+    # end
   end
 
 end

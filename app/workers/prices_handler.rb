@@ -3,14 +3,19 @@ class Prices_handler
   include Sidekiq::Worker
   sidekiq_options :queue => :handler
 
+  def proxy_request(prices_url, proxy_ip)
+    proxy_request = Curl::Easy.new(prices_url) { |curl| curl.proxy_url = proxy_ip }
+    proxy_request.perform
+    proxy_request.body
+  end
+
   def perform(product_url, id)
     loop do
-      ips = JSON.parse(redis_proxies.get("ips"))
+      ips = JSON.parse(Redis.new.get("ips"))
       proxy_ip = ips[rand(ips.size)]
-
       prices_url = product_url + '/prices#region=minsk&currency=byr'
-      
       html = Nokogiri::HTML(proxy_request(prices_url, proxy_ip).body)
+
       unless (html.text.include?('503 Service Temporarily Unavailable') || html.text.include?('403 Forbidden'))
         rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr')
         rows.map do |row|
@@ -21,16 +26,9 @@ class Prices_handler
         end
         break
       end
-    end
-  end
 
-  def proxy_request(prices_url, proxy_ip)
-    proxy_request = Curl::Easy.new(prices_url) do |curl|
-      curl.proxy_url = proxy_ip
-    end
-    proxy_request.perform
-    proxy_request.body
-  end
+    end #loop
+  end #def
 
 end
 
