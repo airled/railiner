@@ -5,8 +5,8 @@ class Proxies_getter
 
   def perform(url)
     html = Nokogiri::HTML(Curl.get(url).body)
-    html.xpath('//td[1]/font').map do |node|
-      Proxies_handler.perform_async(node.text) if node.text.scan(/[А-Яа-я]/).empty?
+    list = html.xpath('//td[1]/font').map do |node|
+      node.text if node.text.scan(/[А-Яа-я]/).empty?
     end
   end
 

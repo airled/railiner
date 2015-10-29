@@ -1,12 +1,14 @@
 class Prices_handler
 
   include Sidekiq::Worker
-  sidekiq_options :queue => :costs
+  sidekiq_options :queue => :product_id_url
 
   def perform(product_url, id)
     loop do
-      html = Nokogiri::HTML(Curl.get(product_url + '/prices#region=minsk&currency=byr').body)
-      if (!html.text.include?('503 Service Temporarily Unavailable'))
+      # ip = get_ip
+      prices_url = product_url + '/prices#region=minsk&currency=byr'
+      html = Nokogiri::HTML(Curl.get(prices_url).body)
+      unless html.text.include?('503 Service Temporarily Unavailable')
         rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr')
         rows.map do |row|
           price = row.xpath('./td[1]//a').text.strip
@@ -17,6 +19,9 @@ class Prices_handler
         break
       end
     end
+  end
+
+  def get_ip
   end
 
 end
