@@ -2,9 +2,8 @@
 :verbose: false
 :concurrency: 3
 :queues:
-  - costs
-  - proxy_source
-  # - proxies
+  - getter
+  - handler
 :logfile: ./log/sidekiq.log
 :pidfile: ./tmp/pids/sidekiq.pid
 # :namespace: railiner
