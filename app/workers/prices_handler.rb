@@ -11,8 +11,8 @@ class Prices_handler
 
   def perform(product_url, id)
     loop do
-      ips = JSON.parse(Redis.new.get("ips"))
-      proxy_ip = ips[rand(ips.size)]
+      list = JSON.parse(Redis.new.get("ip_list"))
+      proxy_ip = list[rand(ips.size)]
       prices_url = product_url + '/prices#region=minsk&currency=byr'
       html = Nokogiri::HTML(proxy_request(prices_url, proxy_ip))
 
