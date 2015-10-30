@@ -10,7 +10,7 @@ class Proxies_getter
       list = html.xpath('//td[1]/font').map do |node|
         node.text if node.text.scan(/[А-Яа-я]/).empty?
       end
-      Redis.new.set("ips", list.compact.to_json)
+      Redis.new.set("ip_list", list.compact.to_json)
       # sleep(1800)
     # end
   end
