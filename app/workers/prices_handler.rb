@@ -15,7 +15,6 @@ class Prices_handler
       proxy_ip = list[rand(ips.size)]
       prices_url = product_url + '/prices#region=minsk&currency=byr'
       html = Nokogiri::HTML(proxy_request(prices_url, proxy_ip))
-
       unless (html.text.include?('503 Service Temporarily Unavailable') || html.text.include?('403 Forbidden'))
         rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr')
         rows.map do |row|
@@ -24,9 +23,8 @@ class Prices_handler
           product = Product.find_by(id: id)
           product.costs.create(seller_id: seller_id, price: price)
         end
-        break
+        break #loop
       end
-
     end #loop
   end #def
 
