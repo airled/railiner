@@ -12,7 +12,7 @@ class Parser
       Process.daemon if as_daemon
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
       slack_message("#{Time.now} : started", 'warning')
-      start = stats
+      start_stats = stats_now
       Proxies_getter.perform_async('http://xseo.in/freeproxy') if with_queue
       html = get_html(URL)
       group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
@@ -25,8 +25,8 @@ class Parser
           sleep(2)
         end
       end
-      stop = stats
-      results(stop, start)
+      stop_stats = stats_now
+      results(start_stats, stop_stats)
     rescue => exception
       puts exception.message
       slack_message("#{Time.now} : #{exception.message}", 'danger')
@@ -122,8 +122,8 @@ class Parser
     [Time.new, Group.count, Category.count, Product.count]
   end
 
-  def results(stop, start)
-    deltas = stop.zip(start).map { |pair| pair[1] - pair[0] }
+  def results(start_stats, stop_stats)
+    deltas = stop_stats.zip(start_stats).map { |pair| pair[0] - pair[1] }
     time = [deltas[0] / 3600, deltas[0] / 60 % 60, deltas[0] % 60].map { |t| t.to_s.rjust(2, '0') }.join(':')
     time_result = "Done in #{time}"
     db_result = "Got: #{deltas[1]} groups, #{deltas[2]} categories, #{deltas[3]} products"
