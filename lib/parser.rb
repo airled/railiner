@@ -119,17 +119,14 @@ class Parser
   end #def
 
   def stats
-    {time: Time.new, groups: Group.count, categories: Category.count, products: Product.count}
+    [Time.new, Group.count, Category.count, Product.count]
   end
 
   def results(stop, start)
-    seconds = (stop[:time] - start[:time]).to_i
-    time_delta = [seconds / 3600, seconds / 60 % 60, seconds % 60].map { |t| t.to_s.rjust(2, '0') }.join(':')
-    groups_delta = stop[:groups] - start[:groups]
-    categories_delta = stop[:categories] - start[:categories]
-    products_delta = stop[:products] - start[:products]
-    time_result = "Done in #{time_delta}"
-    db_result = "Got: #{groups_delta} groups, #{categories_delta} categories, #{products_delta} products"
+    deltas = stop.zip(start).map { |pair| pair[1] - pair[0] }
+    time = [deltas[0] / 3600, deltas[0] / 60 % 60, deltas[0] % 60].map { |t| t.to_s.rjust(2, '0') }.join(':')
+    time_result = "Done in #{time}"
+    db_result = "Got: #{deltas[1]} groups, #{deltas[2]} categories, #{deltas[3]} products"
     puts "#{time_result}\n#{db_result}"
     slack_message(time_result + '. ' + db_result, 'good')
   end
