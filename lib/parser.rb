@@ -11,7 +11,7 @@ class Parser
     begin
       Process.daemon if as_daemon
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
-      slack_message("Started at #{Time.now}", 'warning')
+      slack_message("#{Time.now} : started", 'warning')
       start = stats
       Proxies_getter.perform_async('http://xseo.in/freeproxy') if with_queue
       html = get_html(URL)
@@ -29,7 +29,7 @@ class Parser
       results(stop, start)
     rescue => exception
       puts exception.message
-      slack_message(exception.message + ": #{Time.now}", 'danger')
+      slack_message("#{Time.now} : #{exception.message}", 'danger')
     end
   end #def
 
@@ -128,7 +128,7 @@ class Parser
     time_result = "Done in #{time}"
     db_result = "Got: #{deltas[1]} groups, #{deltas[2]} categories, #{deltas[3]} products"
     puts "#{time_result}\n#{db_result}"
-    slack_message(time_result + '. ' + db_result, 'good')
+    slack_message("#{Time.now} : #{time_result}. #{db_result}", 'good')
   end
 
   def slack_message(message, status)
