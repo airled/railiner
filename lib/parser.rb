@@ -89,23 +89,19 @@ class Parser
       page = special_request(page_url)
       if (!page.include?('503 Service Temporarily Unavailable'))
         JSON.parse(page)['products'].map do |product|
-          name = product['full_name'].strip
-          url = product['html_url'].strip
-          image_url = (product['images']['icon'].nil?) ? product['images']['header'].strip : product['images']['icon'].strip
-          description = Nokogiri::HTML.parse(product['description']).text.strip
           if product['prices'].nil?
             min_price = max_price = 'N/A'
           else
-            min_price = product['prices']['min'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
-            max_price = product['prices']['max'].to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
+            min_price = divide(product['prices']['min'])
+            max_price = divide(product['prices']['max'])
           end
           product_params = {
-            name: name,
-            url: url,
-            image_url: image_url,
+            name: product['full_name'].strip,
+            url: product['html_url'].strip,
+            image_url: product['images']['header'].strip,
             max_price: max_price,
             min_price: min_price,
-            description: description
+            description: Nokogiri::HTML.parse(product['description']).text.strip
           }
           db_product = category.products.create(product_params)
           Prices_handler.perform_async(url, db_product.id) if with_queue && (min_price != 'N/A')
@@ -117,6 +113,10 @@ class Parser
       end #if
     end #loop
   end #def
+  
+  def divide(price)
+    price.to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
+  end
 
   def stats
     [Time.new, Group.count, Category.count, Product.count]
