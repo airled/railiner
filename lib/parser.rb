@@ -104,7 +104,7 @@ class Parser
             description: Nokogiri::HTML.parse(product['description']).text.strip
           }
           db_product = category.products.create(product_params)
-          Prices_handler.perform_async(url, db_product.id) if with_queue && (min_price != 'N/A')
+          Prices_handler.perform_async(product['html_url'], db_product.id) if with_queue && (min_price != 'N/A')
         end
         break
       else
