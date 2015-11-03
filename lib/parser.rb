@@ -118,7 +118,7 @@ class Parser
     price.to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
   end
 
-  def stats
+  def stats_now
     [Time.new, Group.count, Category.count, Product.count]
   end
 
