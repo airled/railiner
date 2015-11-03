@@ -89,6 +89,7 @@ class Parser
       page = special_request(page_url)
       if (!page.include?('503 Service Temporarily Unavailable'))
         JSON.parse(page)['products'].map do |product|
+          image_url = (product['images']['icon'].nil?) ? product['images']['header'].strip : product['images']['icon'].strip
           if product['prices'].nil?
             min_price = max_price = 'N/A'
           else
@@ -98,7 +99,7 @@ class Parser
           product_params = {
             name: product['full_name'].strip,
             url: product['html_url'].strip,
-            image_url: product['images']['header'].strip,
+            image_url: image_url,
             max_price: max_price,
             min_price: min_price,
             description: Nokogiri::HTML.parse(product['description']).text.strip
