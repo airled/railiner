@@ -124,7 +124,7 @@ class Parser
   end
 
   def results(start_stats, stop_stats)
-    deltas = stop_stats.zip(start_stats).map { |pair| pair[0] - pair[1] }
+    deltas = stop_stats.zip(start_stats).map { |pair| (pair[0] - pair[1]).to_i }
     time = [deltas[0] / 3600, deltas[0] / 60 % 60, deltas[0] % 60].map { |t| t.to_s.rjust(2, '0') }.join(':')
     time_result = "Done in #{time}"
     db_result = "Got: #{deltas[1]} groups, #{deltas[2]} categories, #{deltas[3]} products"
