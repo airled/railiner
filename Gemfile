@@ -20,7 +20,6 @@ gem 'rails-jquery-autocomplete'
 gem 'sidekiq'
 gem 'sinatra', :require => nil
 gem 'foreman'
-gem 'devise'
 
 group :development, :test do
   gem 'pry'
