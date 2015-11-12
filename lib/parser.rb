@@ -3,6 +3,7 @@ require 'json'
 require 'curb'
 require 'erb'
 
+#main script for saving groups of categories, categories of products and products in database
 class Parser
 
   URL = 'http://catalog.onliner.by/'
@@ -72,6 +73,7 @@ class Parser
     data.body_str
   end
   
+  #fetch all products from all the pages of one category
   def parse_category_pages(db_category, group_name, with_queue)
     products_request_url = 'https://catalog.api.onliner.by/search/' + db_category.name
     json = special_request(products_request_url)
@@ -84,6 +86,7 @@ class Parser
     puts
   end
 
+  #fetch all products from one page and save it in the database
   def get_products_from_page(page_url, category, with_queue)
     loop do
       page = special_request(page_url)
@@ -115,6 +118,7 @@ class Parser
     end #loop
   end #def
   
+  #make price look more readable (1 000 instead of 1000)
   def divide(price)
     price.to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
   end

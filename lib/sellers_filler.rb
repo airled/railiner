@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'curb'
 
+#Filler resolves seller's id and save its name in the database
 class Filler
 
   def self.run
