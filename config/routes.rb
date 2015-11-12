@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     resources :categories, only: [:index] do
     end
   end
-  resources :products, only: [:show]
   
   get :autocomplete_product_name, to: 'products#autocomplete_product_name'
 

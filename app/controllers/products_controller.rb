@@ -4,10 +4,6 @@ class ProductsController < ApplicationController
     @products = Product.all.page(params[:page])
   end
 
-  def show
-    @product = Product.find_by(:id => params[:id])
-  end
-
   def find
     request = params[:form][:product]
     if params[:form][:out] == '0'
