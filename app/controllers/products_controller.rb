@@ -18,5 +18,9 @@ class ProductsController < ApplicationController
     products = Product.select(:name).distinct.where('name LIKE ?', "#{term}%").take(10)
     render :json => products.map { |product| {id: product.id, label: product.name, value: product.name} }
   end
+
+  def show
+    @product = Product.find_by(id: params[:id])
+  end
   
 end
