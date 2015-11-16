@@ -4,6 +4,7 @@ set :default_env, { 'PATH' => '$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH' }
 # set :default_shell, '/bin/zsh --login'
 set :application, 'railiner'
 set :repo_url, 'git@github.com:airled/railiner'
+set :branch, 'devise_new'
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 # Default deploy_to directory is /var/www/my_app_name

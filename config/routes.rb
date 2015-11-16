@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  devise_for :users
+  get 'persons/profile'
+
   get :autocomplete_product_name, to: 'products#autocomplete_product_name'
   get 'find/(page/:page)', to: 'products#find'
 
