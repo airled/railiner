@@ -12,7 +12,7 @@ class Prices_handler
   def perform(product_url, id)
     loop do
       list = JSON.parse(Redis.new.get("ip_list"))
-      proxy_ip = list[rand(ips.size)]
+      proxy_ip = list[rand(list.size)]
       prices_url = product_url + '/prices#region=minsk&currency=byr'
       html = Nokogiri::HTML(proxy_request(prices_url, proxy_ip))
       unless (html.text.include?('503 Service Temporarily Unavailable') || html.text.include?('403 Forbidden'))
