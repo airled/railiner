@@ -53,6 +53,12 @@
             <li><%= link_to "Категории", "/categories"  %></li>
             <li><%= link_to "Продукты", "/products"  %></li>
           </ul>
+          <% if user_signed_in? %>
+            <span>Здравствуйте, <%= current_user.email %></span>
+            <%= link_to 'Выйти', destroy_user_session_path, :method => :delete %>
+          <% else %>
+              <%= link_to 'Войти', new_user_session_path %> или <%= link_to 'Зарегистрироваться', new_user_registration_path %>
+          <% end %>
         </div>
         <div>
           <%= form_for :form, url: '/find', method: :get do |f| %>
@@ -74,6 +80,9 @@
         </div>
       </div>
     </div>
+
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
 
   </body>
 </html>
