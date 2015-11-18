@@ -24,7 +24,7 @@ class Comparator
       max_price = divide(product['prices']['max'])
     end
 
-    product_params = {
+    {
       name: product['full_name'].strip,
       url: product['html_url'].strip,
       image_url: image_url,
@@ -40,11 +40,11 @@ class Comparator
   end
 
   def check_equality(product_in_db, params)
-    changed = []
+    changes = {}
     [:url, :image_url, :max_price, :min_price, :description].map do |attrib|
-      changed << params[:attrib] if product_in_db[:attrib] != params[:attrib]
+      changes.merge!(attrib => params[attrib]) if product_in_db[attrib] != params[attrib]
     end
-    product_in_db.update(changed)
+    product_in_db.update(changes)
   end
 
 end
