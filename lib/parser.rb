@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'json'
 require 'curb'
 require 'erb'
+require_relative './product_comparator'
 
 #main script for saving groups of categories, categories of products and products in database
 class Parser
@@ -92,22 +93,7 @@ class Parser
       page = special_request(page_url)
       if (!page.include?('503 Service Temporarily Unavailable'))
         JSON.parse(page)['products'].map do |product|
-          image_url = (product['images']['icon'].nil?) ? product['images']['header'].strip : product['images']['icon'].strip
-          if product['prices'].nil?
-            min_price = max_price = 'N/A'
-          else
-            min_price = divide(product['prices']['min'])
-            max_price = divide(product['prices']['max'])
-          end
-          product_params = {
-            name: product['full_name'].strip,
-            url: product['html_url'].strip,
-            image_url: image_url,
-            max_price: max_price,
-            min_price: min_price,
-            description: Nokogiri::HTML.parse(product['description']).text.strip
-          }
-          db_product = category.products.create(product_params)
+          Comparator.new.run(category, product)
           Prices_handler.perform_async(product['html_url'], db_product.id) if with_queue && (min_price != 'N/A')
         end
         break
@@ -118,11 +104,6 @@ class Parser
     end #loop
   end #def
   
-  #make price look more readable (1 000 instead of 1000)
-  def divide(price)
-    price.to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
-  end
-
   def stats_now
     [Time.new, Group.count, Category.count, Product.count]
   end
