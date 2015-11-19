@@ -94,7 +94,7 @@ class Parser
       if (!page.include?('503 Service Temporarily Unavailable'))
         JSON.parse(page)['products'].map do |product|
           Comparator.new.run(category, product)
-          Prices_handler.perform_async(product['html_url'], db_product.id) if with_queue && (min_price != 'N/A')
+          #Prices_handler.perform_async(product['html_url'], db_product.id) if with_queue && (min_price != 'N/A')
         end
         break
       else
