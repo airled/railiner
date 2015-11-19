@@ -4,19 +4,18 @@ class Comparator
     #product is after JSON.parse 
     #params is a hash of parameters of the product fetched from a page
     params = get_product_params(product)
-    product_in_db = Product.find_by(name: params[:name])
+    product_in_db = category.products.find_by(name: params[:name])
     if product_in_db.nil?
       category.products.create(params)
     else
       check_equality(product_in_db, params)
     end
-
   end
 
   private 
   
   def get_product_params(product)
-    image_url = (product['images']['icon'].nil?) ? product['images']['header'].strip : product['images']['icon'].strip
+    image_url = product['images']['icon'].nil? ? product['images']['header'] : product['images']['icon']
     if product['prices'].nil?
       min_price = max_price = 'N/A'
     else
@@ -27,7 +26,7 @@ class Comparator
     {
       name: product['full_name'].strip,
       url: product['html_url'].strip,
-      image_url: image_url,
+      image_url: image_url.strip,
       max_price: max_price,
       min_price: min_price,
       description: Nokogiri::HTML.parse(product['description']).text.strip
