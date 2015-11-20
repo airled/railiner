@@ -20,10 +20,14 @@ class Parser
       group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
       categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
       group_nodes.zip(categories_nodes).map do |group_node, categories_node|
-        db_group = create_group(group_node.text.strip)
+        group_name_ru = group_node.text.strip
+        db_group = Group.find_by(name_ru: group_name_ru)
+        db_group = create_group(group_name_ru) if db_group.nil?
         categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |category_node|
-          db_category = create_group_category(db_group, category_node)
-          parse_category_pages(db_category, group_node.text, with_queue)
+          category_name_ru = category_node.xpath('./a/@title').text.strip
+          db_category = db_group.categories.find_by(name_ru: category_name_ru)
+          db_category = create_group_category(db_group, category_node, category_name_ru) if db_category.nil?
+          parse_category_pages(db_category, group_name_ru, with_queue)
           sleep(2)
         end
       end
@@ -52,11 +56,10 @@ class Parser
     Group.create(name: name, name_ru: name_ru)
   end
 
-  def create_group_category(group, category_node)
+  def create_group_category(group, category_node, category_name_ru)
     url = category_node.xpath('./a/@href').text.strip
     name = url.sub(URL,'').split('/').first.split('?').first.strip
-    name_ru = category_node.xpath('./a/@title').text.strip
-    group.categories.create(url: url, name_ru: name_ru, name: name)
+    group.categories.create(url: url, name_ru: category_name_ru, name: name)
   end
   
   def special_request(url)
@@ -75,12 +78,12 @@ class Parser
   end
   
   #fetch all products from all the pages of one category
-  def parse_category_pages(db_category, group_name, with_queue)
+  def parse_category_pages(db_category, group_name_ru, with_queue)
     products_request_url = 'https://catalog.api.onliner.by/search/' + db_category.name
     json = special_request(products_request_url)
     quantity = JSON.parse(json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
-      print "\r#{group_name}/#{db_category.name} : #{page_number}/#{quantity}"
+      print "\r#{group_name_ru}/#{db_category.name} : #{page_number}/#{quantity}"
       page_url = products_request_url + '?page=' + page_number.to_s
       get_products_from_page(page_url, db_category, with_queue)
     end
