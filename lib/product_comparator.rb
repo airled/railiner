@@ -1,15 +1,16 @@
 class Comparator
 
-  def run(category, product)
+  def run(category, product, with_queue)
     #product is after JSON.parse 
     #params is a hash of parameters of the product fetched from a page
     params = get_product_params(product)
     product_in_db = category.products.find_by(name: params[:name])
     if product_in_db.nil?
-      category.products.create(params)
+      product_in_db = category.products.create(params)
     else
       check_equality(product_in_db, params)
     end
+    #Prices_handler.perform_async(product['html_url'], product_in_db.id) if with_queue && (min_price != 'N/A')
   end
 
   private 
@@ -22,7 +23,6 @@ class Comparator
       min_price = divide(product['prices']['min'])
       max_price = divide(product['prices']['max'])
     end
-
     {
       name: product['full_name'].strip,
       url: product['html_url'].strip,
