@@ -10,12 +10,14 @@ class Prices_handler
   end
 
   def perform(product_url, id)
-    loop do
+    begin
       list = JSON.parse(Redis.new.get("ip_list"))
       proxy_ip = list[rand(list.size)]
       prices_url = product_url + '/prices#region=minsk&currency=byr'
       html = Nokogiri::HTML(proxy_request(prices_url, proxy_ip))
-      unless (html.text.include?('503 Service Temporarily Unavailable') || html.text.include?('403 Forbidden'))
+      if html.text.include?('503 Service Temporarily Unavailable') || html.text.include?('403 Forbidden')
+        raise
+      else
         rows = html.xpath('//div[@id="region-minsk"]/div[@class="b-offers-list-line-table"]/table[@class="b-offers-list-line-table__table"]/tbody[@class="js-position-wrapper"]/tr')
         rows.map do |row|
           price = row.xpath('./td[1]//a').text.strip
@@ -23,9 +25,10 @@ class Prices_handler
           product = Product.find_by(id: id)
           product.costs.create(seller_id: seller_id, price: price)
         end
-        break #loop
       end
-    end #loop
+    rescue
+      retry
+    end
   end #def
 
 end
