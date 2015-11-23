@@ -11,6 +11,7 @@ class Parser
 
   def run(as_daemon, with_queue)
     begin
+      # clear_sidekiq
       Process.daemon if as_daemon
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
       slack_message("#{Time.now} : started", 'warning')
@@ -40,6 +41,11 @@ class Parser
   end #def
 
   private
+
+  def clear_sidekiq
+    Sidekiq.redis {|c| c.del('stat:processed') }
+    Sidekiq.redis {|c| c.del('stat:failed') }
+  end
 
   def get_html(source)
     Nokogiri::HTML(Curl.get(source).body)

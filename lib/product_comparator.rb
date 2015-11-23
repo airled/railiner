@@ -7,10 +7,10 @@ class Comparator
     product_in_db = category.products.find_by(name: params[:name])
     if product_in_db.nil?
       product_in_db = category.products.create(params)
+      # Prices_handler.perform_async(product['html_url'], product_in_db.id) if with_queue && (params[:min_price] != 'N/A')
     else
       check_equality(product_in_db, params)
     end
-    #Prices_handler.perform_async(product['html_url'], product_in_db.id) if with_queue && (min_price != 'N/A')
   end
 
   private 
