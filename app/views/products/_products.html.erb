@@ -6,7 +6,7 @@
       <%= image_tag product.image_url %>
     </div>
     <div class="col-lg-9">
-      <%= link_to product.name, product.url, :target => "_blank" %>
+      <%= link_to product.name, product_path(id: product.id) %>
       <br>
       <%= product.description %>
       <br>
