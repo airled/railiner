@@ -41,12 +41,13 @@ ActiveRecord::Schema.define(version: 20151003114752) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "url",         limit: 255
-    t.string "name",        limit: 255
-    t.string "image_url",   limit: 255
-    t.string "max_price",   limit: 255
-    t.string "min_price",   limit: 255
-    t.text   "description", limit: 65535
+    t.string "url",             limit: 255
+    t.string "name",            limit: 255
+    t.string "small_image_url", limit: 255
+    t.string "large_image_url", limit: 255
+    t.string "max_price",       limit: 255
+    t.string "min_price",       limit: 255
+    t.text   "description",     limit: 65535
   end
 
   add_index "products", ["name"], name: "index_products_on_name", using: :btree

@@ -16,7 +16,7 @@ class Comparator
   private 
   
   def get_product_params(product)
-    image_url = product['images']['icon'].nil? ? product['images']['header'] : product['images']['icon']
+    small_image_url = product['images']['icon'].nil? ? product['images']['header'] : product['images']['icon']
     if product['prices'].nil?
       min_price = max_price = 'N/A'
     else
@@ -26,7 +26,8 @@ class Comparator
     {
       name: product['full_name'].strip,
       url: product['html_url'].strip,
-      image_url: image_url.strip,
+      large_image_url: product['images']['header'].strip,
+      small_image_url: small_image_url.strip,
       max_price: max_price,
       min_price: min_price,
       description: Nokogiri::HTML.parse(product['description']).text.strip
