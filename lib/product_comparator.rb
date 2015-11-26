@@ -17,6 +17,7 @@ class Comparator
   
   def get_product_params(product)
     small_image_url = product['images']['icon'].nil? ? product['images']['header'] : product['images']['icon']
+    large_image_url = product['images']['header'].nil? ? product['images']['icon'] : product['images']['header']
     if product['prices'].nil?
       min_price = max_price = 'N/A'
     else
