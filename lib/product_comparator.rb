@@ -27,7 +27,7 @@ class Comparator
     {
       name: product['full_name'].strip,
       url: product['html_url'].strip,
-      large_image_url: product['images']['header'].strip,
+      large_image_url: large_image_url.strip,
       small_image_url: small_image_url.strip,
       max_price: max_price,
       min_price: min_price,
