@@ -1,16 +1,25 @@
+require_relative './slack'
+
 class Comparator
 
-  def run(category, product, with_queue)
-    #product is after JSON.parse 
-    #params is a hash of parameters of the product fetched from a page
-    params = get_product_params(product)
-    # product_in_db = category.products.find_by(name: params[:name])
-    # if product_in_db.nil?
-      product_in_db = category.products.create(params)
-      # Prices_handler.perform_async(product['html_url'], product_in_db.id) if with_queue && (params[:min_price] != 'N/A')
-    # else
-    #   check_equality(product_in_db, params)
-    # end
+  def run(category, product, with_queue, page_url)
+    begin
+      #product is after JSON.parse 
+      #params is a hash of parameters of the product fetched from a page
+      params = get_product_params(product)
+      # product_in_db = category.products.find_by(name: params[:name])
+      # if product_in_db.nil?
+        product_in_db = category.products.create(params)
+        # Prices_handler.perform_async(product['html_url'], product_in_db.id) if with_queue && (params[:min_price] != 'N/A')
+      # else
+      #   check_equality(product_in_db, params)
+      # end
+    rescue => exception
+      message = "Exception: #{exception.message} | Category: #{category.name} | Failed product: #{product['full_name']} | Page url: #{page_url}"
+      puts message
+      Slack_message.new.send("#{Time.now} : #{message}", 'danger')
+      raise "Comparator error. Failed to handle the product data."
+    end
   end
 
   private 

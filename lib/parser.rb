@@ -3,6 +3,7 @@ require 'json'
 require 'curb'
 require 'erb'
 require_relative './product_comparator'
+require_relative './slack'
 
 #main script for saving groups of categories, categories of products and products in database
 class Parser
@@ -14,7 +15,7 @@ class Parser
       # clear_sidekiq
       Process.daemon if as_daemon
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
-      slack_message("#{Time.now} : started", 'warning')
+      Slack_message.new.send("#{Time.now} : started", 'warning')
       start_stats = stats_now
       Proxies_getter.perform_async('http://xseo.in/freeproxy') if with_queue
       html = get_html(URL)
@@ -36,7 +37,7 @@ class Parser
       results(start_stats, stop_stats)
     rescue => exception
       puts exception.message
-      slack_message("#{Time.now} : #{exception.message}", 'danger')
+      Slack_message.new.send("#{Time.now} : #{exception.message}", 'danger')
     end
   end #def
 
@@ -102,7 +103,7 @@ class Parser
       page = special_request(page_url)
       if (!page.include?('503 Service Temporarily Unavailable'))
         JSON.parse(page)['products'].map do |product|
-          Comparator.new.run(category, product, with_queue)
+          Comparator.new.run(category, product, with_queue, page_url)
         end
         break
       else
@@ -122,12 +123,7 @@ class Parser
     time_result = "Done in #{time}"
     db_result = "Got: #{deltas[1]} groups, #{deltas[2]} categories, #{deltas[3]} products"
     puts "#{time_result}\n#{db_result}"
-    slack_message("#{Time.now} : #{time_result}. #{db_result}", 'good')
-  end
-
-  def slack_message(message, status)
-    payload = {'color' => status, 'fields' => [{'value' => message}]}.to_json
-    Curl.post(ENV["PARSER_HOOK"], payload)
+    Slack_message.new.send("#{Time.now} : #{time_result}. #{db_result}", 'good')
   end
 
 end
