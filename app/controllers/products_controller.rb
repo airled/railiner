@@ -1,15 +1,11 @@
 class ProductsController < ApplicationController
 
-  def index
-    @products = Product.all.page(params[:page])
-  end
-
   def find
     request = params[:form][:product]
     if params[:form][:out] == '0'
-      @products = Product.distinct.where("name like ?", "%#{request}%").where("min_price !=?", "N/A").page(params[:page])
+      @products = Product.where("name like ?", "%#{request}%").where("min_price !=?", "N/A").page(params[:page])
     else
-      @products = Product.distinct.where("name like ?", "%#{request}%").page(params[:page])
+      @products = Product.where("name like ?", "%#{request}%").page(params[:page])
     end
   end
 
@@ -20,7 +16,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find_by(id: params[:id])
+    @product = Product.find_by(url_name: params[:url_name])
   end
   
 end

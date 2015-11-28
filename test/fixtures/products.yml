@@ -3,7 +3,9 @@
 one:
   url: MyString
   name: MyString
-  image_url: MyString
+  url_name: MyString
+  small_image_url: MyString
+  large_image_url: MyString
   max_price: MyString
   min_price: MyString
   description: MyString
@@ -11,7 +13,9 @@ one:
 two:
   url: MyString
   name: MyString
-  image_url: MyString
+  url_name: MyString
+  small_image_url: MyString
+  large_image_url: MyString
   max_price: MyString
   min_price: MyString
   description: MyString

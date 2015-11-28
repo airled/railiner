@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20151003114752) do
   create_table "products", force: :cascade do |t|
     t.string "url",             limit: 255
     t.string "name",            limit: 255
+    t.string "url_name",        limit: 255
     t.string "small_image_url", limit: 255
     t.string "large_image_url", limit: 255
     t.string "max_price",       limit: 255
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 20151003114752) do
   end
 
   add_index "products", ["name"], name: "index_products_on_name", using: :btree
+  add_index "products", ["url_name"], name: "index_products_on_url_name", using: :btree
 
   create_table "sellers", force: :cascade do |t|
     t.string "name", limit: 255

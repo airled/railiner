@@ -3,6 +3,7 @@ class CreateProducts < ActiveRecord::Migration
     create_table(:products, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8') do |t|
       t.string :url
       t.string :name
+      t.string :url_name
       t.string :small_image_url
       t.string :large_image_url
       t.string :max_price
