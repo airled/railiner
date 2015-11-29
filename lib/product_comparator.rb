@@ -34,8 +34,8 @@ class Comparator
       max_price = divide(product['prices']['max'])
     end
     {
-      name: product['full_name'].strip,
-      url_name: Nokogiri::HTML.parse(product['html_url'].split('/').last).text.strip,
+      name: Nokogiri::HTML.parse(product['full_name']).text.strip,
+      url_name: product['html_url'].split('/').last.strip,
       url: product['html_url'].strip,
       large_image_url: large_image_url.strip,
       small_image_url: small_image_url.strip,
