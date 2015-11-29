@@ -1,11 +1,6 @@
 class CategoriesController < ApplicationController
 
   def index
-    @group = Group.find_by(:name => params[:group_name])
-    @categories = @group.categories.all
-  end
-  
-  def index_all
     @categories = Category.all
   end
 
