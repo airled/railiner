@@ -1,4 +1,4 @@
-require_relative './slack'
+require_relative './slack_message'
 
 class Comparator
 
@@ -37,15 +37,15 @@ class Comparator
       name: Nokogiri::HTML.parse(product['full_name']).text.strip,
       url_name: product['html_url'].split('/').last.strip,
       url: product['html_url'].strip,
-      large_image_url: large_image_url.strip,
-      small_image_url: small_image_url.strip,
+      large_image_url: large_image_url,
+      small_image_url: small_image_url,
       max_price: max_price,
       min_price: min_price,
       description: Nokogiri::HTML.parse(product['description']).text.strip
     }
   end
 
-  #make price look more readable (1 000 instead of 1000)
+  #makes the price look more readable (1 000 instead of 1000)
   def divide(price)
     price.to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
   end

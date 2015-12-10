@@ -3,7 +3,7 @@ require 'json'
 require 'curb'
 require 'erb'
 require_relative './product_comparator'
-require_relative './slack'
+require_relative './slack_message'
 
 #main script for saving groups of categories, categories of products and products in database
 class Parser
