@@ -47,26 +47,26 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="/">Railiner</a>
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <ul class="nav navbar-nav">
-            <li><%= link_to "Группы категорий", "/groups"  %></li>
-            <li><%= link_to "Категории продуктов", "/categories"  %></li>
-          </ul>
-        </div>
-        <%= form_for :form, url: '/find', method: :get, :html => {"class" => 'form-inline'} do |f| %>
+        <%= form_for :form, url: '/find', method: :get, :html => {"class" => 'navbar-form navbar-left'} do |f| %>
           <div class="form-group">
             <%= f.autocomplete_field :product, autocomplete_product_name_path, placeholder: "Найти продукт", class: "form-control" %>
             <%= f.submit 'Найти', class: "btn btn-primary form-control" %>
             <%= f.check_box 'out' %> Не в продаже
           </div>
         <% end %>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+          <ul class="nav navbar-nav">
+            <li><%= link_to "Группы категорий", "/groups"  %></li>
+            <li><%= link_to "Категории продуктов", "/categories"  %></li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <div class="container" style="padding-top: 50px">
       <div class="row">
         <div class="col-lg-12">
-          <%= bootstrap_flash %><br>
+          <%= bootstrap_flash %>
           <%= yield %>
         </div>
       </div>
