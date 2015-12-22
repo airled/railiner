@@ -10,7 +10,9 @@
       <br>
       <%= product.description %>
       <br>
-      цена: <%= product.min_price + ' - ' + product.max_price %>
+      <% if product.min_price %>
+        цена: <%= product.min_price.to_s + ' - ' + product.max_price.to_s %>
+      <% end %>
     </div>
   </div>
   <br>

@@ -6,8 +6,8 @@ class CreateProducts < ActiveRecord::Migration
       t.string :url_name
       t.string :small_image_url
       t.string :large_image_url
-      t.string :max_price
-      t.string :min_price
+      t.integer :max_price
+      t.integer :min_price
       t.text :description
     end
   end

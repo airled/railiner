@@ -28,10 +28,10 @@ class Comparator
     small_image_url = product['images']['icon'].nil? ? product['images']['header'] : product['images']['icon']
     large_image_url = product['images']['header'].nil? ? product['images']['icon'] : product['images']['header']
     if product['prices'].nil?
-      min_price = max_price = 'N/A'
+      min_price = max_price = nil
     else
-      min_price = divide(product['prices']['min'])
-      max_price = divide(product['prices']['max'])
+      min_price = product['prices']['min'].to_i
+      max_price = product['prices']['max'].to_i
     end
     {
       name: Nokogiri::HTML.parse(product['full_name']).text.strip,
