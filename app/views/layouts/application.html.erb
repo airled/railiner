@@ -54,11 +54,11 @@
           </ul>
         </div>
         <div>
-          <%= form_for :form, url: '/find', method: :get do |f| %>
-            <%= f.autocomplete_field :product, autocomplete_product_name_path %>
-            <%= f.submit 'Найти' %><br>
-            <div>
-              <%= f.check_box 'out' %>Не в продаже
+          <%= form_for :form, url: '/find', method: :get, :html => {"class" => 'form-inline'} do |f| %>
+            <div class="form-group">
+              <%= f.autocomplete_field :product, autocomplete_product_name_path, placeholder: "Найти продукт", class: "form-control" %>
+              <%= f.submit 'Найти', class: "btn btn-primary" %>
+              <%= f.check_box 'out' %> Не в продаже
             </div>
           <% end %>
         </div>
@@ -68,7 +68,7 @@
     <div class="container" style="padding-top: 50px">
       <div class="row">
         <div class="col-lg-12">
-          <%= bootstrap_flash %><br><br>
+          <%= bootstrap_flash %><br>
           <%= yield %>
         </div>
       </div>
