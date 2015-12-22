@@ -53,15 +53,13 @@
             <li><%= link_to "Категории продуктов", "/categories"  %></li>
           </ul>
         </div>
-        <div>
-          <%= form_for :form, url: '/find', method: :get, :html => {"class" => 'form-inline'} do |f| %>
-            <div class="form-group">
-              <%= f.autocomplete_field :product, autocomplete_product_name_path, placeholder: "Найти продукт", class: "form-control" %>
-              <%= f.submit 'Найти', class: "btn btn-primary" %>
-              <%= f.check_box 'out' %> Не в продаже
-            </div>
-          <% end %>
-        </div>
+        <%= form_for :form, url: '/find', method: :get, :html => {"class" => 'form-inline'} do |f| %>
+          <div class="form-group">
+            <%= f.autocomplete_field :product, autocomplete_product_name_path, placeholder: "Найти продукт", class: "form-control" %>
+            <%= f.submit 'Найти', class: "btn btn-primary form-control" %>
+            <%= f.check_box 'out' %> Не в продаже
+          </div>
+        <% end %>
       </div>
     </div>
 
