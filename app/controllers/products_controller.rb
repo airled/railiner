@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
 
   def find
     request = params[:form][:product]
-    if request == ''
+    if request.length < 2
       redirect_to :back
     else
       if params[:form][:out] == '0'
