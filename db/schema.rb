@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 20151003114752) do
     t.string  "url_name",        limit: 255
     t.string  "small_image_url", limit: 255
     t.string  "large_image_url", limit: 255
-    t.integer "max_price",       limit: 4
-    t.integer "min_price",       limit: 4
+    t.integer "max_price",       limit: 8
+    t.integer "min_price",       limit: 8
     t.text    "description",     limit: 65535
   end
 

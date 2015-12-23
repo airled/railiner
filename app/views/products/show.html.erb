@@ -1,15 +1,15 @@
-<h1>Информация о продукте: <%= @product.name %></h1>
+<h1><%= @product.name %></h1>
 <div class="row">
   <div class="col-lg-3">
     <%= image_tag @product.large_image_url %>
   </div>
   <div class="col-lg-9">
-    <%= link_to @product.name, @product.url, :target => "_blank" %>
-    <br>
     <%= @product.description %>
     <br>
     <% if @product.min_price %>
       цена: <%= @product.min_price.to_s + ' - ' + @product.max_price.to_s %>
     <% end %>
+    <br>
+    <%= link_to 'Каталог Onliner', @product.url, :target => "_blank" %>
   </div>
 </div>
