@@ -7,7 +7,7 @@
     <%= @product.description %>
     <br>
     <% if @product.min_price %>
-      цена: <%= @product.min_price.to_s + ' - ' + @product.max_price.to_s %>
+      цена: <%= @product.minprice + ' - ' + @product.maxprice %>
     <% end %>
     <br>
     <%= link_to 'Каталог Onliner', @product.url, :target => "_blank" %>
