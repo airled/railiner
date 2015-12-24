@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
       redirect_to :back
     else
       if params[:form][:out] == '0'
-        @products = Product.where("name like ?", "#{request}%").where("min_price !=?", "N/A").group(:url_name).page(params[:page])
+        @products = Product.where("name like ?", "#{request}%").where.not(min_price: nil).group(:url_name).page(params[:page])
       else
         @products = Product.where("name like ?", "#{request}%").group(:url_name).page(params[:page])
       end
