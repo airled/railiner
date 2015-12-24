@@ -4,12 +4,11 @@ class InfoController < ApplicationController
     @groups = Group.count
     @categories = Category.count
 
-    products_in_stock = Product.where.not(min_price: nil)
-    @products_stock = products_in_stock.count
-    @products_stock_uniq = products_in_stock.group(:url_name).count.count
+    @products_in_stock = Product.where.not(min_price: nil).count
+    @products_in_stock_uniq = Product.select(:url_name).distinct.where.not(min_price: nil).count
 
     @products_all = Product.count
-    @products_all_uniq = Product.group(:url_name).count.count
+    @products_all_uniq = Product.select(:url_name).distinct.count
   end
 
 end
