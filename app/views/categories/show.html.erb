@@ -11,9 +11,9 @@
       <%= link_to product.name, product_path(url_name: product.url_name) %>
       <br>
       <%= product.description %>
-      <br>
       <% if product.min_price %>
-        цена: <%= product.minprice + ' - ' + product.maxprice %>
+        <br>
+        цена: <%= product.minprice + ' - ' + product.maxprice + ' руб.' %>
       <% end %>
     </div>
   </div>
