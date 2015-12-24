@@ -1,11 +1,11 @@
 <h1>Статистика</h1>
 <p>
-  Групп: <%= @groups_amount %>
+  Групп: <%= @groups %>
   <br>
-  Категорий: <%= @categories_amount %>
+  Категорий: <%= @categories %>
   <br>
-  Продуктов в продаже: <%= @products_amount %>
+  Продуктов в продаже: <%= "#{@products_stock} (уникальных #{@products_stock_uniq})" %>
   <br>
-  Продуктов всего: <%= @products_all %>
+  Продуктов всего: <%= "#{@products_all} (уникальных #{@products_all_uniq})" %>
   <br>
 </p>

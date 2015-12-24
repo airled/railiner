@@ -51,7 +51,7 @@
           <div class="form-group">
             <%= f.autocomplete_field :product, autocomplete_product_name_path, placeholder: "Найти продукт", class: "form-control" %>
             <%= f.submit 'Найти', class: "btn btn-primary form-control" %>
-            <%= f.check_box 'out' %> Не в продаже
+            <%= f.check_box 'out' %> + не в продаже
           </div>
         <% end %>
         <div class="navbar-collapse collapse navbar-responsive-collapse">

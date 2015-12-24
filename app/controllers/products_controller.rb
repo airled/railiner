@@ -6,10 +6,12 @@ class ProductsController < ApplicationController
       redirect_to :back
     else
       if params[:form][:out] == '0'
-        @products = Product.where("name like ?", "#{request}%").where.not(min_price: nil).group(:url_name).page(params[:page])
+        products = Product.where("name like ?", "#{request}%").where.not(min_price: nil).group(:url_name).all
       else
-        @products = Product.where("name like ?", "#{request}%").group(:url_name).page(params[:page])
+        products = Product.where("name like ?", "#{request}%").group(:url_name).all
       end
+      @amount = products.count.count
+      @products = products.page(params[:page])
     end
   end
 
