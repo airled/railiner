@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20151003114752) do
     t.string "name_ru", limit: 255
   end
 
+  add_index "categories", ["url"], name: "index_categories_on_url", using: :btree
+
   create_table "categories_groups", id: false, force: :cascade do |t|
     t.integer "category_id", limit: 4, null: false
     t.integer "group_id",    limit: 4, null: false

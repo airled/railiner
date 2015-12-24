@@ -4,6 +4,7 @@ class CreateCategories < ActiveRecord::Migration
       t.string :url
       t.string :name
       t.string :name_ru
+      t.index :url
     end
   end
 end

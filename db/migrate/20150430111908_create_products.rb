@@ -9,6 +9,8 @@ class CreateProducts < ActiveRecord::Migration
       t.integer :max_price, :limit => 8
       t.integer :min_price, :limit => 8
       t.text :description
+      t.index :name
+      t.index :url_name
     end
   end
 end

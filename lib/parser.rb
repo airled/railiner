@@ -23,16 +23,18 @@ class Parser
       categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
       group_nodes.zip(categories_nodes).map do |group_node, categories_node|
         group_name_ru = group_node.text.strip
-        db_group = Group.find_by(name_ru: group_name_ru)
-        db_group = create_group(group_name_ru) if db_group.nil?
+        db_group = create_group(group_name_ru)
         categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |category_node|
-          category_name_ru = category_node.xpath('./a/@title').text.strip
-          db_category = db_group.categories.find_by(name_ru: category_name_ru)
-          db_category = create_group_category(db_group, category_node, category_name_ru) if db_category.nil?
-          parse_category_pages(db_category, group_name_ru, with_queue)
-          sleep(2)
-        end
-      end
+          category_url = category_node.xpath('./a/@href').text.strip
+          if Category.find_by(url: category_url).nil?
+            db_category = create_group_category(db_group, category_node)
+            parse_category_pages(db_category, group_name_ru, with_queue)
+            sleep(2)
+          else
+            create_group_category(db_group, category_node)
+          end #if
+        end #map cat_nodes
+      end #zip map
       stop_stats = stats_now
       results(start_stats, stop_stats)
     rescue => exception
@@ -63,10 +65,11 @@ class Parser
     Group.create(name: name, name_ru: name_ru)
   end
 
-  def create_group_category(group, category_node, category_name_ru)
+  def create_group_category(group, category_node)
     url = category_node.xpath('./a/@href').text.strip
+    name_ru = category_node.xpath('./a/@title').text.strip
     name = url.sub(URL,'').split('/').first.split('?').first.strip
-    group.categories.create(url: url, name_ru: category_name_ru, name: name)
+    group.categories.create(url: url, name_ru: name_ru, name: name)
   end
   
   def special_request(url)
