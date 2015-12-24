@@ -15,7 +15,7 @@ class Parser
       # clear_sidekiq
       Process.daemon if as_daemon
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
-      Slack_message.new.send("#{Time.now} : started", 'warning')
+      Slack_message.new.send("#{Time.now} : started by #{ENV['USER']}@#{ENV['HOSTNAME']}", 'warning')
       start_stats = stats_now
       Proxies_getter.perform_async('http://xseo.in/freeproxy') if with_queue
       html = get_html(URL)
