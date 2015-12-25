@@ -14,9 +14,10 @@
 ActiveRecord::Schema.define(version: 20151003114752) do
 
   create_table "categories", force: :cascade do |t|
-    t.string "url",     limit: 255
-    t.string "name",    limit: 255
-    t.string "name_ru", limit: 255
+    t.string  "url",               limit: 255
+    t.string  "name",              limit: 255
+    t.string  "name_ru",           limit: 255
+    t.integer "products_quantity", limit: 4
   end
 
   add_index "categories", ["url"], name: "index_categories_on_url", using: :btree

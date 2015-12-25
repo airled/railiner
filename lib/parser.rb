@@ -29,6 +29,7 @@ class Parser
           if Category.find_by(url: category_url).nil?
             db_category = create_group_category(db_group, category_node)
             parse_category_pages(db_category, group_name_ru, with_queue)
+            db_category.update(products_quantity: db_category.products.count)
             sleep(2)
           else
             create_group_category(db_group, category_node)
@@ -46,8 +47,8 @@ class Parser
   private
 
   def clear_sidekiq
-    Sidekiq.redis {|c| c.del('stat:processed') }
-    Sidekiq.redis {|c| c.del('stat:failed') }
+    Sidekiq.redis { |c| c.del('stat:processed') }
+    Sidekiq.redis { |c| c.del('stat:failed') }
   end
 
   def get_html(source)

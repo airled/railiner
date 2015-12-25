@@ -1,4 +1,4 @@
-<h1><%= "#{@category.name_ru} (#{@amount} продукта(ов))" %></h1>
+<h1><%= "#{@category.name_ru}" %><%= " (#{@category.products_quantity} продукта(ов))" if @category.products_quantity %></h1>
 
 <%= paginate @products %>
 
