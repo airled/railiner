@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resources :groups, only: [:index, :show], param: :name
   resources :categories, only: [:index, :show], param: :category_name
 
+  get 'xhr_stats', to: 'info#xhr_stats'
+
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 end
