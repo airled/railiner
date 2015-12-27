@@ -1,14 +1,20 @@
 <h1>Статистика</h1>
 
-<div id="info">Подождите, собирается информация...</div>
+<script type="text/javascript">
+  function ajax(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "<%= xhr_stats_path %>", true);
+    xhr.onload = function () {
+      document.getElementById("info").innerHTML = xhr.responseText;
+    };
+    xhr.send();
+  }
+</script>
 
 <script type="text/javascript">
-  window.onload = function async_request(){
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "<%= xhr_stats_path %>", true);
-  xhr.onload = function () {
-    document.getElementById("info").innerHTML = xhr.responseText;
-  };
-  xhr.send();
-}
+  window.onload = ajax();
 </script>
+
+<div id="info">Подождите, собирается информация...</div>
+<input type="button" value="Обновить" onclick="document.getElementById('info').innerHTML='Обновление...'; ajax();" class="btn btn-primary">
+
