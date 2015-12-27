@@ -7,4 +7,6 @@
   <br>
   Продуктов всего: <%= "#{@products_all} (уникальных #{@products_all_uniq})" %>
   <br>
+  <input type="button" value="Обновить" onclick="document.getElementById('info').innerHTML='Обновление...'; ajax();" class="btn btn-primary">
+
 </p>

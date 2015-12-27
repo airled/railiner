@@ -15,7 +15,7 @@ class Comparator
       #   check_equality(product_in_db, params)
       # end
     rescue => exception
-      message = "Exception: #{exception.message} | Category: #{category.name} | Failed product: #{product['full_name']} | Page url: #{page_url}"
+      message = "Exception: #{exception.message} | Failed product: #{product['full_name']} | Page url: #{page_url}"
       puts message
       Slack_message.new.send("#{Time.now} : #{message}", 'danger')
       raise "Comparator error. Failed to handle the product data."
