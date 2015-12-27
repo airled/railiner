@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   resources :products, only: [:show], param: :url_name
 
   root 'welcome#index'
-  get 'info', to: 'info#stats'
 
   resources :groups, only: [:index, :show], param: :name
   resources :categories, only: [:index, :show], param: :category_name
 
+  get 'info', to: 'info#stats'
   get 'xhr_stats', to: 'info#xhr_stats'
 
   require 'sidekiq/web'

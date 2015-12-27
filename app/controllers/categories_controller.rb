@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
 
   def index
-    @categories = Category.all
+    @categories = Category.where.not(products_quantity: nil).all
   end
 
   def show
