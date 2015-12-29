@@ -1,5 +1,8 @@
 <h1>Статистика</h1>
+<br>
+<input id="button" type="button" value="Обновить" disabled="disabled" onclick="document.getElementById('info').innerHTML='Обновление...'; this.setAttribute('disabled', 'disabled'); ajax();" class="btn btn-primary">
 <hr>
+<div id="info">Подождите, собирается информация...</div>
 
 <script type="text/javascript">
   function ajax(){
@@ -7,6 +10,7 @@
     xhr.open("GET", "<%= xhr_stats_path %>", true);
     xhr.onload = function () {
       document.getElementById("info").innerHTML = xhr.responseText;
+      document.getElementById("button").removeAttribute("disabled"); 
     };
     xhr.send();
   }
@@ -16,4 +20,3 @@
   window.onload = ajax();
 </script>
 
-<div id="info">Подождите, собирается информация...</div>
