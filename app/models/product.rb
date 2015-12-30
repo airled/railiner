@@ -6,8 +6,6 @@ class Product < ActiveRecord::Base
 
   def prices
     case
-    when self.min_price.nil?
-      nil 
     when self.max_price == self.min_price
       price_to_s(self.min_price) + ' руб.'
     else
