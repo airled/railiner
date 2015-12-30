@@ -4,12 +4,21 @@ class Product < ActiveRecord::Base
   has_many :sellers, :through => :costs
   validates :name, presence: true
 
-  def maxprice
-    self.max_price.to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
+  def prices
+    case
+    when self.min_price.nil?
+      nil 
+    when self.max_price == self.min_price
+      price_to_s(self.min_price) + ' руб.'
+    else
+      price_to_s(self.min_price) + ' - ' + price_to_s(self.max_price) + ' руб.'
+    end
   end
 
-  def minprice
-    self.min_price.to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
+  private
+
+  def price_to_s(price)
+    price.to_s.reverse.scan(/\d{1,3}/).join(' ').reverse.strip
   end
   
 end
