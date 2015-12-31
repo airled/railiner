@@ -48,17 +48,17 @@
         </button>
         <a class="navbar-brand" href="/">Railiner</a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <%= form_for :form, url: '/find', method: :get, :html => {"class" => 'navbar-form navbar-left'} do |f| %>
-            <div class="form-group">
-              <%= f.autocomplete_field :product, autocomplete_product_name_path, placeholder: "Найти продукт", class: "form-control" %>
-              <%= f.submit 'Найти', class: "btn btn-primary form-control" %>
-              <%= f.check_box 'out' %> + не в продаже
-            </div>
-          <% end %>
           <ul class="nav navbar-nav">
             <li><%= link_to "Группы", "/groups"  %></li>
             <li><%= link_to "Категории", "/categories"  %></li>
           </ul>
+          <%= form_for :form, url: '/find', method: :get, :html => {"class" => 'navbar-form navbar-left'} do |f| %>
+            <div class="form-group">
+              <%= f.autocomplete_field :product, autocomplete_product_name_path, placeholder: "Найти продукт", class: "form-control" %>
+              <%= f.submit 'Найти', class: "btn btn-primary" %>
+              <%= f.check_box 'out' %> + не в продаже
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
