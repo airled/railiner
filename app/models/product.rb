@@ -5,11 +5,10 @@ class Product < ActiveRecord::Base
   validates :name, presence: true
 
   def prices
-    case
-    when self.max_price == self.min_price
-      price_to_s(self.min_price) + ' руб.'
-    else
+    if self.max_price != self.min_price
       price_to_s(self.min_price) + ' - ' + price_to_s(self.max_price) + ' руб.'
+    elsif self.max_price == self.min_price
+      price_to_s(self.min_price) + ' руб.'
     end
   end
 
