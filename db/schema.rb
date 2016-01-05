@@ -39,8 +39,9 @@ ActiveRecord::Schema.define(version: 20151003114752) do
   end
 
   create_table "groups", force: :cascade do |t|
-    t.string "name",    limit: 255
-    t.string "name_ru", limit: 255
+    t.string   "name",       limit: 255
+    t.string   "name_ru",    limit: 255
+    t.datetime "created_at"
   end
 
   create_table "products", force: :cascade do |t|
