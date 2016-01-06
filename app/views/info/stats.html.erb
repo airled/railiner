@@ -1,22 +1,37 @@
 <h1>Статистика</h1>
 <br>
-<input id="button" type="button" value="Обновить" disabled="disabled" autocomplete="off" onclick="document.getElementById('info').innerHTML='Обновление...'; this.setAttribute('disabled', 'disabled'); ajax();" class="btn btn-primary">
+<input id="button" type="button" value="Обновить" disabled="disabled" autocomplete="off" onclick="button_click();" class="btn btn-primary">
 <hr>
 <div id="info">Подождите, собирается информация...</div>
+<div class="progress" id="loading">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+</div>
 
 <script type="text/javascript">
+
+  var info = document.getElementById('info');
+  var load = document.getElementById('loading');
+  var btn = document.getElementById('button');
+
   function ajax(){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "<%= xhr_stats_path %>", true);
     xhr.onload = function () {
-      document.getElementById("info").innerHTML = xhr.responseText;
-      document.getElementById("button").removeAttribute("disabled"); 
+      info.innerHTML = xhr.responseText;
+      loading.style.display = 'none';
+      btn.removeAttribute("disabled"); 
     };
     xhr.send();
   }
-</script>
 
-<script type="text/javascript">
+  function button_click(){
+    info.innerHTML = 'Обновление...';
+    btn.setAttribute('disabled', 'disabled');
+    loading.style.display = 'block';
+    ajax();
+  }
+
   window.onload = ajax();
+
 </script>
 
