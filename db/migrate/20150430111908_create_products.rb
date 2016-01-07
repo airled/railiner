@@ -11,6 +11,7 @@ class CreateProducts < ActiveRecord::Migration
       t.text :description
       t.index :name
       t.index :url_name
+      t.timestamps null: false
     end
   end
 end
