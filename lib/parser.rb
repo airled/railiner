@@ -23,7 +23,7 @@ class Parser
       categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
       group_nodes.zip(categories_nodes).map do |group_node, categories_node|
         group_name_ru = group_node.text.strip
-        db_group = create_group(group_name_ru)
+        db_group = check_group(group_name_ru)
         categories_node.xpath('./li/span[@class="catalog-navigation-list__link-inner"]').map do |category_node|
           category_url = category_node.xpath('./a/@href').text.strip
           if Category.find_by(url: category_url).nil?
@@ -45,6 +45,11 @@ class Parser
   end #def
 
   private
+
+  def check_group(name_ru)
+    group_found = Group.find_by(name_ru: name_ru)
+    group_found.nil? ? create_group(name_ru) : group_found
+  end
 
   def clear_sidekiq
     Sidekiq.redis { |c| c.del('stat:processed') }
