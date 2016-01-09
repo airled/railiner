@@ -2,4 +2,6 @@
 <hr>
 
 <p>Продукты <%= link_to 'catalog.onliner.by', 'http://catalog.onliner.by' %>. Добро пожаловать!</p>
-<p>База данных от <%= @date %></p>
+<% if @date %>
+  <p>База данных от <%= @date %></p>
+<% end %>
