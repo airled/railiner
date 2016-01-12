@@ -52,7 +52,7 @@
             <li><%= link_to "Группы", "/groups" %></li>
             <li><%= link_to "Категории", "/categories" %></li>
           </ul>
-          <%= form_for :form, url: '/find', method: :get, :html => {"class" => 'navbar-form navbar-left'} do |f| %>
+          <%= form_for :form, url: find_path, method: :get, :html => {"class" => 'navbar-form navbar-left'} do |f| %>
             <div class="form-group">
               <%= f.autocomplete_field :product, autocomplete_product_name_path, placeholder: "Найти продукт", class: "form-control" %>
               <%= f.submit 'Найти', class: "btn btn-primary" %>

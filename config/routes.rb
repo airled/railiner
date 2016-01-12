@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get :autocomplete_product_name, to: 'products#autocomplete_product_name'
-  get 'find/(page/:page)', to: 'products#find'
+  get 'find/(page/:page)', to: 'products#find', as: :find
   resources :products, only: [:show], param: :url_name
 
   root 'welcome#index'
