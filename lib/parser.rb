@@ -90,7 +90,6 @@ class Parser
       http.ssl_verify_peer = false
       http.headers["User-Agent"] = user_agents[rand(user_agents.size)]
     end
-    data.perform
     data.body_str
   end
   
