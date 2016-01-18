@@ -30,8 +30,7 @@ class Parser
             db_category = create_group_category(db_group, category_node)
             parse_category_pages(db_category, group_name_ru, with_queue)
             db_category.update(products_quantity: db_category.products.count)
-            sleep(2)
-          else
+          elsif db_group.category.find_by(url: category_url).nil?
             create_group_category(db_group, category_node)
           end #if
         end #map cat_nodes
@@ -102,6 +101,7 @@ class Parser
       print "\r#{group_name_ru}/#{db_category.name} : #{page_number}/#{quantity}"
       page_url = products_request_url + '?page=' + page_number.to_s
       get_products_from_page(page_url, db_category, with_queue)
+      sleep(2)
     end
     puts
   end
