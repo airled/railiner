@@ -1,11 +1,28 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+one:
+  email: b@b.b
+  encrypted_password: zxzcvbcvsgcvysg
+  admin: false
+  reset_password_token: 47g347g58347g58473g5374g
+  reset_password_sent_at: null
+  remember_created_at: null
+  sign_in_count: 2
+  current_sign_in_at: null
+  last_sign_in_at: null
+  current_sign_in_ip: null
+  last_sign_in_ip: null
+  created_at: 2016-01-21 13:13:13
+  updated_at: 2016-01-21 13:13:13
+two:
+  email: c@c.c
+  encrypted_password: 4g4v5g4hv54g
+  admin: true
+  reset_password_token: 45b3jh6vj3h5v656v56
+  reset_password_sent_at: null
+  remember_created_at: null
+  sign_in_count: 4
+  current_sign_in_at: null
+  last_sign_in_at: null
+  current_sign_in_ip: null
+  last_sign_in_ip: null
+  created_at: 2016-01-21 14:14:14
+  updated_at: 2016-01-21 14:14:14
