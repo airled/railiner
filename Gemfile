@@ -21,6 +21,7 @@ gem 'sidekiq'
 gem 'sinatra', :require => nil
 gem 'foreman'
 gem 'devise'
+gem 'bootstrap-kaminari-views'
 
 group :development, :test do
   gem 'pry'
