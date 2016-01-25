@@ -17,4 +17,6 @@
 hr {
 	margin-top: 0px;
 }
-
+.pagination, .pagination-sm{
+	margin-top: 0px;
+}
