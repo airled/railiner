@@ -10,14 +10,27 @@ class Parser
 
   URL = 'http://catalog.onliner.by/'
 
-  def run(as_daemon, with_queue)
+  def initialize(daemon=false, queue=false)
+    @daemon = daemon
+    @queue = queue
+  end
+
+  def daemon?
+    @daemon
+  end
+
+  def queue?
+    @queue
+  end
+
+  def run
     begin
       # clear_sidekiq
-      Process.daemon if as_daemon
+      Process.daemon if daemon?
       File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
       Slack_message.new.send("Parser started by #{ENV['USER']}@#{`hostname`.strip} on #{Time.now}", 'warning')
       start_stats = stats_now
-      Proxies_getter.perform_async('http://xseo.in/freeproxy') if with_queue
+      Proxies_getter.perform_async('http://xseo.in/freeproxy') if queue?
       html = get_html(URL)
       group_nodes = html.xpath('//h2[@class="catalog-navigation-list__group-title"]')
       categories_nodes = html.xpath('//ul[@class="catalog-navigation-list__links"]')
@@ -28,7 +41,7 @@ class Parser
           category_url = category_node.xpath('./a/@href').text.strip
           if Category.find_by(url: category_url).nil?
             db_category = create_group_category(db_group, category_node)
-            parse_category_pages(db_category, group_name_ru, with_queue)
+            parse_category_pages(db_category, group_name_ru)
             db_category.update(products_quantity: db_category.products.count)
           elsif db_group.categories.find_by(url: category_url).nil?
             create_group_category(db_group, category_node)
@@ -93,26 +106,26 @@ class Parser
   end
   
   #fetch all products from all the pages of one category
-  def parse_category_pages(db_category, group_name_ru, with_queue)
+  def parse_category_pages(db_category, group_name_ru)
     products_request_url = 'https://catalog.api.onliner.by/search/' + db_category.name
     json = special_request(products_request_url)
     quantity = JSON.parse(json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
       print "\r#{group_name_ru}/#{db_category.name} : #{page_number}/#{quantity}"
       page_url = products_request_url + '?page=' + page_number.to_s
-      get_products_from_page(page_url, db_category, with_queue)
+      get_products_from_page(page_url, db_category)
       sleep(2)
     end
     puts
   end
 
   #fetch all products from one page and save it in the database
-  def get_products_from_page(page_url, category, with_queue)
+  def get_products_from_page(page_url, category)
     loop do
       page = special_request(page_url)
       if (!page.include?('503 Service Temporarily Unavailable'))
         JSON.parse(page)['products'].map do |product|
-          Comparator.new.run(category, product, with_queue, page_url)
+          Comparator.new.run(category, product, queue?, page_url)
         end
         break
       else

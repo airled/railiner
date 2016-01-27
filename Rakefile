@@ -17,7 +17,7 @@ task :parse, [:arg1, :arg2] do |t, args|
       puts "WARNING: Argument 'q' found. Running parser with queue filling"
       true
     end || false
-  Parser.new.run(as_daemon, with_queue)
+  Parser.new(as_daemon, with_queue).run
 end
 
 desc 'Reset the migrations.'
