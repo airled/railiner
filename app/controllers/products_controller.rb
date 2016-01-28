@@ -1,14 +1,14 @@
 class ProductsController < ApplicationController
 
   def find
-    request = params[:form][:product]
-    if request.length < 2
+    @request = params[:form][:product]
+    if @request.length < 2
       redirect_to :back
     else
       if params[:form][:out] == '0'
-        products = Product.where("name like ?", "#{request}%").where.not(min_price: nil).group(:url_name)
+        products = Product.where("name like ?", "#{@request}%").where.not(min_price: nil).group(:url_name)
       else
-        products = Product.where("name like ?", "#{request}%").group(:url_name)
+        products = Product.where("name like ?", "#{@request}%").group(:url_name)
       end
       @amount = products.count.count
       @products = products.page(params[:page])
