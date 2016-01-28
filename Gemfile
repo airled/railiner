@@ -31,6 +31,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'spring'
   gem 'quiet_assets'
+  gem 'rspec-rails'
 end
 
 group :production do
