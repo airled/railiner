@@ -7,8 +7,8 @@ set :repo_url, 'git@github.com:airled/railiner'
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, '/home/onliner'
-set :tmp_dir, '/home/onliner/tmp'
+set :deploy_to, '/home/railiner'
+set :tmp_dir, '/home/railiner/tmp'
 # Default value for :scm is :git
 # set :scm, :git
 # Default value for :format is :pretty

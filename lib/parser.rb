@@ -8,6 +8,8 @@ require_relative './slack_message'
 #main script for saving groups of categories, categories of products and products in database
 class Parser
 
+  include Slack_message
+
   URL = 'http://catalog.onliner.by/'
 
   def initialize(daemon=false, queue=false)
@@ -26,9 +28,8 @@ class Parser
   def run
     begin
       # clear_sidekiq
-      Process.daemon if daemon?
-      File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
-      Slack_message.new.send("Parser started by #{ENV['USER']}@#{`hostname`.strip} on #{Time.now}", 'warning')
+      Process.daemon && save_pid if daemon?
+      send_message("Parser started by #{ENV['USER']}@#{`hostname`.strip} on #{Time.now}", 'warning')
       start_stats = stats_now
       Proxies_getter.perform_async('http://xseo.in/freeproxy') if queue?
       html = get_html(URL)
@@ -52,11 +53,15 @@ class Parser
       results(start_stats, stop_stats)
     rescue => exception
       puts exception.message
-      Slack_message.new.send("Parser exception: #{exception.message} on #{Time.now}", 'danger')
+      send_message("Parser exception: #{exception.message} on #{Time.now}", 'danger')
     end
   end #def
 
   private
+
+  def save_pid
+    File.open("#{File.expand_path('../../tmp/pids', __FILE__)}/parser.pid", 'w') { |f| f << Process.pid }
+  end
 
   def check_group(name_ru)
     group_found = Group.find_by(name_ru: name_ru)
@@ -68,8 +73,8 @@ class Parser
     Sidekiq.redis { |c| c.del('stat:failed') }
   end
 
-  def get_html(source)
-    Nokogiri::HTML(Curl.get(source).body)
+  def get_html(url)
+    Nokogiri::HTML(Curl.get(url).body)
   end
 
   def translate_to_en(word)
@@ -102,7 +107,7 @@ class Parser
       http.ssl_verify_peer = false
       http.headers["User-Agent"] = user_agents[rand(user_agents.size)]
     end
-    data.body_str
+    data.body
   end
   
   #fetch all products from all the pages of one category
@@ -145,7 +150,7 @@ class Parser
     time_result = "Done in #{time}"
     db_result = "Got: #{deltas[1]} groups, #{deltas[2]} categories, #{deltas[3]} products"
     puts "#{time_result}\n#{db_result}"
-    Slack_message.new.send("Parser finished in #{time}. #{db_result} on #{Time.now}", 'good')
+    send_message("Parser finished in #{time}. #{db_result} on #{Time.now}", 'good')
   end
 
 end

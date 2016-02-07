@@ -2,6 +2,8 @@ require_relative './slack_message'
 
 class Comparator
 
+  include Slack_message
+
   def run(category, product, with_queue, page_url)
     begin
       #product is after JSON.parse 
@@ -17,7 +19,7 @@ class Comparator
     rescue => exception
       message = "Exception: #{exception.message} | Failed product: #{product['full_name']} | Page url: #{page_url}"
       puts message
-      Slack_message.new.send("#{Time.now} : #{message}", 'danger')
+      send_message("#{Time.now} : #{message}", 'danger')
       raise "Comparator error. Failed to handle the product data."
     end
   end

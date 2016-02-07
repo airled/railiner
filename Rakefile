@@ -64,7 +64,7 @@ namespace :local do
 
   desc "Stop the application runned with Unicorn."
   task :stop do
-    pid = File.open('/home/onliner/current/tmp/pids/unicorn.pid') { |f| f.read }
+    pid = File.open('/home/railiner/current/tmp/pids/unicorn.pid') { |f| f.read }
     system("kill #{pid.strip}")
     puts 'Unicorn killed.'
   end

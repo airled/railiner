@@ -1,34 +1,29 @@
 <h1>Статистика</h1>
 <hr>
 <input id="button" type="button" value="Обновить" disabled="disabled" autocomplete="off" onclick="getStats();" class="btn btn-primary">
-<p></p>
-<div id="info"></div>
-<div class="progress" id="loading" style="display: none">
-  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-</div>
+<p>
+  <div id="info"></div>
+  <div class="progress" id="loading" style="visibility: hidden">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+  </div>
+</p>
 
 <script type="text/javascript">
-
   function getStats(){
-
-    var info = document.getElementById('info');
-    var loading = document.getElementById('loading');
-    var button = document.getElementById('button');
-
+    var info = document.getElementById('info'),
+        loading = document.getElementById('loading'),
+        button = document.getElementById('button');
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "<%= xhr_stats_path %>", true);
     xhr.onload = function () {
       info.innerHTML = xhr.responseText;
-      loading.style.display = 'none';
+      loading.style.visibility = 'hidden';
       button.removeAttribute("disabled"); 
     };
     xhr.send();
     info.innerHTML = 'Сбор информации...';
-    loading.style.display = 'block';
+    loading.style.visibility = 'visible';
     button.setAttribute('disabled', 'disabled');
   }
-
   getStats();
-
 </script>
-
