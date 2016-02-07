@@ -54,38 +54,21 @@ task :skk do
   puts 'Sidekiq killed.'
 end
 
-namespace :local do
-
-  desc "Start the application locally with Unicorn."
-  task :start do
-    system('source ~/.zshrc && bundle exec unicorn -c config/unicorn.rb -E production -D')
-    puts 'Unicorn started.'
-  end
-
-  desc "Stop the application runned with Unicorn."
-  task :stop do
-    pid = File.open('/home/railiner/current/tmp/pids/unicorn.pid') { |f| f.read }
-    system("kill #{pid.strip}")
-    puts 'Unicorn killed.'
-  end
-
-end
-
 namespace :remote do
 
   desc 'Start the remote application with Capistrano.'
   task :start do
-    system('bundle exec cap production app:start')
+    system('bundle exec cap production start')
   end
 
   desc 'Stop the remote application with Capistrano.'
   task :stop do
-    system('bundle exec cap production app:stop')
+    system('bundle exec cap production stop')
   end  
 
   desc 'Start reparsing remotely with Capistrano.'
   task :reparse do
-    system('bundle exec cap production app:reparse')
+    system('bundle exec cap production reparse')
   end
 
 end
