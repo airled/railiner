@@ -113,8 +113,8 @@ class Parser
   #fetch all products from all the pages of one category
   def parse_category_pages(db_category, group_name_ru)
     products_request_url = 'https://catalog.api.onliner.by/search/' + db_category.name
-    json = special_request(products_request_url)
-    quantity = JSON.parse(json)['page']['last'].to_i
+    response_json = special_request(products_request_url)
+    quantity = JSON.parse(response_json)['page']['last'].to_i
     1.upto(quantity) do |page_number|
       print "\r#{group_name_ru}/#{db_category.name} : #{page_number}/#{quantity}"
       page_url = products_request_url + '?page=' + page_number.to_s
@@ -127,9 +127,9 @@ class Parser
   #fetch all products from one page and save it in the database
   def get_products_from_page(page_url, category)
     loop do
-      page = special_request(page_url)
-      if (!page.include?('503 Service Temporarily Unavailable'))
-        JSON.parse(page)['products'].map do |product|
+      response = special_request(page_url)
+      if (!response.include?('503 Service Temporarily Unavailable'))
+        JSON.parse(response)['products'].map do |product|
           Comparator.new.run(category, product, queue?, page_url)
         end
         break
