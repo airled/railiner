@@ -45,3 +45,8 @@ ul {
 .product-row:hover .add-favorite {
 	display: inline-block;
 }
+.alert {
+	position: absolute;
+	width: 500px;
+	right: 0px;
+}
