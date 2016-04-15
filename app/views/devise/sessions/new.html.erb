@@ -1,18 +1,20 @@
 <h2>Войти</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => "form-inline"}) do |f| %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => "form-horizontal"}) do |f| %>
 
   <div class="form-group">
-    <%= f.label "Почта" %>
-    <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "почта" %>
+    <div class="col-lg-8">
+      <%= f.label "Почта" %>
+      <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "почта" %>
+    </div>
   </div>
 
   <div class="form-group">
-    <%= f.label "Пароль" %>
-    <%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "пароль" %>
+    <div class="col-lg-8">
+      <%= f.label "Пароль" %>
+      <%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "пароль" %>
+    </div>
   </div>
-
-  <%= f.submit "Войти", class: "btn btn-primary" %>
 
   <% if devise_mapping.rememberable? -%>
     <div class="form-group">
@@ -21,8 +23,6 @@
     </div>
   <% end %>
 
-<% end %>
+  <%= f.submit "Войти", class: "btn btn-primary" %>
 
-<!-- 
-<%= render "devise/shared/links" %>
- -->
+<% end %>
