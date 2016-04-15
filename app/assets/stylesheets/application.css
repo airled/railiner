@@ -30,3 +30,18 @@ ul {
 	border-top: 0px;
 	border-bottom: 0px;
 }
+.add-favorite {
+	display: none;
+	background-color: #428bca;
+	border-color: #428bca;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	color: white;
+	border-radius: 3px;
+	font-size: 25px;
+	cursor: default;
+}
+.product-row:hover .add-favorite {
+	display: inline-block;
+}

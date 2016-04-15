@@ -22,6 +22,7 @@ gem 'sinatra', :require => nil
 gem 'foreman'
 gem 'devise'
 gem 'bootstrap-kaminari-views'
+gem 'slim'
 
 group :development, :test do
   gem 'pry'

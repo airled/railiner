@@ -1,0 +1,16 @@
+h1 Профиль
+
+- @products.each do |product|
+  div class="row product-row"
+
+    div class="col-lg-3"
+      = image_tag product.small_image_url
+
+    div class="col-lg-9"
+      = link_to product.name, product_path(url_name: product.url_name)
+      br
+      = product.description
+      br
+      - if product.min_price
+        | цена: 
+        = product.prices
