@@ -50,3 +50,9 @@ ul {
 	width: 500px;
 	right: 0px;
 }
+@media(max-width: 1023px){
+	.alert {
+		position: static;
+		width: 100%;
+	}
+}
