@@ -8,7 +8,10 @@ class UsersController < ApplicationController
   end
 
   def add_product
-    current_user.cart.products << Product.find(params[:product_id])
-    redirect_to :back
+    product_id = params[:product_id].to_i
+    ids = current_user.cart.products.pluck(:id)
+    current_user.cart.products << Product.find(product_id) unless ids.include?(product_id)
+    render json: current_user.cart.products.count
   end
+  
 end

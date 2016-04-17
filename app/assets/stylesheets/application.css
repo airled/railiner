@@ -31,19 +31,22 @@ ul {
 	border-bottom: 0px;
 }
 .add-favorite {
-	display: none;
+	display: table-cell;
 	background-color: #428bca;
 	border-color: #428bca;
 	width: 40px;
 	height: 40px;
 	text-align: center;
+	vertical-align: middle;
 	color: white;
 	border-radius: 3px;
 	font-size: 25px;
 	cursor: default;
+	opacity: 0;
+	transition: opacity 0.2s
 }
 .product-row:hover .add-favorite {
-	display: inline-block;
+	opacity: 1;
 }
 .alert {
 	position: absolute;

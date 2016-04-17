@@ -1,24 +1,43 @@
 = paginate @products, theme: 'twitter-bootstrap-3', pagination_class: "pagination-sm"
 
 - @products.each do |product|
-  div class="row product-row"
-
-    div class="col-lg-3"
+  .row.product-row
+    .col-lg-3
       = image_tag product.small_image_url
+    .col-lg-8
 
-    div class="col-lg-8"
-      = link_to product.name, product_path(url_name: product.url_name)
-      br
-      = product.description
-      br
+      div = link_to product.name, product_path(url_name: product.url_name)
+
+      - if product.description?
+        div = product.description
+
       - if product.min_price
-        | цена: 
-        = product.prices
-    - if user_signed_in?
-      div class="col-lg-1"
-        div class="add-favorite" title="Добавить в интересуемое" 
-          = link_to '+', users_add_product_path(product_id: product.id), method: :post
+        div
+          | цена: 
+          = product.prices
 
+    - if user_signed_in?
+      .col-lg-1
+        .add-favorite data-id=product.id title="Добавить в интересуемое" +
   br
 
 = paginate @products, theme: 'twitter-bootstrap-3', pagination_class: "pagination-sm"
+
+javascript:
+  $(document).ready(function() {
+    $('.add-favorite').click(function() {
+      var productId = this.dataset.id;
+      $.ajax({
+        url: "#{users_add_product_path}",
+        type: "POST",
+        data: {
+          product_id: productId
+        },
+        success: function(jsonResponse) {
+          var newUserProductsQuantity = JSON.parse(jsonResponse),
+              accountEmail = $('#account-link').html().split(' ')[0];
+          $('#account-link').html(accountEmail + ' (' + newUserProductsQuantity + ')');
+        }        
+      });
+    });
+  });

@@ -1,0 +1,9 @@
+h1 Категории продуктов
+hr
+
+- @categories.each_slice(4) do |slice|
+  .row
+    - slice.each do |category|
+      .col-lg-3
+        = link_to category.name_ru, category_path(category.name)
+  br

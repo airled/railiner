@@ -23,7 +23,7 @@ en:
   hello: "Hello world"
   views:
     pagination:
-      first: "&laquo; Первая"
-      last: "Последняя &raquo;"
-      previous: "&lsaquo; Предыдущая"
-      next: "Следующая &rsaquo;"
+      first: "&laquo; First"
+      last: "Last &raquo;"
+      previous: "&lsaquo; Previous"
+      next: "Next &rsaquo;"

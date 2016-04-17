@@ -1,0 +1,12 @@
+h1 Railiner
+hr
+
+div
+  ' Продукты
+  = link_to 'catalog.onliner.by', 'http://catalog.onliner.by', target: '_blank'
+  | . Добро пожаловать!
+  
+- if @date
+  div 
+    | База данных от 
+    = @date
