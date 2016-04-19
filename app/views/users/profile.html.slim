@@ -7,7 +7,7 @@ hr
     .col-lg-3
       = image_tag product.small_image_url
 
-    .col-lg-9
+    .col-lg-8
       = link_to product.name, product.url, target: "_blank"
       - if product.description?
         div = product.description
@@ -15,3 +15,27 @@ hr
         div
           | цена: 
           = product.prices
+
+    .col-lg-1
+      .remove-favorite data-id=product.id title="Убрать из интересуемого" -
+
+javascript:
+  $(document).ready(function() {
+    $('.remove-favorite').click(function() {
+      var productId = this.dataset.id;
+      $.ajax({
+        url: "#{users_remove_product_path}",
+        type: "POST",
+        data: {
+          product_id: productId
+        },
+        success: function(jsonResponse) {
+          var newUserProductsQuantity = JSON.parse(jsonResponse),
+              accountEmail = $('#account-link').html().split(' ')[0];
+          $('#account-link').html(accountEmail + ' (' + newUserProductsQuantity + ')');
+        }        
+      });
+    });
+  });
+
+

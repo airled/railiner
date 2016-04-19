@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   get 'users/profile'
   post 'users/add_product'
+  post 'users/remove_product'
 
   get :autocomplete_product_name, to: 'products#autocomplete_product_name'
   get 'find/(page/:page)', to: 'products#find', as: :find

@@ -6,7 +6,7 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find_by(:name => params[:name])
-    @categories = @group.categories.all
+    @categories = @group.categories.order('name_ru ASC')
   end
   
 end

@@ -30,10 +30,8 @@ ul {
 	border-top: 0px;
 	border-bottom: 0px;
 }
-.add-favorite {
+.add-favorite, .remove-favorite {
 	display: table-cell;
-	background-color: #428bca;
-	border-color: #428bca;
 	width: 40px;
 	height: 40px;
 	text-align: center;
@@ -45,7 +43,15 @@ ul {
 	opacity: 0;
 	transition: opacity 0.2s
 }
-.product-row:hover .add-favorite {
+.add-favorite{
+	background-color: #428bca;
+	border-color: #428bca;
+}
+.remove-favorite {
+	background-color: #f00;
+	border-color: #f00;
+}
+.product-row:hover .add-favorite, .product-row:hover .remove-favorite {
 	opacity: 1;
 }
 .alert {

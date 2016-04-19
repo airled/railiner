@@ -13,5 +13,11 @@ class UsersController < ApplicationController
     current_user.cart.products << Product.find(product_id) unless ids.include?(product_id)
     render json: current_user.cart.products.count
   end
+
+  def remove_product
+    product_id = params[:product_id].to_i
+    current_user.cart.products.delete(Product.find(product_id))
+    render json: current_user.cart.products.count
+  end
   
 end
