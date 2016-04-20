@@ -1,0 +1,18 @@
+#profileProducts
+- @products.each do |product|
+  .row.product-row
+
+    .col-lg-3
+      = image_tag product.small_image_url
+
+    .col-lg-8
+      = link_to product.name, product.url, target: "_blank"
+      - if product.description?
+        div = product.description
+      - if product.min_price
+        div
+          | цена: 
+          = product.prices
+
+    .col-lg-1
+      .remove-favorite data-id=product.id title="Убрать из интересуемого" -
