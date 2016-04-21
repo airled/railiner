@@ -23,6 +23,7 @@ gem 'foreman'
 gem 'devise'
 gem 'bootstrap-kaminari-views'
 gem 'slim'
+gem 'activeadmin', github: 'activeadmin'
 
 group :development, :test do
   gem 'pry'
