@@ -1,18 +1,20 @@
 default: &default
   adapter: mysql2 
-  username: air
   password: 
   host: 127.0.0.1
   pool: 40
 
 development:
   <<: *default
+  username: air
   database: railiner_development
 
 test:
   <<: *default
+  username: air
   database: railiner_testing
 
 production:
   <<: *default
+  username: root
   database: railiner_production
