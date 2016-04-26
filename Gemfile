@@ -24,6 +24,7 @@ gem 'devise'
 gem 'bootstrap-kaminari-views'
 gem 'slim'
 gem 'activeadmin', github: 'activeadmin'
+gem 'rails-i18n'
 
 group :development, :test do
   gem 'pry'
