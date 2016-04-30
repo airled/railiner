@@ -27,7 +27,6 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'rails-i18n'
 
 group :development, :test do
-  gem 'pry'
   gem 'capistrano-rails', '~> 1.1.1'
   gem 'byebug'
   gem 'web-console', '~> 2.0'
