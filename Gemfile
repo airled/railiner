@@ -25,6 +25,7 @@ gem 'bootstrap-kaminari-views'
 gem 'slim'
 gem 'activeadmin', github: 'activeadmin'
 gem 'rails-i18n'
+gem 'rollbar'
 
 group :development, :test do
   gem 'capistrano-rails', '~> 1.1.1'
