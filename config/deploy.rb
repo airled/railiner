@@ -22,10 +22,26 @@ namespace :deploy do
   end
 end
 
+# task :start do
+#   on roles(:all) do
+#     within "#{fetch(:deploy_to)}/current/" do
+#       execute 'source ~/.zshrc && cd current && bundle exec unicorn -c config/unicorn.rb -E production -D && echo "Unicorn started"'
+#     end
+#   end
+# end
+
+# task :stop do
+#   on roles(:all) do
+#     within "#{fetch(:deploy_to)}/current/" do
+#       execute "pid=$(cat #{fetch(:deploy_to)}/current/tmp/pids/unicorn.pid) && kill -9 $(echo $pid) && echo 'Unicorn killed'"
+#     end
+#   end
+# end
+
 task :start do
   on roles(:all) do
     within "#{fetch(:deploy_to)}/current/" do
-      execute 'source ~/.zshrc && cd current && bundle exec unicorn -c config/unicorn.rb -E production -D && echo "Unicorn started"'
+      execute 'source ~/.zshrc && cd current && bundle exec thin -C config/thin.yml -R config.ru start && echo "Started"'
     end
   end
 end
@@ -33,7 +49,7 @@ end
 task :stop do
   on roles(:all) do
     within "#{fetch(:deploy_to)}/current/" do
-      execute "pid=$(cat #{fetch(:deploy_to)}/current/tmp/pids/unicorn.pid) && kill -9 $(echo $pid) && echo 'Unicorn killed'"
+      execute "source ~/.zshrc && cd current && bundle exec thin stop && echo 'Stopped'"
     end
   end
 end
