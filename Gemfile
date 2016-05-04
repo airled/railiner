@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'kaminari'
 gem 'curb'
-gem 'capistrano-rbenv'
 gem 'libv8'
 gem 'mysql2', '~> 0.3.20'
 gem 'rails', '4.2.1'
@@ -19,7 +18,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rails-jquery-autocomplete'
 gem 'sidekiq'
 gem 'sinatra', :require => nil
-gem 'foreman'
 gem 'devise'
 gem 'bootstrap-kaminari-views'
 gem 'slim'
@@ -29,6 +27,7 @@ gem 'rollbar'
 
 group :development, :test do
   gem 'capistrano-rails', '~> 1.1.1'
+  gem 'capistrano-rbenv'
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'better_errors'
@@ -38,7 +37,6 @@ end
 
 group :production do
   # gem 'unicorn'
-  gem 'whenever'
   gem 'thin'
 end
 
