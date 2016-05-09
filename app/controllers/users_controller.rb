@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def profile
     @email = current_user.email
-    @products = current_user.cart.products
+    @products = current_user.cart.products.page(params[:page])
   end
 
   def add_product
