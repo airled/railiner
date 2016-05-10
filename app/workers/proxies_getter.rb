@@ -1,7 +1,7 @@
 class Proxies_getter
 
   include Sidekiq::Worker
-  sidekiq_options :queue => :getter
+  sidekiq_options queue: :getter
 
   def perform(url)
     loop do

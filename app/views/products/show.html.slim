@@ -11,7 +11,7 @@ div class="row product-row"
       | цена: 
       = @product.prices
       br
-    = link_to 'Каталог Onliner', @product.url, :target => "_blank"
+    = link_to 'Каталог Onliner', @product.url, target: "_blank"
     - if user_signed_in?
       div
         div class="add-favorite" title="Добавить в интересуемое" +     

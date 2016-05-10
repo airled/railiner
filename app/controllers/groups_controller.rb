@@ -5,7 +5,7 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = Group.find_by(:name => params[:name])
+    @group = Group.find_by(name: params[:name])
     @categories = @group.categories.order('name_ru ASC')
   end
   

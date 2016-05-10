@@ -17,7 +17,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rails-jquery-autocomplete'
 gem 'sidekiq'
-gem 'sinatra', :require => nil
+gem 'sinatra', require: nil
 gem 'devise'
 gem 'bootstrap-kaminari-views'
 gem 'slim'

@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
   def autocomplete_product_name
     term = params[:term]
     products = Product.select(:name).distinct.where('name LIKE ?', "#{term}%").take(10)
-    render :json => products.map { |product| {id: product.id, label: product.name, value: product.name} }
+    render json: products.map { |product| {id: product.id, label: product.name, value: product.name} }
   end
 
   def show

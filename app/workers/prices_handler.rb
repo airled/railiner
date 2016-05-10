@@ -1,7 +1,7 @@
 class Prices_handler
 
   include Sidekiq::Worker
-  sidekiq_options :queue => :handler
+  sidekiq_options queue: :handler
 
   def proxy_request(prices_url, proxy_ip)
     proxy_request = Curl::Easy.new(prices_url) { |curl| curl.proxy_url = proxy_ip }

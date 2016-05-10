@@ -26,11 +26,11 @@ task :reset do
 end
 
 desc 'Start to parse right after resetting the migrations.'
-task :reparse => [:environment, :reset, :parse] do
+task reparse: [:environment, :reset, :parse] do
 end
 
 desc "Run special script for filling 'Sellers'-table. Use it only if 'Costs'-table has been filled."
-task :fill => :environment do
+task fill: :environment do
   require './lib/sellers_filler'
   Filler.run
 end
